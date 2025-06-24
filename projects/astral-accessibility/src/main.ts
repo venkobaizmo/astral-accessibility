@@ -8,37 +8,64 @@ import "zone.js";
   features?: Record<string, any>,
 ) {
   try {
-    //When no options are given by default all widgets are allowed
+    console.log('initializeAstral called with features:', features);// When no options are given by default all widgets are allowed
     if (!features) {
       features = {
         enabledFeatures: [
-          "Screen Reader",
+          // WCAG 2.1 Core Navigation Features
+          "Skip Links",
+          "Keyboard Navigation", 
+          "Focus Enhancement",
+          
+          // WCAG 2.1 Visual Features
           "Contrast",
+          "Color Blind Support",
           "Saturation",
+          
+          // WCAG 2.1 Text and Reading Features
+          "Screen Reader",
           "Bigger Text",
           "Text Spacing",
-          "Screen Mask",
           "Line Height",
+          
+          // WCAG 2.1 Motion Features
+          "Reduced Motion",
+          "Screen Mask",
         ],
+        // Default widget height to 75% of screen height
+        widgetHeight: "75vh",
+        // Default language is browser locale or English
+        locale: navigator.language || 'en-US'
       };
-    }
-
-    const app = await createApplication();
+    }    // Set default locale if not provided
+    features['locale'] ??= navigator.language || 'en-US';    const app = await createApplication();
     const widget = createCustomElement(AstralAccessibilityComponent, {
       injector: app.injector,
     });
-    customElements.define("astral-accessibility", widget);
+    
+    // Check if custom element is already defined
+    const elementName = "astral-accessibility";
+    if (!customElements.get(elementName)) {
+      customElements.define(elementName, widget);
+    }
 
     const doc = app.injector.get(DOCUMENT);
-    const astralAccessibilityElement = doc.createElement(
-      "astral-accessibility",
-    );
+    
+    // Remove existing astral accessibility element if it exists
+    const existingElement = doc.querySelector(elementName);
+    if (existingElement) {
+      existingElement.remove();
+    }
+    
+    // Create and append new element
+    const astralAccessibilityElement = doc.createElement(elementName);
     astralAccessibilityElement.setAttribute(
       "astral-features",
       JSON.stringify(features),
-    );
-    doc.body.appendChild(astralAccessibilityElement);
+    );    doc.body.appendChild(astralAccessibilityElement);
+    
+    console.log('Astral Accessibility widget initialized successfully with locale:', features['locale']);
   } catch (err) {
-    console.error(err);
+    console.error('Error initializing Astral Accessibility widget:', err);
   }
 };

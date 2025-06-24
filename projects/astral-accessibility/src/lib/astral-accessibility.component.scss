@@ -8,11 +8,10 @@
   bottom: 43px;
   right: 0px;
   transition: max-width 0.1s ease-in-out;
-
   --iconWidth: 70px;
   --modalWidth: 400px;
   --maxModalWidth: 90vw;
-  --modalHeight: calc(40vh - 16px);
+  --modalHeight: 75vh;
   --modalBackgroundColor: #232323;
   --modalBorderColor: #e8e8e8;
   --actionTextColor: #fff;
@@ -130,6 +129,27 @@
 .actions {
   display: flex;
   flex-direction: column;
+  max-height: var(--modalHeight);
+  overflow-y: auto;
+  
+  /* Custom scrollbar styles */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: var(--actionBackgroundColor);
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: var(--actionActiveBackgroundColor);
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-thumb:hover {
+    background: #ffb300;
+  }
 }
 
 .action {

@@ -1,6 +1,7 @@
 import { DOCUMENT, NgIf, NgClass } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { I18nService } from "../services/i18n.service";
 
 @Component({
   selector: "astral-text-size",
@@ -44,23 +45,22 @@ import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
           </div>
 
           <div class="state-dots-wrap">
-            <span>{{ states[currentState] }}</span>
-            <div
+            <span>{{ states[currentState] }}</span>            <div
               class="dots"
               [ngClass]="{ inactive: states[currentState] === base }"
             >
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Medium Text' }"
+                [ngClass]="{ active: states[currentState] === i18n.getTranslation('medium-text') }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Large Text' }"
+                [ngClass]="{ active: states[currentState] === i18n.getTranslation('large-text') }"
               ></div>
               <div
                 class="dot"
                 [ngClass]="{
-                  active: states[currentState] === 'Extra Large Text'
+                  active: states[currentState] === i18n.getTranslation('extra-large-text')
                 }"
               ></div>
             </div>
@@ -77,16 +77,22 @@ import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
 })
 export class TextSizeComponent {
   document = inject(DOCUMENT);
+  i18n = inject(I18nService);
 
   currentState = 0;
   currentScale = 1;
-  base = "Bigger Text";
-  states = [this.base, "Medium Text", "Large Text", "Extra Large Text"];
-  private initialStyles = new WeakMap();
+  base = this.i18n.getTranslation('bigger-text');
+  states = [
+    this.base, 
+    this.i18n.getTranslation('medium-text'), 
+    this.i18n.getTranslation('large-text'), 
+    this.i18n.getTranslation('extra-large-text')
+  ];
+  private readonly initialStyles = new WeakMap();
 
   _style: HTMLStyleElement;
 
-  private observer: MutationObserver;
+  private readonly observer: MutationObserver;
 
   // Select the node that will be observed for mutations
   targetNode = document.body;
@@ -100,7 +106,7 @@ export class TextSizeComponent {
       mutations.forEach((mutation) => {
         mutation.addedNodes.forEach((node) => {
           if (node instanceof HTMLElement) {
-            this.updateTextSize(node as HTMLElement, this.currentScale);
+            this.updateTextSize(node, this.currentScale);
           }
         });
       });
@@ -118,13 +124,12 @@ export class TextSizeComponent {
         "line-height": node.style.lineHeight,
         "word-spacing": node.style.wordSpacing,
       });
-    }
-
-    const children = node.children;
+    }    const children = node.children;
     const excludeNodes = ["SCRIPT"];
     // traverse and update children first
     if (children.length > 0) {
-      for (const child of children) {
+      for (let i = 0; i < children.length; i++) {
+        const child = children[i];
         if (!excludeNodes.includes(child.nodeName))
           this.updateTextSize(child as HTMLElement, scale, previousScale);
       }
@@ -146,16 +151,14 @@ export class TextSizeComponent {
       node.style.wordSpacing = `initial`;
     }
   }
-
   restoreTextSize(node: HTMLElement) {
     const children = node.children;
     if (this.initialStyles.has(node)) {
-      for (const [key, value] of Object.entries(this.initialStyles.get(node))) {
-        node.style[key] = value;
+      const styles = this.initialStyles.get(node) as Record<string, string>;
+      for (const [key, value] of Object.entries(styles)) {
+        (node.style as any)[key] = value;
       }
-    }
-
-    for (const child of children) {
+    }    for (const child of Array.from(children)) {
       this.restoreTextSize(child as HTMLElement);
     }
   }
@@ -173,21 +176,19 @@ export class TextSizeComponent {
   }
 
   private _runStateLogic() {
-    let previousScale = this.currentScale;
-
-    if (this.states[this.currentState] === "Medium Text") {
+    let previousScale = this.currentScale;    if (this.states[this.currentState] === this.i18n.getTranslation('medium-text')) {
       this.currentScale = 1.2;
     }
 
-    if (this.states[this.currentState] === "Large Text") {
+    if (this.states[this.currentState] === this.i18n.getTranslation('large-text')) {
       this.currentScale = 1.5;
     }
 
-    if (this.states[this.currentState] === "Extra Large Text") {
+    if (this.states[this.currentState] === this.i18n.getTranslation('extra-large-text')) {
       this.currentScale = 1.8;
     }
 
-    if (!(this.states[this.currentState] === this.base)) {
+    if (this.states[this.currentState] !== this.base) {
       this.updateTextSize(document.body, this.currentScale, previousScale);
     } else {
       // is base state

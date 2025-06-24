@@ -1,13 +1,29 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
-  "newProjectRoot": "projects",
-  "projects": {
+  "newProjectRoot": "projects",  "projects": {
     "astral-accessibility": {
       "projectType": "application",
       "root": "projects/astral-accessibility",
       "sourceRoot": "projects/astral-accessibility/src",
       "prefix": "lib",
+      "i18n": {
+        "sourceLocale": "en-US",
+        "locales": {
+          "es": {
+            "translation": "src/locale/messages.es.xlf",
+            "baseHref": ""
+          },
+          "fr": {
+            "translation": "src/locale/messages.fr.xlf", 
+            "baseHref": ""
+          },
+          "de": {
+            "translation": "src/locale/messages.de.xlf",
+            "baseHref": ""
+          }
+        }
+      },
       "architect": {
         "build": {
           "builder": "ngx-build-plus:browser",
@@ -20,8 +36,7 @@
             "assets": [],
             "scripts": [],
             "singleBundle": true
-          },
-          "configurations": {
+          },          "configurations": {
             "production": {
               "budgets": [
                 {
@@ -44,6 +59,27 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
+            },
+            "es": {
+              "aot": true,
+              "outputPath": "dist/astral-accessibility-es/",
+              "i18nFile": "src/locale/messages.es.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "es"
+            },
+            "fr": {
+              "aot": true,
+              "outputPath": "dist/astral-accessibility-fr/",
+              "i18nFile": "src/locale/messages.fr.xlf",
+              "i18nFormat": "xlf", 
+              "i18nLocale": "fr"
+            },
+            "de": {
+              "aot": true,
+              "outputPath": "dist/astral-accessibility-de/",
+              "i18nFile": "src/locale/messages.de.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "de"
             }
           },
           "defaultConfiguration": "production"
@@ -69,5 +105,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "19edcc3c-4ec6-45d4-b084-4830baadfacf"
   }
 }

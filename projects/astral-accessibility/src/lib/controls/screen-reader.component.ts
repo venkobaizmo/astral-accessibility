@@ -1,6 +1,7 @@
 import { DOCUMENT, NgIf, NgClass } from "@angular/common";
 import { Component, inject, Renderer2 } from "@angular/core";
 import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { I18nService } from "../services/i18n.service";
 
 @Component({
   selector: "astral-screen-reader",
@@ -57,22 +58,21 @@ import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
           <div class="state-dots-wrap">
             <span>{{
               synthesisAvailable ? states[currentState] : unavailableMessage
-            }}</span>
-            <div
+            }}</span>            <div
               class="dots"
               [ngClass]="{ inactive: states[currentState] === base }"
             >
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Read Normal' }"
+                [ngClass]="{ active: states[currentState] === i18n.getTranslation('read-normal') }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Read Fast' }"
+                [ngClass]="{ active: states[currentState] === i18n.getTranslation('read-fast') }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Read Slow' }"
+                [ngClass]="{ active: states[currentState] === i18n.getTranslation('read-slow') }"
               ></div>
             </div>
           </div>
@@ -93,6 +93,8 @@ export class ScreenReaderComponent {
   isApple = false;
   isEdgeAndroid = false;
   synthesisAvailable = true;
+  
+  i18n = inject(I18nService);
 
   constructor(private renderer: Renderer2) {}
 
@@ -220,11 +222,15 @@ export class ScreenReaderComponent {
   }
 
   document = inject(DOCUMENT);
-
   currentState = 0;
-  base = "Screen Reader";
-  unavailableMessage = "Screen Reader unavailable on device";
-  states = [this.base, "Read Normal", "Read Fast", "Read Slow"];
+  base = this.i18n.getTranslation('screen-reader');
+  unavailableMessage = this.i18n.getTranslation('screen-reader-unavailable');
+  states = [
+    this.base, 
+    this.i18n.getTranslation('read-normal'), 
+    this.i18n.getTranslation('read-fast'), 
+    this.i18n.getTranslation('read-slow')
+  ];
 
   _style: HTMLStyleElement;
 
@@ -234,20 +240,19 @@ export class ScreenReaderComponent {
 
     this._runStateLogic();
   }
-
   private _runStateLogic() {
     this._style?.remove?.();
     this._style = this.document.createElement("style");
 
-    if (this.states[this.currentState] === "Read Normal") {
+    if (this.states[this.currentState] === this.i18n.getTranslation('read-normal')) {
       this.speech.rate = 0.8;
     }
 
-    if (this.states[this.currentState] === "Read Fast") {
+    if (this.states[this.currentState] === this.i18n.getTranslation('read-fast')) {
       this.speech.rate = this.isApple ? 1.3 : 1.7;
     }
 
-    if (this.states[this.currentState] === "Read Slow") {
+    if (this.states[this.currentState] === this.i18n.getTranslation('read-slow')) {
       this.speech.rate = 0.4;
     }
 

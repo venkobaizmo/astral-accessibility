@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Astral Widget - Height Configuration Demo</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Load the widget bundle -->
+  <script src="main.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+      min-height: 200vh; /* Make page tall to show scroll behavior */
+      background: linear-gradient(to bottom, #f0f8ff, #e6f3ff, #cce7ff);
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      color: #333;
+    }
+    .demo-button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 10px 5px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .demo-button:hover {
+      background: #0056b3;
+    }
+    .demo-button.small {
+      background: #28a745;
+    }
+    .demo-button.small:hover {
+      background: #1e7e34;
+    }
+    .demo-button.large {
+      background: #dc3545;
+    }
+    .demo-button.large:hover {
+      background: #c82333;
+    }
+    .demo-button.custom {
+      background: #6f42c1;
+    }
+    .demo-button.custom:hover {
+      background: #5a2d91;
+    }
+    .demo-button:disabled {
+      background: #6c757d !important;
+      cursor: not-allowed;
+    }
+    .notice {
+      background: #d1ecf1;
+      border: 1px solid #bee5eb;
+      color: #0c5460;
+      padding: 12px;
+      border-radius: 4px;
+      margin: 15px 0;
+    }
+    .config-example {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      padding: 15px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      margin: 10px 0;
+      overflow-x: auto;
+    }
+    .spacer {
+      height: 50vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6c757d;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎛️ Astral Widget Height Configuration Demo</h1>
+  
+  <div class="card">
+    <h2>Widget Height Options</h2>
+    <p>This demo shows how to configure the accessibility widget's height through the configuration options. Try different height settings below:</p>
+    
+    <div class="notice">
+      <strong>Note:</strong> Only one widget can be active at a time. Click a button to initialize the widget with that height configuration.
+    </div>
+
+    <button class="demo-button" onclick="initializeWidget('default')">
+      🏠 Default Height (75vh)
+    </button>
+    
+    <button class="demo-button small" onclick="initializeWidget('small')">
+      📱 Small Height (50vh)
+    </button>
+    
+    <button class="demo-button large" onclick="initializeWidget('large')">
+      💻 Large Height (90vh)
+    </button>
+    
+    <button class="demo-button custom" onclick="initializeWidget('custom')">
+      ⚙️ Custom Height (400px)
+    </button>
+  </div>
+
+  <div class="card">
+    <h2>Configuration Examples</h2>
+    
+    <h3>Default Height (75vh)</h3>
+    <div class="config-example">
+initializeAstral({
+  enabledFeatures: [...],
+  // No widgetHeight specified - uses default 75vh
+});
+    </div>
+
+    <h3>Small Height (50vh)</h3>
+    <div class="config-example">
+initializeAstral({
+  enabledFeatures: [...],
+  widgetHeight: "50vh"
+});
+    </div>
+
+    <h3>Large Height (90vh)</h3>
+    <div class="config-example">
+initializeAstral({
+  enabledFeatures: [...],
+  widgetHeight: "90vh"
+});
+    </div>
+
+    <h3>Custom Pixel Height (400px)</h3>
+    <div class="config-example">
+initializeAstral({
+  enabledFeatures: [...],
+  widgetHeight: "400px"
+});
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Supported Height Values</h2>
+    <ul>
+      <li><strong>Viewport units:</strong> 50vh, 75vh, 90vh, etc.</li>
+      <li><strong>Pixel values:</strong> 300px, 400px, 500px, etc.</li>
+      <li><strong>Percentage:</strong> 50%, 75%, 100%, etc.</li>
+      <li><strong>CSS calc():</strong> calc(100vh - 100px), etc.</li>
+    </ul>
+    <p><strong>Default:</strong> If no <code>widgetHeight</code> is specified in the config, the widget defaults to 75vh (75% of viewport height).</p>
+  </div>
+
+  <div class="spacer">
+    Scroll down to see more content...
+  </div>
+
+  <div class="card">
+    <h2>Sample Content for Testing</h2>
+    <p>This content helps test the widget's scrolling behavior with different heights. The accessibility widget should appear in the bottom-right corner.</p>
+    
+    <h3>Accessibility Features to Test</h3>
+    <ul>
+      <li><strong>Skip Links:</strong> Quick navigation to main content</li>
+      <li><strong>Focus Enhancement:</strong> Better focus indicators</li>
+      <li><strong>Color Blind Support:</strong> Color blindness filters</li>
+      <li><strong>Contrast:</strong> Adjust page contrast</li>
+      <li><strong>Text Size:</strong> Increase text size</li>
+      <li><strong>Reduced Motion:</strong> Minimize animations</li>
+    </ul>
+    
+    <p>Try different height configurations to see how the widget's scrollable area changes. Larger heights show more features at once, while smaller heights require scrolling within the widget panel.</p>
+  </div>
+
+  <div class="spacer">
+    End of demo content
+  </div>
+
+  <script>
+    let currentWidget = null;
+
+    function initializeWidget(type) {
+      // Remove existing widget if any
+      const existing = document.querySelector('astral-accessibility');
+      if (existing) {
+        existing.remove();
+      }
+
+      let config = {
+        enabledFeatures: [
+          "Skip Links",
+          "Focus Enhancement", 
+          "Color Blind Support",
+          "Contrast",
+          "Saturation",
+          "Screen Reader",
+          "Bigger Text",
+          "Text Spacing",
+          "Line Height",
+          "Reduced Motion",
+          "Screen Mask"
+        ]
+      };
+
+      // Set height based on type
+      switch(type) {
+        case 'default':
+          // No widgetHeight specified - uses default 75vh
+          break;
+        case 'small':
+          config.widgetHeight = "50vh";
+          break;
+        case 'large':
+          config.widgetHeight = "90vh";
+          break;
+        case 'custom':
+          config.widgetHeight = "400px";
+          break;
+      }
+      
+      // Initialize the widget
+      if (typeof initializeAstral === 'function') {
+        initializeAstral(config);
+        
+        // Update button states
+        const buttons = document.querySelectorAll('.demo-button');
+        buttons.forEach(btn => {
+          btn.disabled = false;
+          btn.textContent = btn.textContent.replace(' ✓', '');
+        });
+        
+        // Mark active button
+        event.target.disabled = true;
+        event.target.textContent += ' ✓';
+        
+        currentWidget = type;
+        
+        // Show success message
+        setTimeout(() => {
+          alert(`Widget initialized with ${getHeightDescription(type)} height! Check the bottom-right corner.`);
+        }, 500);
+      } else {
+        alert('Widget failed to load. Please refresh the page and try again.');
+      }
+    }
+
+    function getHeightDescription(type) {
+      switch(type) {
+        case 'default': return 'default (75vh)';
+        case 'small': return 'small (50vh)';
+        case 'large': return 'large (90vh)';
+        case 'custom': return 'custom (400px)';
+        default: return 'unknown';
+      }
+    }
+  </script>
+</body>
+</html>

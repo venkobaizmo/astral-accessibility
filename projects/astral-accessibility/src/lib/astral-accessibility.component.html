@@ -2,12 +2,16 @@
   name="viewport"
   content="width=device-width, initial-scale=1, minimum-scale=1"
 />
-<div class="astral-accessibility d-flex align-items-end">
+<div class="astral-accessibility d-flex align-items-end" role="complementary" [attr.aria-label]="i18n.getTranslation('accessibility-tools')">
   <div>
     <div class="astral-inverted-corner"></div>
     <button
       [class]="astralAccessibilityIcon"
       (click)="modalVisible = !modalVisible"
+      [attr.aria-label]="modalVisible ? closeAccessibilityPanelText : openAccessibilityPanelText"
+      [attr.aria-expanded]="modalVisible"
+      aria-haspopup="true"
+      aria-controls="astral-panel"
     >
       <!-- <i class="pi pi-user"></i> -->
       <div *ngIf="!modalVisible; else closeIconButton">
@@ -48,27 +52,39 @@
       <!-- <div class="icon-background"></div> -->
     </button>
   </div>
-
   <div
     [class]="
       modalVisible ? astralAccessibilityPanel + ' active' : 'astral-modal'
-    "
-  >
-    <div class="actions">
-      <!-- <div class="action">
-        <astral-invert></astral-invert>
+    "    id="astral-panel"
+    role="dialog"
+    [attr.aria-hidden]="!modalVisible"
+    [attr.aria-label]="i18n.getTranslation('accessibility-options-panel')"
+    [attr.aria-modal]="modalVisible"
+  >    <div class="actions" role="group" [attr.aria-label]="i18n.getTranslation('accessibility-features')">
+      <!-- WCAG 2.1 Core Features -->
+      <div class="action" *ngIf="this.enabledFeatures.includes('Skip Links')">
+        <astral-skip-links></astral-skip-links>
+      </div>      <!-- <div class="action" *ngIf="this.enabledFeatures.includes('Keyboard Navigation')">
+        <astral-keyboard-navigation></astral-keyboard-navigation>
       </div> -->
-      <div
-        class="action"
-        *ngIf="this.enabledFeatures.includes('Screen Reader')"
-      >
-        <astral-screen-reader></astral-screen-reader>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Focus Enhancement')">
+        <astral-focus-enhancement></astral-focus-enhancement>
       </div>
+      
+      <!-- Color and Visual Features -->
       <div class="action" *ngIf="this.enabledFeatures.includes('Contrast')">
         <astral-contrast></astral-contrast>
       </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Color Blind Support')">
+        <astral-color-blind-support></astral-color-blind-support>
+      </div>
       <div class="action" *ngIf="this.enabledFeatures.includes('Saturation')">
         <astral-saturate></astral-saturate>
+      </div>
+      
+      <!-- Text and Reading Features -->
+      <div class="action" *ngIf="this.enabledFeatures.includes('Screen Reader')">
+        <astral-screen-reader></astral-screen-reader>
       </div>
       <div class="action" *ngIf="this.enabledFeatures.includes('Bigger Text')">
         <astral-text-size></astral-text-size>
@@ -76,11 +92,16 @@
       <div class="action" *ngIf="this.enabledFeatures.includes('Text Spacing')">
         <astral-text-spacing></astral-text-spacing>
       </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Screen Mask')">
-        <astral-screen-mask></astral-screen-mask>
-      </div>
       <div class="action" *ngIf="this.enabledFeatures.includes('Line Height')">
         <astral-line-height></astral-line-height>
+      </div>
+      
+      <!-- Motion and Animation Features -->
+      <div class="action" *ngIf="this.enabledFeatures.includes('Reduced Motion')">
+        <astral-reduced-motion></astral-reduced-motion>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Screen Mask')">
+        <astral-screen-mask></astral-screen-mask>
       </div>
     </div>
   </div>

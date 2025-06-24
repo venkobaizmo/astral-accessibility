@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Astral Accessibility Widget Test</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Load the widget bundle -->
+  <script src="main.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      color: #333;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 10px 0;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .demo-button {
+      background: #28a745;
+      font-size: 16px;
+      padding: 15px 30px;
+      margin: 20px 0;
+    }
+    .demo-button:hover {
+      background: #1e7e34;
+    }
+  </style>
+</head>
+<body>
+  <h1>Astral Accessibility Widget Demo</h1>
+  <p>This page demonstrates the Astral Accessibility Widget. Click the button below to initialize the widget, then look for the accessibility icon in the bottom-right corner of the page.</p>
+  
+  <button class="demo-button" onclick="initializeWidget()">Initialize Accessibility Widget</button>
+  
+  <div class="card">
+    <h2>Sample Content</h2>
+    <p>This is some sample text for accessibility testing. You can use the accessibility widget to:</p>
+    <ul>
+      <li>Adjust text size and spacing</li>
+      <li>Change contrast settings</li>
+      <li>Enable screen reader functionality</li>
+      <li>Use screen mask for better focus</li>
+      <li>Adjust color saturation</li>
+      <li>Change line height for better readability</li>
+    </ul>
+    <p>Here's a <a href="#demo">demo link</a> and a <button>sample button</button> to test interactions.</p>
+  </div>
+
+  <div class="card">
+    <h2>More Test Content</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  </div>
+
+  <script>
+    function initializeWidget() {
+      // Initialize the accessibility widget with all features enabled
+      if (typeof initializeAstral === 'function') {
+        initializeAstral({
+          enabledFeatures: [
+            "Screen Reader",
+            "Contrast", 
+            "Saturation",
+            "Bigger Text",
+            "Text Spacing",
+            "Screen Mask",
+            "Line Height"
+          ]
+        });
+        
+        // Update the button to show it's been initialized
+        const button = document.querySelector('.demo-button');
+        button.textContent = 'Widget Initialized! Check bottom-right corner →';
+        button.disabled = true;
+        button.style.background = '#6c757d';
+      } else {
+        alert('Widget failed to load. Please refresh the page and try again.');
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 import { DOCUMENT, NgIf, NgClass } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { I18nService } from "../services/i18n.service";
 
 @Component({
   selector: "astral-saturate",
@@ -57,22 +58,21 @@ import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
           </div>
           <div class="state-dots-wrap">
             <span>{{ states[currentState] }}</span>
-            <div *ngIf="states[currentState] != base" class="dots">
-              <div
+            <div *ngIf="states[currentState] != base" class="dots">              <div
                 class="dot"
                 [ngClass]="{
-                  active: states[currentState] === 'Low Saturation'
+                  active: states[currentState] === i18n.getTranslation('low-saturation')
                 }"
               ></div>
               <div
                 class="dot"
                 [ngClass]="{
-                  active: states[currentState] === 'High Saturation'
+                  active: states[currentState] === i18n.getTranslation('high-saturation')
                 }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Desaturated' }"
+                [ngClass]="{ active: states[currentState] === i18n.getTranslation('desaturated') }"
               ></div>
             </div>
           </div>
@@ -88,10 +88,16 @@ import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
 })
 export class SaturateComponent {
   document = inject(DOCUMENT);
+  i18n = inject(I18nService);
 
   currentState = 0;
-  base = "Saturation";
-  states = [this.base, "Low Saturation", "High Saturation", "Desaturated"];
+  base = this.i18n.getTranslation('saturation');
+  states = [
+    this.base, 
+    this.i18n.getTranslation('low-saturation'), 
+    this.i18n.getTranslation('high-saturation'), 
+    this.i18n.getTranslation('desaturated')
+  ];
 
   nextState() {
     this.currentState += 1;
@@ -101,17 +107,15 @@ export class SaturateComponent {
   }
 
   private _runStateLogic() {
-    this._resetSaturation();
-
-    if (this.states[this.currentState] === "Low Saturation") {
+    this._resetSaturation();    if (this.states[this.currentState] === this.i18n.getTranslation('low-saturation')) {
       this.document.documentElement.classList.add("astral_low_saturation");
     }
 
-    if (this.states[this.currentState] === "High Saturation") {
+    if (this.states[this.currentState] === this.i18n.getTranslation('high-saturation')) {
       this.document.documentElement.classList.add("astral_high_saturation");
     }
 
-    if (this.states[this.currentState] === "Desaturated") {
+    if (this.states[this.currentState] === this.i18n.getTranslation('desaturated')) {
       this.document.documentElement.classList.add("astral_desaturated");
     }
   }

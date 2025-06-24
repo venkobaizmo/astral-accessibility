@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Astral Accessibility Widget - Auto Demo</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Load the widget bundle -->
+  <script src="main.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      color: #333;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 10px 0;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .notice {
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+      padding: 12px;
+      border-radius: 4px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="notice">
+    <strong>Accessibility Widget Active!</strong> Look for the accessibility icon in the bottom-right corner of the page.
+  </div>
+  <h1>Astral Accessibility Widget - WCAG 2.1 AA Compliant Demo</h1>
+  <p>This page automatically loads the enhanced Astral Accessibility Widget with comprehensive WCAG 2.1 Level AA compliance features. The widget provides various accessibility features to improve the web experience for all users.</p>
+    <div class="card">
+    <h2>WCAG 2.1 AA Compliant Features</h2>
+    <p>The accessibility widget now includes comprehensive WCAG 2.1 Level AA compliant features:</p>
+    <ul>
+      <li><strong>Skip Links:</strong> Navigate quickly to main content sections</li>
+      <li><strong>Keyboard Navigation:</strong> Enhanced keyboard-only navigation support</li>
+      <li><strong>Focus Enhancement:</strong> Improved focus indicators for better visibility</li>
+      <li><strong>Color Blind Support:</strong> Filters and patterns for color vision deficiencies</li>
+      <li><strong>Reduced Motion:</strong> Disable animations for motion sensitivity</li>
+      <li><strong>Screen Reader:</strong> Reads out text content when you click on elements</li>
+      <li><strong>Contrast:</strong> Adjusts background and text contrast for better visibility</li>
+      <li><strong>Saturation:</strong> Controls color saturation levels</li>
+      <li><strong>Bigger Text:</strong> Increases text size for better readability</li>
+      <li><strong>Text Spacing:</strong> Adjusts letter and word spacing</li>
+      <li><strong>Screen Mask:</strong> Provides a focus area that follows your cursor</li>
+      <li><strong>Line Height:</strong> Increases line spacing for better readability</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Sample Interactive Content</h2>
+    <p>Here's some sample content to test the accessibility features:</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. <a href="#test">This is a test link</a> that you can interact with. The accessibility features will help improve your reading experience.</p>
+    <button onclick="alert('Button clicked!')">Click Me</button>
+    <button onclick="alert('Another test!')">Another Button</button>
+  </div>
+
+  <div class="card">
+    <h2>Instructions</h2>
+    <ol>
+      <li>Look for the accessibility icon (person icon) in the bottom-right corner</li>
+      <li>Click the icon to open the accessibility panel</li>
+      <li>Try different features like text size, contrast, and spacing</li>
+      <li>Click on text elements to test the screen reader functionality</li>
+      <li>Use the screen mask feature to focus on specific areas</li>
+    </ol>
+  </div>
+
+  <script>
+    // Auto-initialize the widget when the page loads
+    window.addEventListener('load', function() {
+      setTimeout(function() {        if (typeof initializeAstral === 'function') {
+          initializeAstral({
+            enabledFeatures: [
+              // WCAG 2.1 Core Navigation Features
+              "Skip Links",
+              "Keyboard Navigation", 
+              "Focus Enhancement",
+              
+              // WCAG 2.1 Visual Features
+              "Contrast",
+              "Color Blind Support",
+              "Saturation",
+              
+              // WCAG 2.1 Text and Reading Features
+              "Screen Reader",
+              "Bigger Text",
+              "Text Spacing",
+              "Line Height",
+              
+              // WCAG 2.1 Motion Features
+              "Reduced Motion",
+              "Screen Mask"
+            ]
+          });
+          console.log('Astral Accessibility Widget with WCAG 2.1 compliance initialized successfully!');
+        } else {
+          console.error('initializeAstral function not found. Widget failed to load.');
+        }
+      }, 1000); // Small delay to ensure script is fully loaded
+    });
+  </script>
+</body>
+</html>

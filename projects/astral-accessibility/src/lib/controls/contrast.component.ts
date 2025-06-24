@@ -1,6 +1,7 @@
 import { DOCUMENT, NgIf, NgClass } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { I18nService } from "../services/i18n.service";
 
 @Component({
   selector: "astral-contrast",
@@ -84,10 +85,16 @@ import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
 })
 export class ContrastComponent {
   document = inject(DOCUMENT);
+  i18n = inject(I18nService);
 
   currentState = 0;
-  base = "Contrast";
-  states = [this.base, "Invert", "High Contrast", "Dark High Contrast"];
+  base = this.i18n.getTranslation('contrast');
+  states = [
+    this.base, 
+    this.i18n.getTranslation('invert'), 
+    this.i18n.getTranslation('high-contrast'), 
+    this.i18n.getTranslation('dark-high-contrast')
+  ];
 
   _style: HTMLStyleElement;
 
@@ -100,15 +107,13 @@ export class ContrastComponent {
 
   private _runStateLogic() {
     this._style?.remove?.();
-    this._style = this.document.createElement("style");
-
-    if (this.states[this.currentState] === "Invert") {
+    this._style = this.document.createElement("style");    if (this.states[this.currentState] === this.i18n.getTranslation('invert')) {
       this.document.documentElement.classList.add("astral_inverted");
     } else {
       this.document.documentElement.classList.remove("astral_inverted");
     }
 
-    if (this.states[this.currentState] === "High Contrast") {
+    if (this.states[this.currentState] === this.i18n.getTranslation('high-contrast')) {
       this._style.textContent = `
             body > :not(astral-accessibility) * {
                 background: transparent !important;
@@ -117,11 +122,10 @@ export class ContrastComponent {
 
             html body > :not(astral-accessibility) button {
               background-color: #e8e8e8 !important;
-            }
-        `;
+            }        `;
     }
-
-    if (this.states[this.currentState] === "Dark High Contrast") {
+    
+    if (this.states[this.currentState] === this.i18n.getTranslation('dark-high-contrast')) {
       this._style.textContent = `
             body > :not(astral-accessibility), body > :not(astral-accessibility) * {
               background: black !important;

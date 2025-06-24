@@ -16,13 +16,18 @@ started this project [here](https://blue.verto.health/advancing-accessibility-wi
 
 ## Features
 
-- Screen Reader (text to speech)
-- Contrast
-- Saturation
-- Text Size
-- Text Spacing
-- Screen Mask
-- Line Height
+- 🌍 **Internationalization (i18n)** - Multi-language support (English, Spanish, French, German)
+- 🔊 **Screen Reader** - Text-to-speech functionality
+- 🎨 **Contrast Control** - Visual contrast adjustments
+- 🌈 **Color Blind Support** - Filters for color vision deficiencies
+- 🎭 **Saturation Control** - Color saturation adjustments
+- 📏 **Text Size** - Font size scaling options
+- 📝 **Text Spacing** - Letter and word spacing adjustments
+- 🎯 **Screen Mask** - Focus enhancement tool
+- 📐 **Line Height** - Line spacing adjustments
+- ⚡ **Skip Links** - Keyboard navigation shortcuts
+- 🎭 **Focus Enhancement** - Improved focus indicators
+- 🏃 **Reduced Motion** - Animation controls for motion sensitivity
 - More to come!
 
 | Key             | Capability                                                                                                                                                                                                                                                                                                 |
@@ -80,6 +85,43 @@ Optionally we can choose which widgets should appear by passing an object inside
   });
 </script>
 ```
+
+## Internationalization (i18n)
+
+Astral Accessibility now supports multiple languages with automatic browser language detection and dynamic language switching capabilities.
+
+### Supported Languages
+
+- **English (en-US)** - Default language
+- **Spanish (es)** - Español
+- **French (fr)** - Français 
+- **German (de)** - Deutsch
+
+### Usage
+
+The widget automatically detects your browser's language preference and displays in the appropriate language. You can also manually set the language:
+
+```html
+<script>
+  initializeAstral({
+    locale: 'es', // Force Spanish language
+    enabledFeatures: ["Screen Reader", "Contrast", "Bigger Text"]
+  });
+</script>
+```
+
+### Features Translated
+
+All user-facing text is translated including:
+- Button labels and tooltips
+- ARIA labels for screen readers
+- Feature names and state descriptions
+- Accessibility announcements
+- Component status messages
+
+### Demo
+
+Check out the [internationalization demo](projects/demo/i18n-demo.html) to see the multi-language functionality in action.
 
 ## Development Setup
 

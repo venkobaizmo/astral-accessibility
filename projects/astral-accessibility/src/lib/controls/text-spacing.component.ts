@@ -1,6 +1,7 @@
 import { DOCUMENT, NgIf, NgClass } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { I18nService } from "../services/i18n.service";
 
 @Component({
   selector: "astral-text-spacing",
@@ -44,24 +45,23 @@ import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
           </div>
 
           <div class="state-dots-wrap">
-            <span>{{ states[currentState] }}</span>
-            <div
+            <span>{{ states[currentState] }}</span>            <div
               class="dots"
               [ngClass]="{ inactive: states[currentState] === base }"
             >
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Light Spacing' }"
+                [ngClass]="{ active: states[currentState] === i18n.getTranslation('light-spacing') }"
               ></div>
               <div
                 class="dot"
                 [ngClass]="{
-                  active: states[currentState] === 'Moderate Spacing'
+                  active: states[currentState] === i18n.getTranslation('moderate-spacing')
                 }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Heavy Spacing' }"
+                [ngClass]="{ active: states[currentState] === i18n.getTranslation('heavy-spacing') }"
               ></div>
             </div>
           </div>
@@ -77,10 +77,16 @@ import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
 })
 export class TextSpacingComponent {
   document = inject(DOCUMENT);
+  i18n = inject(I18nService);
 
   currentState = 0;
-  base = "Text Spacing";
-  states = [this.base, "Light Spacing", "Moderate Spacing", "Heavy Spacing"];
+  base = this.i18n.getTranslation('text-spacing');
+  states = [
+    this.base, 
+    this.i18n.getTranslation('light-spacing'), 
+    this.i18n.getTranslation('moderate-spacing'), 
+    this.i18n.getTranslation('heavy-spacing')
+  ];
 
   _style: HTMLStyleElement;
 
@@ -90,24 +96,23 @@ export class TextSpacingComponent {
 
     this._runStateLogic();
   }
-
   private _runStateLogic() {
     this._style?.remove?.();
     this._style = this.document.createElement("style");
 
-    if (this.states[this.currentState] === "Light Spacing") {
+    if (this.states[this.currentState] === this.i18n.getTranslation('light-spacing')) {
       this.document.documentElement.classList.add("astral_light_spacing");
     } else {
       this.document.documentElement.classList.remove("astral_light_spacing");
     }
 
-    if (this.states[this.currentState] === "Moderate Spacing") {
+    if (this.states[this.currentState] === this.i18n.getTranslation('moderate-spacing')) {
       this.document.documentElement.classList.add("astral_moderate_spacing");
     } else {
       this.document.documentElement.classList.remove("astral_moderate_spacing");
     }
 
-    if (this.states[this.currentState] === "Heavy Spacing") {
+    if (this.states[this.currentState] === this.i18n.getTranslation('heavy-spacing')) {
       this.document.documentElement.classList.add("astral_heavy_spacing");
     } else {
       this.document.documentElement.classList.remove("astral_heavy_spacing");

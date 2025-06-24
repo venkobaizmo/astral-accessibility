@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Astral Accessibility - Internationalization Demo</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .language-selector {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .language-selector select {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    
+    .i18n-info {
+      background: #e3f2fd;
+      border: 1px solid #2196f3;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+    
+    .feature-item {
+      background: #f5f5f5;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid #4caf50;
+    }
+  </style>
+</head>
+<body>  <!-- Language Selector -->
+  <div class="language-selector">
+    <label for="language-select">Language / Idioma / Langue / Sprache / 语言 / 言語 / 언어 / لغة / Язык / Idioma / Lingua / Taal / भाषा / Dil:</label>
+    <select id="language-select" onchange="changeLanguage(this.value)">
+      <option value="en-US">English (US)</option>
+      <option value="es">Español</option>
+      <option value="fr">Français</option>
+      <option value="de">Deutsch</option>
+      <option value="zh-CN">中文 (简体)</option>
+      <option value="ja">日本語</option>
+      <option value="ko">한국어</option>
+      <option value="ar">العربية</option>
+      <option value="ru">Русский</option>
+      <option value="pt">Português</option>
+      <option value="it">Italiano</option>
+      <option value="nl">Nederlands</option>
+      <option value="hi">हिन्दी</option>
+      <option value="tr">Türkçe</option>
+    </select>
+  </div>
+
+  <div class="home-page d-flex justify-content-center">
+    <div class="card">
+      <div class="header">
+        <div class="header-text">
+          <h1>Astral Accessibility - Internationalization Demo</h1>
+          <hr />
+        </div>
+      </div>
+
+      <div class="i18n-info">
+        <h2>🌍 Multi-Language Support</h2>
+        <p>This demo showcases the internationalization (i18n) capabilities of the Astral Accessibility widget. The widget now supports multiple languages and automatically detects your browser's language preference.</p>
+          <h3>Supported Languages:</h3>
+        <ul>
+          <li><strong>English (en-US)</strong> - Default language</li>
+          <li><strong>Spanish (es)</strong> - Español</li>
+          <li><strong>French (fr)</strong> - Français</li>
+          <li><strong>German (de)</strong> - Deutsch</li>
+          <li><strong>Chinese Simplified (zh-CN)</strong> - 中文 (简体)</li>
+          <li><strong>Japanese (ja)</strong> - 日本語</li>
+          <li><strong>Korean (ko)</strong> - 한국어</li>
+          <li><strong>Arabic (ar)</strong> - العربية</li>
+          <li><strong>Russian (ru)</strong> - Русский</li>
+          <li><strong>Portuguese (pt)</strong> - Português</li>
+          <li><strong>Italian (it)</strong> - Italiano</li>
+          <li><strong>Dutch (nl)</strong> - Nederlands</li>
+          <li><strong>Hindi (hi)</strong> - हिन्दी</li>
+          <li><strong>Turkish (tr)</strong> - Türkçe</li>
+        </ul>
+      </div>
+
+      <div class="introduction">
+        <h2>How to Test Internationalization</h2>
+        <ol>
+          <li>Use the language selector in the top-right corner to change the language</li>
+          <li>Open the accessibility widget (bottom-right corner)</li>
+          <li>Notice how all text elements are translated including:
+            <ul>
+              <li>Button labels and tooltips</li>
+              <li>ARIA labels for screen readers</li>
+              <li>Feature names and descriptions</li>
+              <li>Announcement messages</li>
+            </ul>
+          </li>
+          <li>Try different accessibility features to see the translated announcements</li>
+        </ol>
+
+        <div class="feature-list">
+          <div class="feature-item">
+            <h4>🔊 Screen Reader</h4>
+            <p>Text-to-speech functionality with localized speed options</p>
+          </div>
+          
+          <div class="feature-item">
+            <h4>🎨 Contrast Control</h4>
+            <p>Visual contrast adjustments with translated mode names</p>
+          </div>
+          
+          <div class="feature-item">
+            <h4>📏 Text Size</h4>
+            <p>Font size controls with localized size descriptions</p>
+          </div>
+          
+          <div class="feature-item">
+            <h4>🌈 Color Blind Support</h4>
+            <p>Color vision assistance with translated condition names</p>
+          </div>
+          
+          <div class="feature-item">
+            <h4>⚡ Skip Links</h4>
+            <p>Navigation shortcuts with localized link text</p>
+          </div>
+          
+          <div class="feature-item">
+            <h4>🎭 Screen Mask</h4>
+            <p>Focus enhancement tools with translated cursor sizes</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Technical Implementation</h2>
+        <p>The internationalization is implemented using:</p>
+        <ul>
+          <li><strong>I18nService:</strong> A centralized translation service</li>
+          <li><strong>Automatic Detection:</strong> Browser language preference detection</li>
+          <li><strong>Fallback Support:</strong> Defaults to English if translation is unavailable</li>
+          <li><strong>Dynamic Updates:</strong> Real-time language switching</li>
+          <li><strong>Accessibility First:</strong> All ARIA labels and announcements are translated</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Sample Content for Testing</h2>
+        <p>Here's some sample content to test the accessibility features in different languages:</p>
+        
+        <h3>Sample Heading</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. <a href="#test">This is a test link</a> that you can interact with. The accessibility features will help improve your reading experience in any language.</p>
+        
+        <button onclick="alert('Button clicked! / ¡Botón presionado! / Bouton cliqué! / Schaltfläche gedrückt! / 按钮被点击! / ボタンがクリックされました! / 버튼 클릭됨! / تم النقر على الزر! / Кнопка нажата! / Botão clicado! / Pulsante cliccato! / Knop ingedrukt! / बटन दबाया गया! / Buton tıklandı!')">Test Button</button>
+        
+        <h4>Form Elements</h4>
+        <label for="test-input">Sample Input:</label>
+        <input type="text" id="test-input" placeholder="Type something here...">
+        
+        <label for="test-select">Sample Select:</label>
+        <select id="test-select">
+          <option>Option 1</option>
+          <option>Option 2</option>
+          <option>Option 3</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+  <script>
+    let currentWidget = null;
+
+    function changeLanguage(locale) {
+      // Remove existing widget
+      const existing = document.querySelector('astral-accessibility');
+      if (existing) {
+        existing.remove();
+      }
+
+      // Initialize widget with new locale
+      if (typeof initializeAstral === 'function') {
+        initializeAstral({
+          locale: locale,
+          enabledFeatures: [
+            "Skip Links",
+            "Focus Enhancement", 
+            "Color Blind Support",
+            "Contrast",
+            "Saturation",
+            "Screen Reader",
+            "Bigger Text",
+            "Text Spacing",
+            "Line Height",
+            "Reduced Motion",
+            "Screen Mask"
+          ]
+        });
+        
+        console.log(`Widget initialized with locale: ${locale}`);
+      } else {
+        console.error('initializeAstral function not found');
+      }
+    }
+
+    // Initialize with browser default language
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        const browserLang = navigator.language || 'en-US';
+        const select = document.getElementById('language-select');
+        
+        // Set select to browser language if supported
+        const options = Array.from(select.options);
+        const matchingOption = options.find(option => option.value === browserLang);
+        if (matchingOption) {
+          select.value = browserLang;
+        }
+        
+        changeLanguage(select.value);
+      }, 1000);
+    });
+  </script>
+</body>
+</html>

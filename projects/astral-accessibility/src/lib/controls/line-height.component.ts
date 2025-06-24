@@ -1,22 +1,22 @@
 import { DOCUMENT, NgIf, NgClass } from "@angular/common";
 import { Component, Renderer2, inject } from "@angular/core";
 import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { I18nService } from "../services/i18n.service";
 
 @Component({
   selector: "astral-line-height",
   standalone: true,
-  template: `
-    <button
+  template: `    <button
       (click)="nextState()"
-      [ngClass]="{ 'in-use': states[currentState] != base }"
+      [ngClass]="{ 'in-use': !isBaseState() }"
     >
       <div class="title">
         <div class="icon-state-wrap">
           <div
             class="icon action-icon"
             [ngClass]="{
-              inactive: states[currentState] == base,
-              active: states[currentState] != base
+              inactive: isBaseState(),
+              active: !isBaseState()
             }"
           >
             <svg
@@ -34,47 +34,89 @@ import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
                 stroke-linejoin="round"
               />
             </svg>
-          </div>
-
-          <div class="state-dots-wrap">
-            <span>{{ states[currentState] }}</span>
+          </div>          <div class="state-dots-wrap">
+            <span>{{ getDisplayText() }}</span>
             <div
               class="dots"
-              [ngClass]="{ inactive: states[currentState] === base }"
+              [ngClass]="{ inactive: isBaseState() }"
             >
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Light Height' }"
+                [ngClass]="{ active: isLightHeightActive() }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{
-                  active: states[currentState] === 'Moderate Height'
-                }"
+                [ngClass]="{ active: isModerateHeightActive() }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Heavy Height' }"
+                [ngClass]="{ active: isHeavyHeightActive() }"
               ></div>
             </div>
           </div>
         </div>
-      </div>
-
-      <astral-widget-checkmark
-        [isActive]="states[currentState] !== base"
+      </div>      <astral-widget-checkmark
+        [isActive]="!isBaseState()"
       ></astral-widget-checkmark>
     </button>
   `,
   imports: [NgIf, NgClass, AstralCheckmarkSvgComponent],
 })
-export class LineHeightComponent {
-  constructor(private renderer: Renderer2) {}
+export class LineHeightComponent {  constructor(
+    private readonly renderer: Renderer2,
+    public i18n: I18nService
+  ) {}
+  
   document = inject(DOCUMENT);
 
   currentState = 0;
-  base = "Line Height";
-  states = [this.base, "Light Height", "Moderate Height", "Heavy Height"];
+
+  get baseText() {
+    return this.i18n.getTranslation('line-height');
+  }
+
+  get lightHeightText() {
+    return this.i18n.getTranslation('light-line-height');
+  }
+
+  get moderateHeightText() {
+    return this.i18n.getTranslation('moderate-line-height');
+  }
+
+  get heavyHeightText() {
+    return this.i18n.getTranslation('heavy-line-height');
+  }
+
+  getDisplayText(): string {
+    switch (this.currentState) {
+      case 0:
+        return this.baseText;
+      case 1:
+        return this.lightHeightText;
+      case 2:
+        return this.moderateHeightText;
+      case 3:
+        return this.heavyHeightText;
+      default:
+        return this.baseText;
+    }
+  }
+
+  isBaseState(): boolean {
+    return this.currentState === 0;
+  }
+
+  isLightHeightActive(): boolean {
+    return this.currentState === 1;
+  }
+
+  isModerateHeightActive(): boolean {
+    return this.currentState === 2;
+  }
+
+  isHeavyHeightActive(): boolean {
+    return this.currentState === 3;
+  }
 
   lowHeight = `
   *:not(.astral-accessibility *) {
@@ -102,13 +144,19 @@ export class LineHeightComponent {
     this.currentState = this.currentState % 4;
 
     this._runStateLogic();
-  }
-
-  private _runStateLogic() {
+  }  private _runStateLogic() {
     this._style?.remove?.();
     this._style = this.document.createElement("style");
 
-    if (this.states[this.currentState] === "Light Height") {
+    this._handleLightHeight();
+    this._handleModerateHeight();
+    this._handleHeavyHeight();
+
+    this.document.body.appendChild(this._style);
+  }
+
+  private _handleLightHeight() {
+    if (this.currentState === 1) { // Light Height
       if (!this.lowHeightStyleTag) {
         this.lowHeightStyleTag = this.renderer.createElement("style");
         this.renderer.appendChild(
@@ -117,14 +165,14 @@ export class LineHeightComponent {
         );
         this.renderer.appendChild(this.document.head, this.lowHeightStyleTag);
       }
-    } else {
-      if (this.lowHeightStyleTag) {
-        this.renderer.removeChild(this.document.head, this.lowHeightStyleTag);
-        this.lowHeightStyleTag = null;
-      }
+    } else if (this.lowHeightStyleTag) {
+      this.renderer.removeChild(this.document.head, this.lowHeightStyleTag);
+      this.lowHeightStyleTag = null;
     }
+  }
 
-    if (this.states[this.currentState] === "Moderate Height") {
+  private _handleModerateHeight() {
+    if (this.currentState === 2) { // Moderate Height
       if (!this.moderateHeightStyleTag) {
         this.moderateHeightStyleTag = this.renderer.createElement("style");
         this.renderer.appendChild(
@@ -136,17 +184,17 @@ export class LineHeightComponent {
           this.moderateHeightStyleTag,
         );
       }
-    } else {
-      if (this.moderateHeightStyleTag) {
-        this.renderer.removeChild(
-          this.document.head,
-          this.moderateHeightStyleTag,
-        );
-        this.moderateHeightStyleTag = null;
-      }
+    } else if (this.moderateHeightStyleTag) {
+      this.renderer.removeChild(
+        this.document.head,
+        this.moderateHeightStyleTag,
+      );
+      this.moderateHeightStyleTag = null;
     }
+  }
 
-    if (this.states[this.currentState] === "Heavy Height") {
+  private _handleHeavyHeight() {
+    if (this.currentState === 3) { // Heavy Height
       if (!this.heavyHeightStyleTag) {
         this.heavyHeightStyleTag = this.renderer.createElement("style");
         this.renderer.appendChild(
@@ -155,13 +203,9 @@ export class LineHeightComponent {
         );
         this.renderer.appendChild(this.document.head, this.heavyHeightStyleTag);
       }
-    } else {
-      if (this.heavyHeightStyleTag) {
-        this.renderer.removeChild(this.document.head, this.heavyHeightStyleTag);
-        this.heavyHeightStyleTag = null;
-      }
+    } else if (this.heavyHeightStyleTag) {
+      this.renderer.removeChild(this.document.head, this.heavyHeightStyleTag);
+      this.heavyHeightStyleTag = null;
     }
-
-    this.document.body.appendChild(this._style);
   }
 }
