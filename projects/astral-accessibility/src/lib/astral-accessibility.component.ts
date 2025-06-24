@@ -12,6 +12,15 @@ import { SkipLinksComponent } from "./controls/skip-links.component";
 import { ReducedMotionComponent } from "./controls/reduced-motion.component";
 import { FocusEnhancementComponent } from "./controls/focus-enhancement.component";
 import { ColorBlindSupportComponent } from "./controls/color-blind-support.component";
+// New accessibility components
+import { AltTextValidatorComponent } from "./controls/alt-text-validator.component";
+import { PageTitleValidatorComponent } from "./controls/page-title-validator.component";
+import { LanguageValidatorComponent } from "./controls/language-validator.component";
+import { AutoRefreshControlsComponent } from "./controls/auto-refresh-controls.component";
+import { FocusTrapComponent } from "./controls/focus-trap.component";
+import { TouchTargetValidatorComponent } from "./controls/touch-target-validator.component";
+import { ReadingOrderValidatorComponent } from "./controls/reading-order-validator.component";
+import { ErrorIdentificationComponent } from "./controls/error-identification.component";
 import { I18nService } from "./services/i18n.service";
 
 @Component({
@@ -32,6 +41,14 @@ import { I18nService } from "./services/i18n.service";
     SkipLinksComponent,    ReducedMotionComponent,
     FocusEnhancementComponent,
     ColorBlindSupportComponent,
+    AltTextValidatorComponent,
+    PageTitleValidatorComponent,
+    LanguageValidatorComponent,
+    AutoRefreshControlsComponent,
+    FocusTrapComponent,
+    TouchTargetValidatorComponent,
+    ReadingOrderValidatorComponent,
+    ErrorIdentificationComponent,
     // KeyboardNavigationComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

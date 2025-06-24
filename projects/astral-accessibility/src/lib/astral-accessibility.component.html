@@ -64,7 +64,36 @@
       <!-- WCAG 2.1 Core Features -->
       <div class="action" *ngIf="this.enabledFeatures.includes('Skip Links')">
         <astral-skip-links></astral-skip-links>
-      </div>      <!-- <div class="action" *ngIf="this.enabledFeatures.includes('Keyboard Navigation')">
+      </div>
+
+      <!-- New WCAG 2.1 Level A/AA Features -->
+      <div class="action" *ngIf="this.enabledFeatures.includes('Alt Text Validator')">
+        <astral-alt-text-validator></astral-alt-text-validator>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Page Title Validator')">
+        <astral-page-title-validator></astral-page-title-validator>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Language Validator')">
+        <astral-language-validator></astral-language-validator>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Auto Refresh Controls')">
+        <astral-auto-refresh-controls></astral-auto-refresh-controls>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Focus Trap')">
+        <astral-focus-trap></astral-focus-trap>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Touch Target Validator')">
+        <astral-touch-target-validator></astral-touch-target-validator>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Reading Order Validator')">
+        <astral-reading-order-validator></astral-reading-order-validator>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Error Identification')">
+        <astral-error-identification></astral-error-identification>
+      </div>
+
+      <!-- Focus and Navigation Features -->
+      <!-- <div class="action" *ngIf="this.enabledFeatures.includes('Keyboard Navigation')">
         <astral-keyboard-navigation></astral-keyboard-navigation>
       </div> -->
       <div class="action" *ngIf="this.enabledFeatures.includes('Focus Enhancement')">

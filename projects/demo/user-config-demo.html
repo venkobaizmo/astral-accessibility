@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Astral Widget - End User Configuration</title>
+  <script src="main.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+    .config-section { background: #f8f9fa; padding: 20px; margin: 20px 0; border-radius: 8px; }
+    button { background: #007bff; color: white; border: none; padding: 10px 20px; margin: 10px; border-radius: 4px; cursor: pointer; }
+    button:hover { background: #0056b3; }
+  </style>
+</head>
+<body>
+  <h1>Astral Accessibility Widget - Configuration Demo</h1>
+  
+  <div class="config-section">
+    <h2>🎯 End User Configuration (Recommended for Public Websites)</h2>
+    <p><strong>Purpose:</strong> Helps website visitors with disabilities navigate and use your site better.</p>
+    <button onclick="initEndUserConfig()">Initialize End User Widget</button>
+    <ul>
+      <li>✅ Screen Reader - Reads content aloud</li>
+      <li>✅ Contrast - Visual contrast improvements</li>
+      <li>✅ Bigger Text - Text size scaling</li>
+      <li>✅ Text Spacing - Readability improvements</li>
+      <li>✅ Focus Enhancement - Better navigation</li>
+      <li>✅ Auto Refresh Controls - User control over timers</li>
+    </ul>
+  </div>
+
+  <div class="config-section">
+    <h2>🛠️ Developer Configuration (For Testing & Development)</h2>
+    <p><strong>Purpose:</strong> Helps developers identify and fix accessibility issues.</p>
+    <button onclick="initDeveloperConfig()">Initialize Developer Widget</button>
+    <ul>
+      <li>🔍 Alt Text Validator - Find missing alt text</li>
+      <li>🔍 Page Title Validator - Check page titles</li>
+      <li>🔍 Language Validator - Validate language attributes</li>
+      <li>🔍 Touch Target Validator - Check touch target sizes</li>
+      <li>🔍 Reading Order Validator - Check heading structure</li>
+      <li>🔍 Error Identification - Find accessibility errors</li>
+    </ul>
+  </div>
+
+  <div class="config-section">
+    <h2>🎨 Complete Configuration (All Features)</h2>
+    <p><strong>Purpose:</strong> For demonstration or accessibility expert use.</p>
+    <button onclick="initCompleteConfig()">Initialize Complete Widget</button>
+    <p>Includes both user enhancement tools and developer validation tools.</p>
+  </div>
+
+  <script>
+    function initEndUserConfig() {
+      if (typeof initializeAstral === 'function') {
+        initializeAstral({
+          enabledFeatures: [
+            // User Enhancement Tools
+            "Screen Reader",
+            "Contrast", 
+            "Bigger Text",
+            "Text Spacing",
+            "Line Height",
+            "Focus Enhancement",
+            "Screen Mask",
+            "Color Blind Support",
+            "Reduced Motion",
+            "Auto Refresh Controls",
+            "Focus Trap"
+          ]
+        });
+        alert('End User Widget Initialized! 🎯\n\nThis configuration focuses on tools that help users navigate and use your website better.');
+      } else {
+        alert('Widget failed to load. Please refresh and try again.');
+      }
+    }
+
+    function initDeveloperConfig() {
+      if (typeof initializeAstral === 'function') {
+        initializeAstral({
+          enabledFeatures: [
+            // Essential user tools for testing
+            "Screen Reader",
+            "Contrast",
+            "Bigger Text",
+            
+            // Developer Validation Tools
+            "Alt Text Validator",
+            "Page Title Validator", 
+            "Language Validator",
+            "Touch Target Validator",
+            "Reading Order Validator",
+            "Error Identification"
+          ]
+        });
+        alert('Developer Widget Initialized! 🛠️\n\nThis configuration includes validation tools to help identify and fix accessibility issues.');
+      } else {
+        alert('Widget failed to load. Please refresh and try again.');
+      }
+    }
+
+    function initCompleteConfig() {
+      if (typeof initializeAstral === 'function') {
+        initializeAstral({
+          enabledFeatures: [
+            // All User Enhancement Tools
+            "Screen Reader", "Contrast", "Bigger Text", "Text Spacing", 
+            "Line Height", "Focus Enhancement", "Screen Mask", 
+            "Color Blind Support", "Saturation", "Reduced Motion",
+            "Auto Refresh Controls", "Focus Trap", "Skip Links",
+            
+            // All Developer Validation Tools
+            "Alt Text Validator", "Page Title Validator", "Language Validator",
+            "Touch Target Validator", "Reading Order Validator", "Error Identification"
+          ]
+        });
+        alert('Complete Widget Initialized! 🎨\n\nAll features are now available for comprehensive testing and demonstration.');
+      } else {
+        alert('Widget failed to load. Please refresh and try again.');
+      }
+    }
+  </script>
+
+  <div style="margin-top: 40px; padding: 20px; background: #fff3cd; border-radius: 8px;">
+    <h3>💡 Recommendation</h3>
+    <p><strong>For most public websites, use the "End User Configuration"</strong> as it focuses on tools that actively help your visitors, rather than showing them technical issues they cannot fix themselves.</p>
+    <p>Use the "Developer Configuration" during development, testing, and accessibility audits.</p>
+  </div>
+</body>
+</html>
