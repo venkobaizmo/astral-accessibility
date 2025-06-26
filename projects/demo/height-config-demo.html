@@ -94,28 +94,43 @@
   <h1>🎛️ Astral Widget Height Configuration Demo</h1>
   
   <div class="card">
-    <h2>Widget Height Options</h2>
-    <p>This demo shows how to configure the accessibility widget's height through the configuration options. Try different height settings below:</p>
+    <h2>🎛️ Widget Height Configuration</h2>
+    <p>Test different widget height configurations to see how the accessibility widget adapts:</p>
     
-    <div class="notice">
-      <strong>Note:</strong> Only one widget can be active at a time. Click a button to initialize the widget with that height configuration.
+    <div class="config-buttons">
+      <button class="demo-button" id="default-height">
+        Default Height
+      </button>
+      
+      <button class="demo-button small" id="small-height">
+        Small Height
+      </button>
+      
+      <button class="demo-button large" id="large-height">
+        Large Height
+      </button>
+      
+      <button class="demo-button custom" id="custom-height">
+        Custom Height
+      </button>
     </div>
+    
+    <div class="height-info">
+      <h3>Height Options:</h3>
+      <ul>
+        <li><strong>Default:</strong> Standard widget height (recommended)</li>
+        <li><strong>Small:</strong> Compact widget for smaller screens</li>
+        <li><strong>Large:</strong> Larger widget for better visibility</li>
+        <li><strong>Custom:</strong> Custom height configuration</li>
+      </ul>
+    </div>
+  </div>
 
-    <button class="demo-button" onclick="initializeWidget('default')">
-      🏠 Default Height (75vh)
-    </button>
-    
-    <button class="demo-button small" onclick="initializeWidget('small')">
-      📱 Small Height (50vh)
-    </button>
-    
-    <button class="demo-button large" onclick="initializeWidget('large')">
-      💻 Large Height (90vh)
-    </button>
-    
-    <button class="demo-button custom" onclick="initializeWidget('custom')">
-      ⚙️ Custom Height (400px)
-    </button>
+  <div class="card">
+    <h2>📊 Widget Status</h2>
+    <div id="widget-status">
+      <p>No configuration selected. Choose a height option above.</p>
+    </div>
   </div>
 
   <div class="card">
@@ -191,82 +206,72 @@ initializeAstral({
   </div>
 
   <script>
-    let currentWidget = null;
-
-    function initializeWidget(type) {
-      // Remove existing widget if any
-      const existing = document.querySelector('astral-accessibility');
-      if (existing) {
-        existing.remove();
-      }
-
-      let config = {
-        enabledFeatures: [
-          "Skip Links",
-          "Focus Enhancement", 
-          "Color Blind Support",
-          "Contrast",
-          "Saturation",
-          "Screen Reader",
-          "Bigger Text",
-          "Text Spacing",
-          "Line Height",
-          "Reduced Motion",
-          "Screen Mask"
-        ]
-      };
-
-      // Set height based on type
-      switch(type) {
-        case 'default':
-          // No widgetHeight specified - uses default 75vh
-          break;
-        case 'small':
-          config.widgetHeight = "50vh";
-          break;
-        case 'large':
-          config.widgetHeight = "90vh";
-          break;
-        case 'custom':
-          config.widgetHeight = "400px";
-          break;
+    document.addEventListener('DOMContentLoaded', function() {
+      const defaultBtn = document.getElementById('default-height');
+      const smallBtn = document.getElementById('small-height');
+      const largeBtn = document.getElementById('large-height');
+      const customBtn = document.getElementById('custom-height');
+      const statusDiv = document.getElementById('widget-status');
+      
+      function initializeWidget(config) {
+        if (typeof initializeAstral === 'function') {
+          let config = {
+            enabledFeatures: [
+              // Core accessibility features
+              "Screen Reader",
+              "Contrast",
+              "Highlight Links",
+              "Bigger Text",
+              "Text Spacing",
+              "Line Height",
+              "Text Align",
+              "Saturation",
+              "Pause Animations",
+              "Hide Images",
+              "Dyslexia Friendly",
+              "Cursor",
+              "Tooltip",
+              "Page Structure",
+              "Dictionary",
+              // Navigation and enhancement features
+              "Skip Links",
+              "Focus Enhancement", 
+              "Color Blind Support",
+              "Reduced Motion",
+              "Screen Mask"
+            ]
+          };
+          
+          // Add height configuration if provided
+          if (config.height) {
+            config.height = config.height;
+          }
+          
+          initializeAstral(config);
+          
+          const heightText = config.height ? ` with ${config.height} height` : '';
+          statusDiv.innerHTML = `<strong>✅ Widget Initialized!</strong> Widget is now running${heightText}. Look for the accessibility icon in the bottom-right corner.`;
+        } else {
+          statusDiv.innerHTML = '<strong>❌ Error:</strong> initializeAstral function not found. Make sure the widget is properly loaded.';
+        }
       }
       
-      // Initialize the widget
-      if (typeof initializeAstral === 'function') {
-        initializeAstral(config);
-        
-        // Update button states
-        const buttons = document.querySelectorAll('.demo-button');
-        buttons.forEach(btn => {
-          btn.disabled = false;
-          btn.textContent = btn.textContent.replace(' ✓', '');
-        });
-        
-        // Mark active button
-        event.target.disabled = true;
-        event.target.textContent += ' ✓';
-        
-        currentWidget = type;
-        
-        // Show success message
-        setTimeout(() => {
-          alert(`Widget initialized with ${getHeightDescription(type)} height! Check the bottom-right corner.`);
-        }, 500);
-      } else {
-        alert('Widget failed to load. Please refresh the page and try again.');
-      }
-    }
-
-    function getHeightDescription(type) {
-      switch(type) {
-        case 'default': return 'default (75vh)';
-        case 'small': return 'small (50vh)';
-        case 'large': return 'large (90vh)';
-        case 'custom': return 'custom (400px)';
-        default: return 'unknown';
-      }
-    }
+      defaultBtn.addEventListener('click', function() {
+        initializeWidget({});
+      });
+      
+      smallBtn.addEventListener('click', function() {
+        initializeWidget({ height: 'small' });
+      });
+      
+      largeBtn.addEventListener('click', function() {
+        initializeWidget({ height: 'large' });
+      });
+      
+      customBtn.addEventListener('click', function() {
+        initializeWidget({ height: 'custom' });
+      });
+    });
   </script>
 </body>
 </html>

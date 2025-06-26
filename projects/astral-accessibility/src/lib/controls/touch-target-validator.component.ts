@@ -17,15 +17,15 @@ interface TouchTargetIssue {
   template: `
     <button
       (click)="nextState()"
-      [ngClass]="{ 'in-use': states[currentState] !== base }"
+      [ngClass]="{ 'in-use': currentState !== 0 }"
     >
       <div class="title">
         <div class="icon-state-wrap">
           <div
             class="icon action-icon"
             [ngClass]="{
-              inactive: states[currentState] == base,
-              active: states[currentState] != base
+              inactive: currentState === 0,
+              active: currentState !== 0
             }"
           >
             <svg
@@ -34,14 +34,10 @@ interface TouchTargetIssue {
               viewBox="0 0 41 41"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <rect x="6" y="8" width="29" height="20" rx="2" fill="none" stroke="#FFF" stroke-width="2"/>
-              <circle cx="12" cy="14" r="3" fill="#FFF" opacity="0.7"/>
-              <circle cx="20" cy="14" r="3" fill="#FFF" opacity="0.7"/>
-              <circle cx="28" cy="14" r="3" fill="#FFF" opacity="0.7"/>
-              <circle cx="16" cy="22" r="3" fill="#FFF" opacity="0.7"/>
-              <circle cx="24" cy="22" r="3" fill="#FFF" opacity="0.7"/>
-              <path d="M8 32 L12 28 L16 32" stroke="#FFF" stroke-width="2" fill="none"/>
-              <text x="20" y="36" font-family="Arial" font-size="6" fill="#FFF">TOUCH</text>
+              <rect x="8" y="8" width="25" height="25" fill="none" stroke="#FFF" stroke-width="2"/>
+              <circle cx="20.5" cy="20.5" r="6" fill="none" stroke="#FFF" stroke-width="2"/>
+              <circle cx="20.5" cy="20.5" r="2" fill="#FFF"/>
+              <text x="4" y="38" font-family="Arial" font-size="6" fill="#FFF">TOUCH</text>
             </svg>
           </div>
 
@@ -49,19 +45,19 @@ interface TouchTargetIssue {
             <span>{{ states[currentState] }}</span>
             <div
               class="dots"
-              [ngClass]="{ inactive: states[currentState] === base }"
+              [ngClass]="{ inactive: currentState === 0 }"
             >
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Scan Touch Targets' }"
+                [ngClass]="{ active: currentState === 1 }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Show Issues' }"
+                [ngClass]="{ active: currentState === 2 }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Auto-fix' }"
+                [ngClass]="{ active: currentState === 3 }"
               ></div>
             </div>
           </div>
@@ -69,7 +65,7 @@ interface TouchTargetIssue {
       </div>
 
       <astral-widget-checkmark
-        [isActive]="states[currentState] !== base"
+        [isActive]="currentState !== 0"
       ></astral-widget-checkmark>
     </button>
 
@@ -256,8 +252,13 @@ export class TouchTargetValidatorComponent implements OnDestroy {
 
   document = inject(DOCUMENT);
   currentState = 0;
-  base = "Touch Target Validator";
-  states = [this.base, "Scan Touch Targets", "Show Issues", "Auto-fix"];
+  base = this.i18n.getTranslation('touch-target-validator');
+  states = [
+    this.i18n.getTranslation('touch-target-validator'),
+    this.i18n.getTranslation('validate-touch-targets'),
+    this.i18n.getTranslation('touch-targets-valid'),
+    this.i18n.getTranslation('touch-targets-invalid')
+  ];
   
   touchTargetIssues: TouchTargetIssue[] = [];
   showTouchPanel = false;

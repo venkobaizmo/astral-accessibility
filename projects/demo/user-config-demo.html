@@ -18,107 +18,153 @@
   <div class="config-section">
     <h2>🎯 End User Configuration (Recommended for Public Websites)</h2>
     <p><strong>Purpose:</strong> Helps website visitors with disabilities navigate and use your site better.</p>
-    <button onclick="initEndUserConfig()">Initialize End User Widget</button>
+    <button id="init-end-user">Initialize End User Widget</button>
     <ul>
       <li>✅ Screen Reader - Reads content aloud</li>
       <li>✅ Contrast - Visual contrast improvements</li>
+      <li>✅ Highlight Links - Makes links more visible</li>
       <li>✅ Bigger Text - Text size scaling</li>
       <li>✅ Text Spacing - Readability improvements</li>
-      <li>✅ Focus Enhancement - Better navigation</li>
-      <li>✅ Auto Refresh Controls - User control over timers</li>
+      <li>✅ Line Height - Line spacing control</li>
+      <li>✅ Text Align - Text alignment options</li>
+      <li>✅ Saturation - Color saturation control</li>
+      <li>✅ Pause Animations - Motion reduction</li>
+      <li>✅ Hide Images - Image hiding for text focus</li>
+      <li>✅ Dyslexia Friendly - Specialized fonts and spacing</li>
+      <li>✅ Cursor - Enhanced cursor visibility</li>
+      <li>✅ Tooltip - Enhanced tooltips</li>
+      <li>✅ Page Structure - Page structure navigation</li>
+      <li>✅ Dictionary - Word lookup functionality</li>
+      <li>✅ Focus Enhancement - Better focus indicators</li>
+      <li>✅ Screen Mask - Screen masking tools</li>
+      <li>✅ Color Blind Support - Color vision assistance</li>
+      <li>✅ Reduced Motion - Motion sensitivity support</li>
+      <li>✅ Auto Refresh Controls - Refresh management</li>
+      <li>✅ Focus Trap - Modal focus containment</li>
+      <li>✅ Skip Links - Quick navigation links</li>
     </ul>
   </div>
 
   <div class="config-section">
-    <h2>🛠️ Developer Configuration (For Testing & Development)</h2>
-    <p><strong>Purpose:</strong> Helps developers identify and fix accessibility issues.</p>
-    <button onclick="initDeveloperConfig()">Initialize Developer Widget</button>
+    <h2>🔧 Developer Configuration (For Development Teams)</h2>
+    <p><strong>Purpose:</strong> Helps developers identify and fix accessibility issues during development.</p>
+    <button id="init-developer">Initialize Developer Widget</button>
     <ul>
-      <li>🔍 Alt Text Validator - Find missing alt text</li>
-      <li>🔍 Page Title Validator - Check page titles</li>
-      <li>🔍 Language Validator - Validate language attributes</li>
-      <li>🔍 Touch Target Validator - Check touch target sizes</li>
-      <li>🔍 Reading Order Validator - Check heading structure</li>
-      <li>🔍 Error Identification - Find accessibility errors</li>
+      <li>✅ Alt Text Validator - Image alt text checking</li>
+      <li>✅ Page Title Validator - Page title validation</li>
+      <li>✅ Language Validator - Language attribute checking</li>
+      <li>✅ Touch Target Validator - Touch target size validation</li>
+      <li>✅ Reading Order Validator - Heading structure validation</li>
+      <li>✅ Form Enhancement - Form accessibility improvements</li>
+      <li>✅ Error Identification - Accessibility error detection</li>
+      <li>✅ Keyboard Navigation - Keyboard navigation testing</li>
     </ul>
   </div>
 
   <div class="config-section">
-    <h2>🎨 Complete Configuration (All Features)</h2>
-    <p><strong>Purpose:</strong> For demonstration or accessibility expert use.</p>
-    <button onclick="initCompleteConfig()">Initialize Complete Widget</button>
-    <p>Includes both user enhancement tools and developer validation tools.</p>
+    <h2>🚀 Complete Configuration (All Features)</h2>
+    <p><strong>Purpose:</strong> Full accessibility suite for comprehensive testing and enhancement.</p>
+    <button id="init-complete">Initialize Complete Widget</button>
+    <p><em>Includes all features from both configurations above.</em></p>
+  </div>
+
+  <div class="config-section">
+    <h2>📊 Configuration Status</h2>
+    <div id="config-status">
+      <p>No configuration selected. Choose one of the options above.</p>
+    </div>
   </div>
 
   <script>
-    function initEndUserConfig() {
-      if (typeof initializeAstral === 'function') {
-        initializeAstral({
-          enabledFeatures: [
-            // User Enhancement Tools
-            "Screen Reader",
-            "Contrast", 
-            "Bigger Text",
-            "Text Spacing",
-            "Line Height",
-            "Focus Enhancement",
-            "Screen Mask",
-            "Color Blind Support",
-            "Reduced Motion",
-            "Auto Refresh Controls",
-            "Focus Trap"
-          ]
-        });
-        alert('End User Widget Initialized! 🎯\n\nThis configuration focuses on tools that help users navigate and use your website better.');
-      } else {
-        alert('Widget failed to load. Please refresh and try again.');
-      }
-    }
+    document.addEventListener('DOMContentLoaded', function() {
+      const endUserBtn = document.getElementById('init-end-user');
+      const developerBtn = document.getElementById('init-developer');
+      const completeBtn = document.getElementById('init-complete');
+      const statusDiv = document.getElementById('config-status');
 
-    function initDeveloperConfig() {
-      if (typeof initializeAstral === 'function') {
-        initializeAstral({
-          enabledFeatures: [
-            // Essential user tools for testing
-            "Screen Reader",
-            "Contrast",
-            "Bigger Text",
-            
-            // Developer Validation Tools
-            "Alt Text Validator",
-            "Page Title Validator", 
-            "Language Validator",
-            "Touch Target Validator",
-            "Reading Order Validator",
-            "Error Identification"
-          ]
-        });
-        alert('Developer Widget Initialized! 🛠️\n\nThis configuration includes validation tools to help identify and fix accessibility issues.');
-      } else {
-        alert('Widget failed to load. Please refresh and try again.');
+      function initEndUserConfig() {
+        if (typeof initializeAstral === 'function') {
+          initializeAstral({
+            enabledFeatures: [
+              // User Enhancement Tools
+              "Screen Reader",
+              "Contrast", 
+              "Highlight Links",
+              "Bigger Text",
+              "Text Spacing",
+              "Line Height",
+              "Text Align",
+              "Saturation",
+              "Pause Animations",
+              "Hide Images",
+              "Dyslexia Friendly",
+              "Cursor",
+              "Tooltip",
+              "Page Structure",
+              "Dictionary",
+              "Focus Enhancement",
+              "Screen Mask",
+              "Color Blind Support",
+              "Reduced Motion",
+              "Auto Refresh Controls",
+              "Focus Trap",
+              "Skip Links"
+            ]
+          });
+          statusDiv.innerHTML = '<strong>✅ End User Widget Initialized!</strong> 22 user enhancement features enabled.';
+        } else {
+          statusDiv.innerHTML = '<strong>❌ Error:</strong> initializeAstral function not found.';
+        }
       }
-    }
 
-    function initCompleteConfig() {
-      if (typeof initializeAstral === 'function') {
-        initializeAstral({
-          enabledFeatures: [
-            // All User Enhancement Tools
-            "Screen Reader", "Contrast", "Bigger Text", "Text Spacing", 
-            "Line Height", "Focus Enhancement", "Screen Mask", 
-            "Color Blind Support", "Saturation", "Reduced Motion",
-            "Auto Refresh Controls", "Focus Trap", "Skip Links",
-            
-            // All Developer Validation Tools
-            "Alt Text Validator", "Page Title Validator", "Language Validator",
-            "Touch Target Validator", "Reading Order Validator", "Error Identification"
-          ]
-        });
-        alert('Complete Widget Initialized! 🎨\n\nAll features are now available for comprehensive testing and demonstration.');
-      } else {
-        alert('Widget failed to load. Please refresh and try again.');
+      function initDeveloperConfig() {
+        if (typeof initializeAstral === 'function') {
+          initializeAstral({
+            enabledFeatures: [
+              // Developer Validation Tools
+              "Alt Text Validator",
+              "Page Title Validator",
+              "Language Validator",
+              "Touch Target Validator",
+              "Reading Order Validator",
+              "Form Enhancement",
+              "Error Identification",
+              "Keyboard Navigation"
+            ]
+          });
+          statusDiv.innerHTML = '<strong>✅ Developer Widget Initialized!</strong> 8 developer validation features enabled.';
+        } else {
+          statusDiv.innerHTML = '<strong>❌ Error:</strong> initializeAstral function not found.';
+        }
       }
-    }
+
+      function initCompleteConfig() {
+        if (typeof initializeAstral === 'function') {
+          initializeAstral({
+            enabledFeatures: [
+              // All User Enhancement Tools
+              "Screen Reader", "Contrast", "Highlight Links", "Bigger Text", "Text Spacing", 
+              "Line Height", "Text Align", "Saturation", "Pause Animations", "Hide Images",
+              "Dyslexia Friendly", "Cursor", "Tooltip", "Page Structure", "Dictionary",
+              "Focus Enhancement", "Screen Mask", "Color Blind Support", "Reduced Motion",
+              "Auto Refresh Controls", "Focus Trap", "Skip Links",
+              
+              // All Developer Validation Tools
+              "Alt Text Validator", "Page Title Validator", "Language Validator",
+              "Touch Target Validator", "Reading Order Validator", "Form Enhancement",
+              "Error Identification", "Keyboard Navigation"
+            ]
+          });
+          statusDiv.innerHTML = '<strong>✅ Complete Widget Initialized!</strong> All 30 accessibility features enabled.';
+        } else {
+          statusDiv.innerHTML = '<strong>❌ Error:</strong> initializeAstral function not found.';
+        }
+      }
+
+      endUserBtn.addEventListener('click', initEndUserConfig);
+      developerBtn.addEventListener('click', initDeveloperConfig);
+      completeBtn.addEventListener('click', initCompleteConfig);
+    });
   </script>
 
   <div style="margin-top: 40px; padding: 20px; background: #fff3cd; border-radius: 8px;">

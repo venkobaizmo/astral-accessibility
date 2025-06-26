@@ -46,26 +46,39 @@
       border-radius: 8px;
       border-left: 4px solid #4caf50;
     }
+    
+    .demo-button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    
+    .demo-button:hover {
+      background: #0056b3;
+    }
   </style>
 </head>
 <body>  <!-- Language Selector -->
   <div class="language-selector">
     <label for="language-select">Language / Idioma / Langue / Sprache / 语言 / 言語 / 언어 / لغة / Язык / Idioma / Lingua / Taal / भाषा / Dil:</label>
-    <select id="language-select" onchange="changeLanguage(this.value)">
+    <select id="language-select">
       <option value="en-US">English (US)</option>
-      <option value="es">Español</option>
-      <option value="fr">Français</option>
-      <option value="de">Deutsch</option>
+      <option value="es-ES">Español (Spanish)</option>
+      <option value="fr-FR">Français (French)</option>
+      <option value="de-DE">Deutsch (German)</option>
       <option value="zh-CN">中文 (简体)</option>
-      <option value="ja">日本語</option>
-      <option value="ko">한국어</option>
-      <option value="ar">العربية</option>
-      <option value="ru">Русский</option>
-      <option value="pt">Português</option>
-      <option value="it">Italiano</option>
-      <option value="nl">Nederlands</option>
-      <option value="hi">हिन्दी</option>
-      <option value="tr">Türkçe</option>
+      <option value="ja-JP">日本語 (Japanese)</option>
+      <option value="ko-KR">한국어 (Korean)</option>
+      <option value="ar-SA">العربية (Arabic)</option>
+      <option value="ru-RU">Русский (Russian)</option>
+      <option value="pt-BR">Português (Portuguese)</option>
+      <option value="it-IT">Italiano (Italian)</option>
+      <option value="hi-IN">हिन्दी (Hindi)</option>
     </select>
   </div>
 
@@ -81,22 +94,23 @@
       <div class="i18n-info">
         <h2>🌍 Multi-Language Support</h2>
         <p>This demo showcases the internationalization (i18n) capabilities of the Astral Accessibility widget. The widget now supports multiple languages and automatically detects your browser's language preference.</p>
-          <h3>Supported Languages:</h3>
+        
+        <button class="demo-button" id="init-widget">Initialize Widget</button>
+        
+        <h3>Supported Languages:</h3>
         <ul>
           <li><strong>English (en-US)</strong> - Default language</li>
-          <li><strong>Spanish (es)</strong> - Español</li>
-          <li><strong>French (fr)</strong> - Français</li>
-          <li><strong>German (de)</strong> - Deutsch</li>
+          <li><strong>Spanish (es-ES)</strong> - Español</li>
+          <li><strong>French (fr-FR)</strong> - Français</li>
+          <li><strong>German (de-DE)</strong> - Deutsch</li>
           <li><strong>Chinese Simplified (zh-CN)</strong> - 中文 (简体)</li>
-          <li><strong>Japanese (ja)</strong> - 日本語</li>
-          <li><strong>Korean (ko)</strong> - 한국어</li>
-          <li><strong>Arabic (ar)</strong> - العربية</li>
-          <li><strong>Russian (ru)</strong> - Русский</li>
-          <li><strong>Portuguese (pt)</strong> - Português</li>
-          <li><strong>Italian (it)</strong> - Italiano</li>
-          <li><strong>Dutch (nl)</strong> - Nederlands</li>
-          <li><strong>Hindi (hi)</strong> - हिन्दी</li>
-          <li><strong>Turkish (tr)</strong> - Türkçe</li>
+          <li><strong>Japanese (ja-JP)</strong> - 日本語</li>
+          <li><strong>Korean (ko-KR)</strong> - 한국어</li>
+          <li><strong>Arabic (ar-SA)</strong> - العربية</li>
+          <li><strong>Russian (ru-RU)</strong> - Русский</li>
+          <li><strong>Portuguese (pt-BR)</strong> - Português</li>
+          <li><strong>Italian (it-IT)</strong> - Italiano</li>
+          <li><strong>Hindi (hi-IN)</strong> - हिन्दी</li>
         </ul>
       </div>
 
@@ -168,7 +182,7 @@
         <h3>Sample Heading</h3>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. <a href="#test">This is a test link</a> that you can interact with. The accessibility features will help improve your reading experience in any language.</p>
         
-        <button onclick="alert('Button clicked! / ¡Botón presionado! / Bouton cliqué! / Schaltfläche gedrückt! / 按钮被点击! / ボタンがクリックされました! / 버튼 클릭됨! / تم النقر على الزر! / Кнопка нажата! / Botão clicado! / Pulsante cliccato! / Knop ingedrukt! / बटन दबाया गया! / Buton tıklandı!')">Test Button</button>
+        <button id="sample-test-button">Test Button</button>
         
         <h4>Form Elements</h4>
         <label for="test-input">Sample Input:</label>
@@ -181,59 +195,145 @@
           <option>Option 3</option>
         </select>
       </div>
+
+      <div class="test-content">
+        <h3>🌍 Multi-Language Test Content</h3>
+        <p>This content will be read by the screen reader in the selected language:</p>
+        
+        <div class="language-test">
+          <h4>English Content</h4>
+          <p>This is English text that will be read by the screen reader.</p>
+          
+          <h4>Spanish Content</h4>
+          <p lang="es-ES">Este es texto en español que será leído por el lector de pantalla.</p>
+          
+          <h4>French Content</h4>
+          <p lang="fr-FR">Ceci est du texte français qui sera lu par le lecteur d'écran.</p>
+          
+          <h4>German Content</h4>
+          <p lang="de-DE">Dies ist deutscher Text, der vom Bildschirmlesegerät gelesen wird.</p>
+          
+          <h4>Chinese Content</h4>
+          <p lang="zh-CN">这是中文文本，将由屏幕阅读器朗读。</p>
+          
+          <h4>Japanese Content</h4>
+          <p lang="ja-JP">これは日本語のテキストで、スクリーンリーダーによって読み上げられます。</p>
+          
+          <h4>Korean Content</h4>
+          <p lang="ko-KR">이것은 스크린 리더에 의해 읽힐 한국어 텍스트입니다.</p>
+          
+          <h4>Arabic Content</h4>
+          <p lang="ar-SA">هذا نص باللغة العربية سيتم قراءته بواسطة قارئ الشاشة.</p>
+          
+          <h4>Russian Content</h4>
+          <p lang="ru-RU">Это русский текст, который будет прочитан программой чтения с экрана.</p>
+          
+          <h4>Portuguese Content</h4>
+          <p lang="pt-BR">Este é texto em português que será lido pelo leitor de tela.</p>
+          
+          <h4>Italian Content</h4>
+          <p lang="it-IT">Questo è testo italiano che sarà letto dal lettore di schermo.</p>
+          
+          <h4>Hindi Content</h4>
+          <p lang="hi-IN">यह हिंदी टेक्स्ट है जो स्क्रीन रीडर द्वारा पढ़ा जाएगा।</p>
+        </div>
+        
+        <div class="interactive-test">
+          <h4>Interactive Test</h4>
+          <button id="multi-lang-test-button">Test Button / Botón de prueba / Bouton de test / Test-Schaltfläche / 测试按钮 / テストボタン / 테스트 버튼 / زر الاختبار / Тестовая кнопка / Botão de teste / Pulsante di test</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>📊 Widget Status</h2>
+        <div id="widget-status">
+          <p>Widget not initialized. Select a language and click "Initialize Widget" to start.</p>
+        </div>
+      </div>
     </div>
   </div>
 
   <script src="main.js"></script>
   <script>
-    let currentWidget = null;
-
-    function changeLanguage(locale) {
-      // Remove existing widget
-      const existing = document.querySelector('astral-accessibility');
-      if (existing) {
-        existing.remove();
+    document.addEventListener('DOMContentLoaded', function() {
+      const languageSelect = document.getElementById('language-select');
+      const initButton = document.getElementById('init-widget');
+      const sampleTestButton = document.getElementById('sample-test-button');
+      const multiLangTestButton = document.getElementById('multi-lang-test-button');
+      const statusDiv = document.getElementById('widget-status');
+      
+      function initializeWidget(locale = 'en-US') {
+        if (typeof window.initializeAstral === 'function') {
+          const features = {
+            enabledFeatures: [
+              "Contrast", "Bigger Text", "Screen Reader", "Text Spacing", 
+              "Screen Mask", "Saturation", "Line Height", "Skip Links", 
+              "Focus Enhancement", "Form Enhancement", "Page Structure", 
+              "Reduced Motion", "Keyboard Navigation", "Invert", 
+              "Color Blind Support", "Alt Text Validator", "Page Title Validator", 
+              "Language Validator", "Auto Refresh Controls", "Focus Trap", 
+              "Touch Target Validator", "Reading Order Validator", "Error Identification", 
+              "Text Align", "Dictionary", "Highlight Links", "Pause Animations", 
+              "Hide Images", "Dyslexia Friendly", "Cursor", "Tooltip"
+            ],
+            locale: locale,
+            widgetHeight: "75vh"
+          };
+          
+          window.initializeAstral(features);
+          
+          statusDiv.innerHTML = `<strong>✅ Widget Initialized!</strong> Widget is now running in <strong>${locale}</strong> language. Look for the accessibility icon in the bottom-right corner.`;
+          console.log(`Widget initialized with locale: ${locale}`);
+        } else {
+          statusDiv.innerHTML = '<strong>❌ Error:</strong> initializeAstral function not found. Make sure the widget is properly loaded.';
+          console.error('initializeAstral function not found');
+        }
       }
-
-      // Initialize widget with new locale
-      if (typeof initializeAstral === 'function') {
-        initializeAstral({
-          locale: locale,
-          enabledFeatures: [
-            "Skip Links",
-            "Focus Enhancement", 
-            "Color Blind Support",
-            "Contrast",
-            "Saturation",
-            "Screen Reader",
-            "Bigger Text",
-            "Text Spacing",
-            "Line Height",
-            "Reduced Motion",
-            "Screen Mask"
-          ]
+      
+      // Language change handler
+      if (languageSelect) {
+        languageSelect.addEventListener('change', function() {
+          initializeWidget(this.value);
         });
-        
-        console.log(`Widget initialized with locale: ${locale}`);
-      } else {
-        console.error('initializeAstral function not found');
       }
-    }
-
-    // Initialize with browser default language
-    window.addEventListener('load', function() {
+      
+      // Initialize button handler
+      if (initButton) {
+        initButton.addEventListener('click', function() {
+          initializeWidget(languageSelect ? languageSelect.value : 'en-US');
+        });
+      }
+      
+      // Test button handlers
+      if (sampleTestButton) {
+        sampleTestButton.addEventListener('click', function() {
+          alert('Sample button clicked!');
+        });
+      }
+      
+      if (multiLangTestButton) {
+        multiLangTestButton.addEventListener('click', function() {
+          alert('Button clicked! / ¡Botón presionado! / Bouton cliqué! / Schaltfläche gedrückt! / 按钮被点击! / ボタンがクリックされました! / 버튼 클릭됨! / تم النقر على الزر! / Кнопка нажата! / Botão clicado! / Pulsante cliccato!');
+        });
+      }
+      
+      // Initialize with browser default language
       setTimeout(function() {
         const browserLang = navigator.language || 'en-US';
         const select = document.getElementById('language-select');
         
-        // Set select to browser language if supported
-        const options = Array.from(select.options);
-        const matchingOption = options.find(option => option.value === browserLang);
-        if (matchingOption) {
-          select.value = browserLang;
+        if (select) {
+          // Set select to browser language if supported
+          const options = Array.from(select.options);
+          const matchingOption = options.find(option => option.value === browserLang);
+          if (matchingOption) {
+            select.value = browserLang;
+          }
+          
+          initializeWidget(select.value);
+        } else {
+          initializeWidget(browserLang);
         }
-        
-        changeLanguage(select.value);
       }, 1000);
     });
   </script>

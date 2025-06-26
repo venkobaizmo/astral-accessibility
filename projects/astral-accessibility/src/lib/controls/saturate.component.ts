@@ -9,15 +9,15 @@ import { I18nService } from "../services/i18n.service";
   template: `
     <button
       (click)="nextState()"
-      [ngClass]="{ 'in-use': states[currentState] !== base }"
+      [ngClass]="{ 'in-use': currentState !== 0 }"
     >
       <div class="title">
         <div class="icon-state-wrap">
           <div
             class="icon action-icon "
             [ngClass]="{
-              inactive: states[currentState] == base,
-              active: states[currentState] != base
+              inactive: currentState === 0,
+              active: currentState !== 0
             }"
           >
             <svg
@@ -58,21 +58,17 @@ import { I18nService } from "../services/i18n.service";
           </div>
           <div class="state-dots-wrap">
             <span>{{ states[currentState] }}</span>
-            <div *ngIf="states[currentState] != base" class="dots">              <div
+            <div *ngIf="currentState !== 0" class="dots">              <div
                 class="dot"
-                [ngClass]="{
-                  active: states[currentState] === i18n.getTranslation('low-saturation')
-                }"
+                [ngClass]="{ active: currentState === 1 }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{
-                  active: states[currentState] === i18n.getTranslation('high-saturation')
-                }"
+                [ngClass]="{ active: currentState === 2 }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === i18n.getTranslation('desaturated') }"
+                [ngClass]="{ active: currentState === 3 }"
               ></div>
             </div>
           </div>
@@ -80,7 +76,7 @@ import { I18nService } from "../services/i18n.service";
       </div>
 
       <astral-widget-checkmark
-        [isActive]="states[currentState] !== base"
+        [isActive]="currentState !== 0"
       ></astral-widget-checkmark>
     </button>
   `,
@@ -91,9 +87,8 @@ export class SaturateComponent {
   i18n = inject(I18nService);
 
   currentState = 0;
-  base = this.i18n.getTranslation('saturation');
   states = [
-    this.base, 
+    this.i18n.getTranslation('saturation'), 
     this.i18n.getTranslation('low-saturation'), 
     this.i18n.getTranslation('high-saturation'), 
     this.i18n.getTranslation('desaturated')
@@ -107,15 +102,15 @@ export class SaturateComponent {
   }
 
   private _runStateLogic() {
-    this._resetSaturation();    if (this.states[this.currentState] === this.i18n.getTranslation('low-saturation')) {
+    this._resetSaturation();    if (this.currentState === 1) {
       this.document.documentElement.classList.add("astral_low_saturation");
     }
 
-    if (this.states[this.currentState] === this.i18n.getTranslation('high-saturation')) {
+    if (this.currentState === 2) {
       this.document.documentElement.classList.add("astral_high_saturation");
     }
 
-    if (this.states[this.currentState] === this.i18n.getTranslation('desaturated')) {
+    if (this.currentState === 3) {
       this.document.documentElement.classList.add("astral_desaturated");
     }
   }

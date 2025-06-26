@@ -48,7 +48,8 @@
       font-size: 16px;
       padding: 15px 30px;
       margin: 20px 0;
-    }    .demo-button:hover {
+    }
+    .demo-button:hover {
       background: #1e7e34;
     }
     .feature-grid {
@@ -96,12 +97,19 @@
       border: none;
       font-size: 10px;
     }
+    
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
   </style>
 </head>
-<body>  <h1>Astral Accessibility Widget - Full Feature Demo</h1>
+<body>
+  <h1>Astral Accessibility Widget - Full Feature Demo</h1>
   <p>This comprehensive demo showcases all accessibility features of the Astral Widget. Click the button below to initialize the widget, then use the accessibility icon in the bottom-right corner to test each feature.</p>
   
-  <button class="demo-button" onclick="initializeWidget()">Initialize Accessibility Widget</button>
+  <button class="demo-button" id="init-widget">Initialize Accessibility Widget</button>
   
   <div class="card">
     <h2>🎯 Core Accessibility Features</h2>
@@ -113,6 +121,15 @@
       <li><strong>Bigger Text:</strong> Increase text size for easier reading</li>
       <li><strong>Text Spacing:</strong> Adjust letter and word spacing</li>
       <li><strong>Line Height:</strong> Customize line spacing for improved readability</li>
+      <li><strong>Text Align:</strong> Adjust text alignment for better reading flow</li>
+      <li><strong>Saturation:</strong> Control color saturation for visual comfort</li>
+      <li><strong>Pause Animations:</strong> Stop or reduce motion for users with vestibular disorders</li>
+      <li><strong>Hide Images:</strong> Conceal images to focus on text content</li>
+      <li><strong>Dyslexia Friendly:</strong> Apply dyslexia-friendly fonts and spacing</li>
+      <li><strong>Cursor:</strong> Enhance cursor visibility and size</li>
+      <li><strong>Tooltip:</strong> Enhanced tooltips and context information</li>
+      <li><strong>Page Structure:</strong> Visualize and navigate page structure</li>
+      <li><strong>Dictionary:</strong> Look up word definitions on demand</li>
     </ul>
   </div>
 
@@ -152,9 +169,10 @@
       
       <div class="feature-card">
         <h3>🔄 Auto-refresh Controls</h3>
-        <p>Manages and controls automatic page refreshes for accessibility.</p>        <div class="test-area">
+        <p>Manages and controls automatic page refreshes for accessibility.</p>
+        <div class="test-area">
           <p>Monitors for: setTimeout, setInterval, meta refresh</p>
-          <button onclick="setTimeout(() => alert('Detected!'), 1000)">Test Timer</button>
+          <button id="test-timer">Test Timer</button>
           <p id="timer-test">Auto-refresh timer: 0</p>
         </div>
       </div>
@@ -163,11 +181,11 @@
         <h3>🎯 Focus Trap Management</h3>
         <p>Creates accessible focus containment for modals and dialogs.</p>
         <div class="test-area">
-          <button onclick="showModal()">Open Test Modal</button>
+          <button id="open-modal">Open Test Modal</button>
           <div id="testModal" style="display: none; position: fixed; top: 50%; left: 50%; background: white; padding: 20px; border: 2px solid #333; z-index: 1000;">
             <h4>Test Modal</h4>
             <button>Button 1</button>
-            <button onclick="hideModal()">Close</button>
+            <button id="close-modal">Close</button>
           </div>
         </div>
       </div>
@@ -192,130 +210,114 @@
       </div>
       
       <div class="feature-card">
-        <h3>⚠️ Error Identification</h3>
-        <p>Identifies and reports accessibility errors with suggestions.</p>
+        <h3>🎨 Form Enhancement</h3>
+        <p>Improves form accessibility with better labels and validation.</p>
         <div class="test-area">
-          <form class="error-demo">
-            <label>Name (required but not marked):</label>
-            <input type="text" required>
-            <input type="submit" value="Submit">
+          <form>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name">
+            <button type="submit">Submit</button>
           </form>
         </div>
       </div>
     </div>
   </div>
+
   <div class="card">
-    <h2>🧪 Interactive Testing Area</h2>
-    <p>Use this area to test various accessibility features:</p>
+    <h2>🧪 Test Areas</h2>
+    <p>Use these areas to test the accessibility features:</p>
     
-    <h3>Keyboard Navigation Test</h3>
-    <p>Try pressing <kbd>Tab</kbd>, <kbd>F1</kbd> for help, and <kbd>H</kbd> to navigate headings:</p>
-    <button>Button 1</button>
-    <a href="#test">Link 1</a>
-    <button>Button 2</button>
-    <input type="text" placeholder="Text input">
-    <button>Button 3</button>
-    
-    <h3>Color and Contrast Test</h3>
-    <div style="background: #ffff00; color: #ffffff; padding: 10px;">
-      Poor contrast text (fails WCAG)
-    </div>
-    <div style="background: #000000; color: #ffffff; padding: 10px; margin-top: 5px;">
-      Good contrast text (passes WCAG)
+    <div class="test-area">
+      <h3>Text Content Test</h3>
+      <p>This paragraph contains <strong>bold text</strong>, <em>italic text</em>, and a <a href="#test">test link</a> to demonstrate various text formatting and link highlighting features.</p>
+      <p>Another paragraph with different content to test text spacing, line height, and text alignment features.</p>
     </div>
     
-    <h3>Text and Spacing Test</h3>
-    <p style="font-size: 12px; line-height: 1.0; letter-spacing: -1px;">
-      This text is too small and cramped for some users to read comfortably.
-    </p>
-    <p style="font-size: 16px; line-height: 1.6; letter-spacing: 0.1em;">
-      This text has better size and spacing for readability.
-    </p>
+    <div class="test-area">
+      <h3>Color and Contrast Test</h3>
+      <p style="color: #666;">This text has low contrast</p>
+      <p style="color: #000; background: #fff;">This text has high contrast</p>
+      <div style="background: #yellow; padding: 10px;">
+        <p>This background tests color saturation features</p>
+      </div>
+    </div>
+    
+    <div class="test-area">
+      <h3>Animation Test</h3>
+      <div style="animation: pulse 2s infinite;">
+        <p>This text has a pulsing animation</p>
+      </div>
+    </div>
   </div>
 
   <div class="card">
-    <h2>💡 How to Use the Widget</h2>
-    <ol>
-      <li><strong>Initialize:</strong> Click the "Initialize Accessibility Widget" button above</li>
-      <li><strong>Open Widget:</strong> Look for the accessibility icon (♿) in the bottom-right corner</li>
-      <li><strong>Navigate Features:</strong> Use the arrow buttons or keyboard to cycle through features</li>
-      <li><strong>Activate Features:</strong> Click on any feature to enable/disable it</li>
-      <li><strong>Test Validation:</strong> The new validation features will automatically scan the page</li>
-    </ol>
-    
-    <h3>🎹 Keyboard Shortcuts</h3>
-    <ul>
-      <li><kbd>F1</kbd> - Show keyboard navigation help (when widget is active)</li>
-      <li><kbd>H</kbd> - Navigate between headings</li>
-      <li><kbd>L</kbd> - Navigate between landmarks</li>
-      <li><kbd>Tab</kbd>/<kbd>Shift+Tab</kbd> - Navigate interactive elements</li>
-      <li><kbd>Esc</kbd> - Close overlays and return focus</li>
-    </ul>
+    <h2>📊 Widget Status</h2>
+    <div id="widget-status">
+      <p>Widget not initialized. Click the button above to start.</p>
+    </div>
   </div>
+
   <script>
-    function initializeWidget() {
-      // Initialize the accessibility widget with all features enabled
-      if (typeof initializeAstral === 'function') {
-        initializeAstral({
-          enabledFeatures: [
-            // Core features
-            "Screen Reader",
-            "Contrast", 
-            "Highlight Links",
-            "Bigger Text",
-            "Text Spacing",
-            "Line Height",
-            // New WCAG 2.1 compliance features
-            "Alt Text Validator",
-            "Page Title Validator", 
-            "Language Validator",
-            "Auto-refresh Controls",
-            "Focus Trap",
-            "Touch Target Validator",
-            "Reading Order Validator",
-            "Error Identification"
-          ]
-        });
-        
-        // Update the button to show it's been initialized
-        const button = document.querySelector('.demo-button');
-        button.textContent = 'Widget Initialized! Check bottom-right corner →';
-        button.disabled = true;
-        button.style.background = '#6c757d';
-        
-        // Add a note about the new features
-        const note = document.createElement('div');
-        note.style.cssText = 'background: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 10px; margin: 10px 0; border-radius: 4px;';
-        note.innerHTML = '<strong>✅ Widget Initialized!</strong> The accessibility widget now includes 8 new WCAG 2.1 compliance features. Use the widget to scan this page and discover accessibility issues that can be automatically detected and improved.';
-        button.parentNode.insertBefore(note, button.nextSibling);
-        
-      } else {
-        alert('Widget failed to load. Please refresh the page and try again.');
-      }
-    }
-    
-    // Demo modal functions
-    function showModal() {
-      document.getElementById('testModal').style.display = 'block';
-      // Focus trap will be handled by the widget's focus trap feature
-      document.querySelector('#testModal button').focus();
-    }
-    
-    function hideModal() {
-      document.getElementById('testModal').style.display = 'none';
-    }
-    
-    // Add some dynamic content for testing
+    // Wait for the page to load
     document.addEventListener('DOMContentLoaded', function() {
-      // Add a timer that the auto-refresh controls can detect
-      let counter = 0;
-      setInterval(() => {
-        counter++;
-        const elem = document.querySelector('#timer-test');
-        if (elem) {
-          elem.textContent = `Auto-refresh timer: ${counter}`;
+      const initButton = document.getElementById('init-widget');
+      const testTimerButton = document.getElementById('test-timer');
+      const openModalButton = document.getElementById('open-modal');
+      const closeModalButton = document.getElementById('close-modal');
+      const statusDiv = document.getElementById('widget-status');
+      
+      // Initialize widget
+      initButton.addEventListener('click', function() {
+        if (typeof initializeAstral === 'function') {
+          initializeAstral({
+            enabledFeatures: [
+              // Core features
+              "Screen Reader",
+              "Contrast", 
+              "Highlight Links",
+              "Bigger Text",
+              "Text Spacing",
+              "Line Height",
+              "Text Align",
+              "Saturation",
+              "Pause Animations",
+              "Hide Images",
+              "Dyslexia Friendly",
+              "Cursor",
+              "Tooltip",
+              "Page Structure",
+              "Dictionary",
+              // New WCAG 2.1 compliance features
+              "Alt Text Validator",
+              "Page Title Validator", 
+              "Language Validator",
+              "Auto-refresh Controls",
+              "Focus Trap",
+              "Touch Target Validator",
+              "Reading Order Validator",
+              "Form Enhancement"
+            ]
+          });
+          
+          statusDiv.innerHTML = '<strong>✅ Widget Initialized!</strong> The accessibility widget now includes 23 comprehensive accessibility features (15 core features + 8 WCAG 2.1 compliance features). Use the widget to scan this page and discover accessibility issues that can be automatically detected and improved.';
+        } else {
+          statusDiv.innerHTML = '<strong>❌ Error:</strong> initializeAstral function not found. Make sure the widget is properly loaded.';
         }
-      }, 5000);
+      });
+      
+      // Test timer functionality
+      testTimerButton.addEventListener('click', function() {
+        setTimeout(() => alert('Detected!'), 1000);
+      });
+      
+      // Modal functionality
+      openModalButton.addEventListener('click', function() {
+        document.getElementById('testModal').style.display = 'block';
+      });
+      
+      closeModalButton.addEventListener('click', function() {
+        document.getElementById('testModal').style.display = 'none';
+      });
     });
   </script>
 </body>

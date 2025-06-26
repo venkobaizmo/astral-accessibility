@@ -15,15 +15,15 @@ interface ImageIssue {
   template: `
     <button
       (click)="nextState()"
-      [ngClass]="{ 'in-use': states[currentState] !== base }"
+      [ngClass]="{ 'in-use': currentState !== 0 }"
     >
       <div class="title">
         <div class="icon-state-wrap">
           <div
             class="icon action-icon"
             [ngClass]="{
-              inactive: states[currentState] == base,
-              active: states[currentState] != base
+              inactive: currentState === 0,
+              active: currentState !== 0
             }"
           >
             <svg
@@ -44,15 +44,15 @@ interface ImageIssue {
             <span>{{ states[currentState] }}</span>
             <div
               class="dots"
-              [ngClass]="{ inactive: states[currentState] === base }"
+              [ngClass]="{ inactive: currentState === 0 }"
             >
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Scan Images' }"
+                [ngClass]="{ active: currentState === 1 }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Fix Issues' }"
+                [ngClass]="{ active: currentState === 2 }"
               ></div>
             </div>
           </div>
@@ -60,7 +60,7 @@ interface ImageIssue {
       </div>
 
       <astral-widget-checkmark
-        [isActive]="states[currentState] !== base"
+        [isActive]="currentState !== 0"
       ></astral-widget-checkmark>
     </button>
 
@@ -146,8 +146,12 @@ export class AltTextValidatorComponent implements OnDestroy {
 
   document = inject(DOCUMENT);
   currentState = 0;
-  base = "Alt Text Validator";
-  states = [this.base, "Scan Images", "Fix Issues"];
+  base = this.i18n.getTranslation('alt-text-validator');
+  states = [
+    this.i18n.getTranslation('alt-text-validator'),
+    this.i18n.getTranslation('validate-alt-text'),
+    this.i18n.getTranslation('alt-text-issues-found')
+  ];
   
   imageIssues: ImageIssue[] = [];
   showIssuesPanel = false;
@@ -163,10 +167,10 @@ export class AltTextValidatorComponent implements OnDestroy {
     // Remove any existing highlights
     this.removeHighlights();
 
-    if (this.states[this.currentState] === "Scan Images") {
+    if (this.currentState === 1) {
       this.scanForAltTextIssues();
       this.showIssuesPanel = true;
-    } else if (this.states[this.currentState] === "Fix Issues") {
+    } else if (this.currentState === 2) {
       this.showFixGuidance();
     } else {
       this.showIssuesPanel = false;

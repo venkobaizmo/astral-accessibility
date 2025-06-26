@@ -11,7 +11,7 @@ import { I18nService } from "../services/i18n.service";
       [disabled]="!synthesisAvailable"
       (click)="nextState()"
       [ngClass]="{
-        'in-use': states[currentState] != base,
+        'in-use': currentState !== 0,
         'disabled-button': !synthesisAvailable
       }"
     >
@@ -20,8 +20,8 @@ import { I18nService } from "../services/i18n.service";
           <div
             class="icon action-icon d-flex align-items-center"
             [ngClass]="{
-              inactive: states[currentState] == base,
-              active: states[currentState] != base,
+              inactive: currentState === 0,
+              active: currentState !== 0,
               disabled: !synthesisAvailable
             }"
           >
@@ -60,19 +60,19 @@ import { I18nService } from "../services/i18n.service";
               synthesisAvailable ? states[currentState] : unavailableMessage
             }}</span>            <div
               class="dots"
-              [ngClass]="{ inactive: states[currentState] === base }"
+              [ngClass]="{ inactive: currentState === 0 }"
             >
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === i18n.getTranslation('read-normal') }"
+                [ngClass]="{ active: currentState === 1 }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === i18n.getTranslation('read-fast') }"
+                [ngClass]="{ active: currentState === 2 }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === i18n.getTranslation('read-slow') }"
+                [ngClass]="{ active: currentState === 3 }"
               ></div>
             </div>
           </div>
@@ -80,7 +80,7 @@ import { I18nService } from "../services/i18n.service";
       </div>
 
       <astral-widget-checkmark
-        [isActive]="states[currentState] !== base"
+        [isActive]="currentState !== 0"
       ></astral-widget-checkmark>
     </button>
   `,
@@ -102,7 +102,7 @@ export class ScreenReaderComponent {
     let element = document.elementFromPoint(x, y);
 
     if (element) {
-      if (this.states[this.currentState] != this.base) {
+      if (this.currentState !== 0) {
         if (element.ariaLabel) {
           // it has aria-label, use aria-label
           this.speech.text = element.ariaLabel;
@@ -244,19 +244,19 @@ export class ScreenReaderComponent {
     this._style?.remove?.();
     this._style = this.document.createElement("style");
 
-    if (this.states[this.currentState] === this.i18n.getTranslation('read-normal')) {
+    if (this.currentState === 1) {
       this.speech.rate = 0.8;
     }
 
-    if (this.states[this.currentState] === this.i18n.getTranslation('read-fast')) {
+    if (this.currentState === 2) {
       this.speech.rate = this.isApple ? 1.3 : 1.7;
     }
 
-    if (this.states[this.currentState] === this.i18n.getTranslation('read-slow')) {
+    if (this.currentState === 3) {
       this.speech.rate = 0.4;
     }
 
-    if (this.states[this.currentState] === this.base) {
+    if (this.currentState === 0) {
       if (speechSynthesis.speaking) {
         speechSynthesis.cancel();
       }

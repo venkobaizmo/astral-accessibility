@@ -9,15 +9,15 @@ import { I18nService } from "../services/i18n.service";
   template: `
     <button
       (click)="nextState()"
-      [ngClass]="{ 'in-use': states[currentState] != base }"
+      [ngClass]="{ 'in-use': currentState !== 0 }"
     >
       <div class="title">
         <div class="icon-state-wrap">
           <div
             class="icon action-icon"
             [ngClass]="{
-              inactive: states[currentState] == base,
-              active: states[currentState] != base
+              inactive: currentState === 0,
+              active: currentState !== 0
             }"
           >
             <svg
@@ -47,21 +47,19 @@ import { I18nService } from "../services/i18n.service";
           <div class="state-dots-wrap">
             <span>{{ states[currentState] }}</span>            <div
               class="dots"
-              [ngClass]="{ inactive: states[currentState] === base }"
+              [ngClass]="{ inactive: currentState === 0 }"
             >
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === i18n.getTranslation('light-spacing') }"
+                [ngClass]="{ active: currentState === 1 }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{
-                  active: states[currentState] === i18n.getTranslation('moderate-spacing')
-                }"
+                [ngClass]="{ active: currentState === 2 }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === i18n.getTranslation('heavy-spacing') }"
+                [ngClass]="{ active: currentState === 3 }"
               ></div>
             </div>
           </div>
@@ -69,7 +67,7 @@ import { I18nService } from "../services/i18n.service";
       </div>
 
       <astral-widget-checkmark
-        [isActive]="states[currentState] !== base"
+        [isActive]="currentState !== 0"
       ></astral-widget-checkmark>
     </button>
   `,

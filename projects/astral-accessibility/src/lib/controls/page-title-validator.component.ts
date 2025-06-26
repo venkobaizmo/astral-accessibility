@@ -15,15 +15,15 @@ interface TitleIssue {
   template: `
     <button
       (click)="nextState()"
-      [ngClass]="{ 'in-use': states[currentState] !== base }"
+      [ngClass]="{ 'in-use': currentState !== 0 }"
     >
       <div class="title">
         <div class="icon-state-wrap">
           <div
             class="icon action-icon"
             [ngClass]="{
-              inactive: states[currentState] == base,
-              active: states[currentState] != base
+              inactive: currentState === 0,
+              active: currentState !== 0
             }"
           >
             <svg
@@ -45,15 +45,15 @@ interface TitleIssue {
             <span>{{ states[currentState] }}</span>
             <div
               class="dots"
-              [ngClass]="{ inactive: states[currentState] === base }"
+              [ngClass]="{ inactive: currentState === 0 }"
             >
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Check Title' }"
+                [ngClass]="{ active: currentState === 1 }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Monitor Changes' }"
+                [ngClass]="{ active: currentState === 2 }"
               ></div>
             </div>
           </div>
@@ -61,7 +61,7 @@ interface TitleIssue {
       </div>
 
       <astral-widget-checkmark
-        [isActive]="states[currentState] !== base"
+        [isActive]="currentState !== 0"
       ></astral-widget-checkmark>
     </button>
 
@@ -143,8 +143,13 @@ export class PageTitleValidatorComponent implements OnDestroy {
 
   document = inject(DOCUMENT);
   currentState = 0;
-  base = "Page Title Validator";
-  states = [this.base, "Check Title", "Monitor Changes"];
+  base = this.i18n.getTranslation('page-title-validator');
+  states = [
+    this.i18n.getTranslation('page-title-validator'),
+    this.i18n.getTranslation('validate-page-title'),
+    this.i18n.getTranslation('page-title-valid'),
+    this.i18n.getTranslation('page-title-invalid')
+  ];
   
   currentTitle = "";
   titleIssue: TitleIssue = { type: 'good', current: '', suggestion: '' };

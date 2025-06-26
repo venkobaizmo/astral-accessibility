@@ -16,15 +16,15 @@ interface LanguageIssue {
   template: `
     <button
       (click)="nextState()"
-      [ngClass]="{ 'in-use': states[currentState] !== base }"
+      [ngClass]="{ 'in-use': currentState !== 0 }"
     >
       <div class="title">
         <div class="icon-state-wrap">
           <div
             class="icon action-icon"
             [ngClass]="{
-              inactive: states[currentState] == base,
-              active: states[currentState] != base
+              inactive: currentState === 0,
+              active: currentState !== 0
             }"
           >
             <svg
@@ -45,15 +45,15 @@ interface LanguageIssue {
             <span>{{ states[currentState] }}</span>
             <div
               class="dots"
-              [ngClass]="{ inactive: states[currentState] === base }"
+              [ngClass]="{ inactive: currentState === 0 }"
             >
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Scan Languages' }"
+                [ngClass]="{ active: currentState === 1 }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Show Issues' }"
+                [ngClass]="{ active: currentState === 2 }"
               ></div>
             </div>
           </div>
@@ -61,7 +61,7 @@ interface LanguageIssue {
       </div>
 
       <astral-widget-checkmark
-        [isActive]="states[currentState] !== base"
+        [isActive]="currentState !== 0"
       ></astral-widget-checkmark>
     </button>
 
@@ -183,8 +183,13 @@ export class LanguageValidatorComponent implements OnDestroy {
 
   document = inject(DOCUMENT);
   currentState = 0;
-  base = "Language Validator";
-  states = [this.base, "Scan Languages", "Show Issues"];
+  base = this.i18n.getTranslation('language-validator');
+  states = [
+    this.i18n.getTranslation('language-validator'),
+    this.i18n.getTranslation('validate-language'),
+    this.i18n.getTranslation('language-valid'),
+    this.i18n.getTranslation('language-invalid')
+  ];
   
   languageIssues: LanguageIssue[] = [];
   showLanguagePanel = false;
@@ -222,7 +227,7 @@ export class LanguageValidatorComponent implements OnDestroy {
 
   nextState() {
     this.currentState += 1;
-    this.currentState = this.currentState % 3;
+    this.currentState = this.currentState % 4;
     this._runStateLogic();
   }
 

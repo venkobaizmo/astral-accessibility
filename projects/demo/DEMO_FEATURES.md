@@ -1,7 +1,7 @@
 # Astral Accessibility Widget - Demo Features Guide
 
 ## Overview
-The Astral Accessibility Widget now includes 13+ comprehensive accessibility features, including 8 new WCAG 2.1 Level A/AA compliance tools. This demo page showcases all features with interactive examples.
+The Astral Accessibility Widget now includes 23 comprehensive accessibility features, including 15 core accessibility tools and 8 WCAG 2.1 Level A/AA compliance tools. This demo page showcases all features with interactive examples.
 
 ## Core Accessibility Features
 
@@ -12,6 +12,15 @@ The Astral Accessibility Widget now includes 13+ comprehensive accessibility fea
 4. **Bigger Text** - Dynamic text size adjustment (up to 200%)
 5. **Text Spacing** - Letter spacing, word spacing, and line height controls
 6. **Line Height** - Customizable line spacing for improved readability
+7. **Text Align** - Adjust text alignment for better reading flow
+8. **Saturation** - Control color saturation for visual comfort
+9. **Pause Animations** - Stop or reduce motion for users with vestibular disorders
+10. **Hide Images** - Conceal images to focus on text content
+11. **Dyslexia Friendly** - Specialized reading support with OpenDyslexic font and enhanced readability
+12. **Cursor** - Enhance cursor visibility and size
+13. **Tooltip** - Enhanced tooltips and context information
+14. **Page Structure** - Visualize and navigate page structure
+15. **Dictionary** - Look up word definitions on demand
 
 ## 🆕 New WCAG 2.1 Compliance Features
 
@@ -80,6 +89,40 @@ The Astral Accessibility Widget now includes 13+ comprehensive accessibility fea
   - Validates error message clarity
   - Checks ARIA error associations
 
+## 🧠 Dyslexia-Friendly Support Features
+
+### Dyslexia Friendly Component
+- **WCAG Success Criteria:** Supports 1.4.8 Visual Presentation (Level AAA), 1.4.12 Text Spacing (Level AA)
+- **Target Users:** Individuals with dyslexia, reading difficulties, and visual processing challenges
+- **Features:**
+  - **Mode 1 - OpenDyslexic Font:** 
+    - Applies specialized OpenDyslexic typeface designed to reduce letter confusion
+    - Enhanced letter spacing (0.05em) and word spacing (0.1em)
+    - Increased line height (1.8) for better visual separation
+  - **Mode 2 - High Readability:**
+    - Combines OpenDyslexic font with enhanced accessibility features
+    - High contrast color scheme (#1a1a1a on #fefefe background)
+    - Increased spacing (letter: 0.1em, word: 0.15em, line: 2.0)
+    - Left text alignment to prevent justification issues
+    - Enhanced link visibility with background highlighting
+    - Reduced visual clutter and text decorations
+  - **Mode 3 - Reading Guide:**
+    - All high readability features plus advanced reading aids
+    - Dynamic reading progress indicator at top of page
+    - Hover-based paragraph highlighting for focus enhancement
+    - Optimized column width (70ch) for easier reading
+    - Color-coded visual hierarchy
+    - Advanced typography improvements
+
+- **Benefits:**
+  - Reduces letter confusion (b/d, p/q reversal)
+  - Improves reading flow and comprehension
+  - Decreases eye strain and visual fatigue
+  - Supports sustained reading attention
+  - Provides customizable reading experience
+
+- **Demo Page:** `dyslexia-friendly-demo.html`
+
 ## Demo Page Test Cases
 
 ### Accessibility Issues to Test
@@ -125,6 +168,14 @@ The demo page intentionally includes accessibility issues to demonstrate the wid
 6. **Touch Target Validator**: Check button sizes
 7. **Reading Order Validator**: Examine heading structure
 8. **Error Identification**: Review form accessibility
+9. **Dyslexia Friendly**: Click multiple times to cycle through three specialized reading modes
+   - Mode 1: OpenDyslexic font with enhanced spacing
+   - Mode 2: High readability with contrast and layout improvements  
+   - Mode 3: Reading guide with visual aids and progress tracking
+
+### Specialized Demo Pages
+- **Main Demo**: `test-widget.html` - Full feature demonstration
+- **Dyslexia-Friendly Demo**: `dyslexia-friendly-demo.html` - Focused dyslexia support testing
 
 ## WCAG 2.1 Compliance Coverage
 

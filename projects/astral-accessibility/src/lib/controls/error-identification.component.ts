@@ -18,15 +18,15 @@ interface ErrorIdentificationIssue {
   template: `
     <button
       (click)="nextState()"
-      [ngClass]="{ 'in-use': states[currentState] !== base }"
+      [ngClass]="{ 'in-use': currentState !== 0 }"
     >
       <div class="title">
         <div class="icon-state-wrap">
           <div
             class="icon action-icon"
             [ngClass]="{
-              inactive: states[currentState] == base,
-              active: states[currentState] != base
+              inactive: currentState === 0,
+              active: currentState !== 0
             }"
           >
             <svg
@@ -49,19 +49,19 @@ interface ErrorIdentificationIssue {
             <span>{{ states[currentState] }}</span>
             <div
               class="dots"
-              [ngClass]="{ inactive: states[currentState] === base }"
+              [ngClass]="{ inactive: currentState === 0 }"
             >
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Scan for Errors' }"
+                [ngClass]="{ active: currentState === 1 }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Show Issues' }"
+                [ngClass]="{ active: currentState === 2 }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Auto-enhance' }"
+                [ngClass]="{ active: currentState === 3 }"
               ></div>
             </div>
           </div>
@@ -69,7 +69,7 @@ interface ErrorIdentificationIssue {
       </div>
 
       <astral-widget-checkmark
-        [isActive]="states[currentState] !== base"
+        [isActive]="currentState !== 0"
       ></astral-widget-checkmark>
     </button>
 
@@ -266,8 +266,13 @@ export class ErrorIdentificationComponent implements OnDestroy {
 
   document = inject(DOCUMENT);
   currentState = 0;
-  base = "Error Identification";
-  states = [this.base, "Scan for Errors", "Show Issues", "Auto-enhance"];
+  base = this.i18n.getTranslation('error-identification');
+  states = [
+    this.i18n.getTranslation('error-identification'),
+    this.i18n.getTranslation('identify-errors'),
+    this.i18n.getTranslation('errors-found'),
+    this.i18n.getTranslation('error-identification-active')
+  ];
   
   errorIdentificationIssues: ErrorIdentificationIssue[] = [];
   showErrorPanel = false;
@@ -288,25 +293,30 @@ export class ErrorIdentificationComponent implements OnDestroy {
   }
 
   private _runStateLogic() {
+    // Remove existing styles and enhancements
     this.removeHighlights();
+    this.revertAllEnhancements();
 
-    if (this.states[this.currentState] === "Scan for Errors") {
+    if (this.currentState === 0) {
+      return; // Normal mode
+    }
+
+    if (this.currentState === 1) {
       this.scanForErrorIdentificationIssues();
-    } else if (this.states[this.currentState] === "Show Issues") {
       this.showErrorPanel = true;
-    } else if (this.states[this.currentState] === "Auto-enhance") {
-      this.autoValidationEnabled = true;
-      this.enhancedErrorMessagesEnabled = true;
-      this.ariaEnhancementsEnabled = true;
+    }
+
+    if (this.currentState === 2) {
+      this.scanForErrorIdentificationIssues();
+      this.showErrorPanel = true;
+      this.announceResults();
+    }
+
+    if (this.currentState === 3) {
+      this.scanForErrorIdentificationIssues();
+      this.showErrorPanel = true;
       this.applyAllEnhancements();
-      this.showErrorPanel = true;
-    } else {
-      this.revertAllEnhancements();
-      this.autoValidationEnabled = false;
-      this.enhancedErrorMessagesEnabled = false;
-      this.ariaEnhancementsEnabled = false;
-      this.showErrorPanel = false;
-      this.errorIdentificationIssues = [];
+      this.announceResults();
     }
   }
 

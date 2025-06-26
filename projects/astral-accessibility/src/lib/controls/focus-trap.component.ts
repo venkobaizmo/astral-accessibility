@@ -17,15 +17,15 @@ interface FocusTrapInfo {
   template: `
     <button
       (click)="nextState()"
-      [ngClass]="{ 'in-use': states[currentState] !== base }"
+      [ngClass]="{ 'in-use': currentState !== 0 }"
     >
       <div class="title">
         <div class="icon-state-wrap">
           <div
             class="icon action-icon"
             [ngClass]="{
-              inactive: states[currentState] == base,
-              active: states[currentState] != base
+              inactive: currentState === 0,
+              active: currentState !== 0
             }"
           >
             <svg
@@ -34,15 +34,10 @@ interface FocusTrapInfo {
               viewBox="0 0 41 41"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <rect x="8" y="8" width="25" height="16" fill="none" stroke="#FFF" stroke-width="2" rx="2"/>
-              <circle cx="12" cy="16" r="2" fill="#FFF"/>
-              <circle cx="20.5" cy="16" r="2" fill="#FFF"/>
-              <circle cx="29" cy="16" r="2" fill="#FFF"/>
-              <path d="M6 12 L6 8 L10 8" stroke="#FFF" stroke-width="2" fill="none"/>
-              <path d="M31 8 L35 8 L35 12" stroke="#FFF" stroke-width="2" fill="none"/>
-              <path d="M35 20 L35 24 L31 24" stroke="#FFF" stroke-width="2" fill="none"/>
-              <path d="M10 24 L6 24 L6 20" stroke="#FFF" stroke-width="2" fill="none"/>
-              <text x="12" y="34" font-family="Arial" font-size="6" fill="#FFF">FOCUS</text>
+              <rect x="6" y="6" width="29" height="29" fill="none" stroke="#FFF" stroke-width="2"/>
+              <rect x="10" y="10" width="21" height="21" fill="none" stroke="#FFF" stroke-width="1" stroke-dasharray="2,2"/>
+              <circle cx="20.5" cy="20.5" r="3" fill="#FFF"/>
+              <text x="4" y="38" font-family="Arial" font-size="6" fill="#FFF">TRAP</text>
             </svg>
           </div>
 
@@ -50,19 +45,19 @@ interface FocusTrapInfo {
             <span>{{ states[currentState] }}</span>
             <div
               class="dots"
-              [ngClass]="{ inactive: states[currentState] === base }"
+              [ngClass]="{ inactive: currentState === 0 }"
             >
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Scan Focus Traps' }"
+                [ngClass]="{ active: currentState === 1 }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Manage Traps' }"
+                [ngClass]="{ active: currentState === 2 }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Auto-trap Modals' }"
+                [ngClass]="{ active: currentState === 3 }"
               ></div>
             </div>
           </div>
@@ -70,7 +65,7 @@ interface FocusTrapInfo {
       </div>
 
       <astral-widget-checkmark
-        [isActive]="states[currentState] !== base"
+        [isActive]="currentState !== 0"
       ></astral-widget-checkmark>
     </button>
 
@@ -228,8 +223,13 @@ export class FocusTrapComponent implements OnDestroy {
 
   document = inject(DOCUMENT);
   currentState = 0;
-  base = "Focus Trap";
-  states = [this.base, "Scan Focus Traps", "Manage Traps", "Auto-trap Modals"];
+  base = this.i18n.getTranslation('focus-trap');
+  states = [
+    this.i18n.getTranslation('focus-trap'),
+    this.i18n.getTranslation('enable-focus-trap'),
+    this.i18n.getTranslation('focus-trap-enabled'),
+    this.i18n.getTranslation('focus-trap-disabled')
+  ];
   
   focusTraps: FocusTrapInfo[] = [];
   showFocusPanel = false;

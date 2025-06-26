@@ -15,15 +15,15 @@ interface ContrastResult {
   template: `
     <button
       (click)="nextState()"
-      [ngClass]="{ 'in-use': states[currentState] !== base }"
+      [ngClass]="{ 'in-use': currentState !== 0 }"
     >
       <div class="title">
         <div class="icon-state-wrap">
           <div
             class="icon action-icon"
             [ngClass]="{
-              inactive: states[currentState] == base,
-              active: states[currentState] != base
+              inactive: currentState === 0,
+              active: currentState !== 0
             }"
           >
             <svg
@@ -57,27 +57,23 @@ interface ContrastResult {
             </div>
             <div
               class="dots"
-              [ngClass]="{ inactive: states[currentState] === base }"
+              [ngClass]="{ inactive: currentState === 0 }"
             >
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === i18n.getTranslation('invert') }"
+                [ngClass]="{ active: currentState === 1 }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === i18n.getTranslation('high-contrast') }"
+                [ngClass]="{ active: currentState === 2 }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{
-                  active: states[currentState] === i18n.getTranslation('dark-high-contrast')
-                }"
+                [ngClass]="{ active: currentState === 3 }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{
-                  active: states[currentState] === 'Contrast Check'
-                }"
+                [ngClass]="{ active: currentState === 4 }"
               ></div>
             </div>
           </div>
@@ -85,7 +81,7 @@ interface ContrastResult {
       </div>
 
       <astral-widget-checkmark
-        [isActive]="states[currentState] !== base"
+        [isActive]="currentState !== 0"
       ></astral-widget-checkmark>
     </button>
   `,
@@ -94,9 +90,8 @@ interface ContrastResult {
 export class ContrastEnhancedComponent implements OnDestroy {
   document = inject(DOCUMENT);
   currentState = 0;
-  base = this.i18n.getTranslation('contrast');
   states = [
-    this.base, 
+    this.i18n.getTranslation('contrast'), 
     this.i18n.getTranslation('invert'), 
     this.i18n.getTranslation('high-contrast'), 
     this.i18n.getTranslation('dark-high-contrast'),
@@ -129,13 +124,13 @@ export class ContrastEnhancedComponent implements OnDestroy {
     this.showContrastInfo = false;
     this.removeContrastOverlay();
 
-    if (this.states[this.currentState] === this.i18n.getTranslation('invert')) {
+    if (this.currentState === 1) {
       this.document.documentElement.classList.add("astral_inverted");
     } else {
       this.document.documentElement.classList.remove("astral_inverted");
     }
 
-    if (this.states[this.currentState] === this.i18n.getTranslation('high-contrast')) {
+    if (this.currentState === 2) {
       this._style.textContent = `
             body > :not(astral-accessibility) * {
                 background: transparent !important;
@@ -152,7 +147,7 @@ export class ContrastEnhancedComponent implements OnDestroy {
         `;
     }
 
-    if (this.states[this.currentState] === this.i18n.getTranslation('dark-high-contrast')) {
+    if (this.currentState === 3) {
       this._style.textContent = `
             body > :not(astral-accessibility), body > :not(astral-accessibility) * {
               background: black !important;
@@ -166,7 +161,7 @@ export class ContrastEnhancedComponent implements OnDestroy {
         `;
     }
 
-    if (this.states[this.currentState] === 'Contrast Check') {
+    if (this.currentState === 4) {
       this.showContrastChecker();
     }
 
@@ -216,10 +211,12 @@ export class ContrastEnhancedComponent implements OnDestroy {
 
     // Add event listeners
     const closeButton = this.contrastOverlay.querySelector('#close-checker') as HTMLElement;
-    closeButton?.addEventListener('click', () => {
-      this.currentState = 0;
-      this._runStateLogic();
-    });
+    if (closeButton) {
+      closeButton.addEventListener('click', () => {
+        this.currentState = 0;
+        this._runStateLogic();
+      });
+    }
 
     // Add click handler for contrast checking
     const clickHandler = (e: MouseEvent) => {

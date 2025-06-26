@@ -70,20 +70,45 @@
       <li><strong>Reduced Motion:</strong> Disable animations for motion sensitivity</li>
       <li><strong>Screen Reader:</strong> Reads out text content when you click on elements</li>
       <li><strong>Contrast:</strong> Adjusts background and text contrast for better visibility</li>
-      <li><strong>Saturation:</strong> Controls color saturation levels</li>
-      <li><strong>Bigger Text:</strong> Increases text size for better readability</li>
+      <li><strong>Highlight Links:</strong> Makes links more visible and identifiable</li>
+      <li><strong>Saturation:</strong> Controls color saturation for visual comfort</li>
+      <li><strong>Bigger Text:</strong> Increases text size for easier reading</li>
       <li><strong>Text Spacing:</strong> Adjusts letter and word spacing</li>
-      <li><strong>Screen Mask:</strong> Provides a focus area that follows your cursor</li>
-      <li><strong>Line Height:</strong> Increases line spacing for better readability</li>
+      <li><strong>Text Align:</strong> Changes text alignment for better reading flow</li>
+      <li><strong>Line Height:</strong> Customizes line spacing for improved readability</li>
+      <li><strong>Dyslexia Friendly:</strong> Applies dyslexia-friendly fonts and spacing</li>
+      <li><strong>Dictionary:</strong> Provides word definitions on demand</li>
+      <li><strong>Page Structure:</strong> Visualizes and navigates page structure</li>
+      <li><strong>Pause Animations:</strong> Stops or reduces motion for users with vestibular disorders</li>
+      <li><strong>Hide Images:</strong> Conceals images to focus on text content</li>
+      <li><strong>Cursor:</strong> Enhances cursor visibility and size</li>
+      <li><strong>Tooltip:</strong> Provides enhanced tooltips and context information</li>
+      <li><strong>Screen Mask:</strong> Creates screen masking for focused reading</li>
     </ul>
   </div>
 
   <div class="card">
-    <h2>Sample Interactive Content</h2>
-    <p>Here's some sample content to test the accessibility features:</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. <a href="#test">This is a test link</a> that you can interact with. The accessibility features will help improve your reading experience.</p>
-    <button onclick="alert('Button clicked!')">Click Me</button>
-    <button onclick="alert('Another test!')">Another Button</button>
+    <h2>🧪 Test Interactive Elements</h2>
+    <p>Try these elements to test the accessibility features:</p>
+    <button id="test-button-1">Click Me</button>
+    <button id="test-button-2">Another Button</button>
+    
+    <h2>📝 Test Content</h2>
+    <p>This paragraph contains <strong>bold text</strong>, <em>italic text</em>, and a <a href="#test">test link</a> to demonstrate various text formatting and link highlighting features.</p>
+    
+    <p>Another paragraph with different content to test text spacing, line height, and text alignment features.</p>
+
+    <h2>🎨 Color and Contrast Test</h2>
+    <p style="color: #666;">This text has low contrast</p>
+    <p style="color: #000; background: #fff;">This text has high contrast</p>
+    <div style="background: #yellow; padding: 10px;">
+      <p>This background tests color saturation features</p>
+    </div>
+
+    <h2>📊 Widget Status</h2>
+    <div id="widget-status">
+      <p>Widget not initialized. It will auto-initialize in 3 seconds...</p>
+    </div>
   </div>
 
   <div class="card">
@@ -98,9 +123,23 @@
   </div>
 
   <script>
-    // Auto-initialize the widget when the page loads
-    window.addEventListener('load', function() {
-      setTimeout(function() {        if (typeof initializeAstral === 'function') {
+    document.addEventListener('DOMContentLoaded', function() {
+      const testButton1 = document.getElementById('test-button-1');
+      const testButton2 = document.getElementById('test-button-2');
+      const statusDiv = document.getElementById('widget-status');
+      
+      // Test button functionality
+      testButton1.addEventListener('click', function() {
+        alert('Button clicked!');
+      });
+      
+      testButton2.addEventListener('click', function() {
+        alert('Another test!');
+      });
+      
+      // Auto-initialize widget after 3 seconds
+      setTimeout(function() {
+        if (typeof initializeAstral === 'function') {
           initializeAstral({
             enabledFeatures: [
               // WCAG 2.1 Core Navigation Features
@@ -112,23 +151,31 @@
               "Contrast",
               "Color Blind Support",
               "Saturation",
+              "Highlight Links",
               
               // WCAG 2.1 Text and Reading Features
               "Screen Reader",
               "Bigger Text",
               "Text Spacing",
+              "Text Align",
               "Line Height",
+              "Dyslexia Friendly",
+              "Dictionary",
+              "Page Structure",
               
-              // WCAG 2.1 Motion Features
-              "Reduced Motion",
+              // WCAG 2.1 Motion and Interaction Features
+              "Pause Animations",
+              "Hide Images",
+              "Cursor",
+              "Tooltip",
               "Screen Mask"
             ]
           });
-          console.log('Astral Accessibility Widget with WCAG 2.1 compliance initialized successfully!');
+          statusDiv.innerHTML = '<strong>✅ Widget Auto-Initialized!</strong> 20 WCAG 2.1 compliance features are now active. Look for the accessibility icon in the bottom-right corner.';
         } else {
-          console.error('initializeAstral function not found. Widget failed to load.');
+          statusDiv.innerHTML = '<strong>❌ Error:</strong> initializeAstral function not found. Make sure the widget is properly loaded.';
         }
-      }, 1000); // Small delay to ensure script is fully loaded
+      }, 3000);
     });
   </script>
 </body>

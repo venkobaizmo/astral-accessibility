@@ -110,8 +110,10 @@
       <div class="action" *ngIf="this.enabledFeatures.includes('Saturation')">
         <astral-saturate></astral-saturate>
       </div>
-      
-      <!-- Text and Reading Features -->
+        <!-- Text and Reading Features -->
+      <div class="action" *ngIf="this.enabledFeatures.includes('Dyslexia Friendly')">
+        <astral-dyslexia-friendly></astral-dyslexia-friendly>
+      </div>
       <div class="action" *ngIf="this.enabledFeatures.includes('Screen Reader')">
         <astral-screen-reader></astral-screen-reader>
       </div>
@@ -124,13 +126,42 @@
       <div class="action" *ngIf="this.enabledFeatures.includes('Line Height')">
         <astral-line-height></astral-line-height>
       </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Text Align')">
+        <astral-text-align></astral-text-align>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Dictionary')">
+        <astral-dictionary></astral-dictionary>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Highlight Links')">
+        <astral-highlight-links></astral-highlight-links>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Cursor')">
+        <astral-cursor></astral-cursor>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Tooltip')">
+        <astral-tooltip></astral-tooltip>
+      </div>
       
       <!-- Motion and Animation Features -->
       <div class="action" *ngIf="this.enabledFeatures.includes('Reduced Motion')">
         <astral-reduced-motion></astral-reduced-motion>
       </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Pause Animations')">
+        <astral-pause-animations></astral-pause-animations>
+      </div>
       <div class="action" *ngIf="this.enabledFeatures.includes('Screen Mask')">
         <astral-screen-mask></astral-screen-mask>
+      </div>
+      
+      <!-- Visual and Content Features -->
+      <div class="action" *ngIf="this.enabledFeatures.includes('Hide Images')">
+        <astral-hide-images></astral-hide-images>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Page Structure')">
+        <astral-page-structure></astral-page-structure>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Form Enhancement')">
+        <astral-form-enhancement></astral-form-enhancement>
       </div>
     </div>
   </div>

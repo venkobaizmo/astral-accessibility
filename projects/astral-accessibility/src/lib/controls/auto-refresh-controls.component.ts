@@ -17,15 +17,15 @@ interface AutoRefreshInfo {
   template: `
     <button
       (click)="nextState()"
-      [ngClass]="{ 'in-use': states[currentState] !== base }"
+      [ngClass]="{ 'in-use': currentState !== 0 }"
     >
       <div class="title">
         <div class="icon-state-wrap">
           <div
             class="icon action-icon"
             [ngClass]="{
-              inactive: states[currentState] == base,
-              active: states[currentState] != base
+              inactive: currentState === 0,
+              active: currentState !== 0
             }"
           >
             <svg
@@ -45,19 +45,19 @@ interface AutoRefreshInfo {
             <span>{{ states[currentState] }}</span>
             <div
               class="dots"
-              [ngClass]="{ inactive: states[currentState] === base }"
+              [ngClass]="{ inactive: currentState === 0 }"
             >
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Detect Auto-refresh' }"
+                [ngClass]="{ active: currentState === 1 }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Pause Auto-refresh' }"
+                [ngClass]="{ active: currentState === 2 }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Control Panel' }"
+                [ngClass]="{ active: currentState === 3 }"
               ></div>
             </div>
           </div>
@@ -65,7 +65,7 @@ interface AutoRefreshInfo {
       </div>
 
       <astral-widget-checkmark
-        [isActive]="states[currentState] !== base"
+        [isActive]="currentState !== 0"
       ></astral-widget-checkmark>
     </button>
 
@@ -227,8 +227,13 @@ export class AutoRefreshControlsComponent implements OnDestroy {
 
   document = inject(DOCUMENT);
   currentState = 0;
-  base = "Auto-refresh Controls";
-  states = [this.base, "Detect Auto-refresh", "Pause Auto-refresh", "Control Panel"];
+  base = this.i18n.getTranslation('auto-refresh-controls');
+  states = [
+    this.i18n.getTranslation('auto-refresh-controls'),
+    this.i18n.getTranslation('auto-refresh-detected'),
+    this.i18n.getTranslation('pause-auto-refresh'),
+    this.i18n.getTranslation('resume-auto-refresh')
+  ];
   
   autoRefreshItems: AutoRefreshInfo[] = [];
   showControlPanel = false;

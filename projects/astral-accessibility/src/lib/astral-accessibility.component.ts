@@ -21,6 +21,17 @@ import { FocusTrapComponent } from "./controls/focus-trap.component";
 import { TouchTargetValidatorComponent } from "./controls/touch-target-validator.component";
 import { ReadingOrderValidatorComponent } from "./controls/reading-order-validator.component";
 import { ErrorIdentificationComponent } from "./controls/error-identification.component";
+import { DyslexiaFriendlyComponent } from "./controls/dyslexia-friendly.component";
+// Additional missing components
+import { HighlightLinksComponent } from "./controls/highlight-links.component";
+import { PauseAnimationsComponent } from "./controls/pause-animations.component";
+import { HideImagesComponent } from "./controls/hide-images.component";
+import { CursorComponent } from "./controls/cursor.component";
+import { TooltipComponent } from "./controls/tooltip.component";
+import { PageStructureComponent } from "./controls/page-structure.component";
+import { DictionaryComponent } from "./controls/dictionary.component";
+import { FormEnhancementComponent } from "./controls/form-enhancement.component";
+import { TextAlignComponent } from "./controls/text-align.component";
 import { I18nService } from "./services/i18n.service";
 
 @Component({
@@ -45,10 +56,20 @@ import { I18nService } from "./services/i18n.service";
     PageTitleValidatorComponent,
     LanguageValidatorComponent,
     AutoRefreshControlsComponent,
-    FocusTrapComponent,
-    TouchTargetValidatorComponent,
+    FocusTrapComponent,    TouchTargetValidatorComponent,
     ReadingOrderValidatorComponent,
     ErrorIdentificationComponent,
+    DyslexiaFriendlyComponent,
+    // Additional missing components
+    HighlightLinksComponent,
+    PauseAnimationsComponent,
+    HideImagesComponent,
+    CursorComponent,
+    TooltipComponent,
+    PageStructureComponent,
+    DictionaryComponent,
+    FormEnhancementComponent,
+    TextAlignComponent,
     // KeyboardNavigationComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

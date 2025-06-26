@@ -17,32 +17,27 @@ interface ReadingOrderIssue {
   template: `
     <button
       (click)="nextState()"
-      [ngClass]="{ 'in-use': states[currentState] !== base }"
+      [ngClass]="{ 'in-use': currentState !== 0 }"
     >
       <div class="title">
         <div class="icon-state-wrap">
           <div
             class="icon action-icon"
             [ngClass]="{
-              inactive: states[currentState] == base,
-              active: states[currentState] != base
+              inactive: currentState === 0,
+              active: currentState !== 0
             }"
           >
             <svg
               width="25"
               height="25"
-              viewBox="0 0 41 41"
+              viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path d="M8 10 L33 10" stroke="#FFF" stroke-width="2"/>
-              <path d="M8 16 L28 16" stroke="#FFF" stroke-width="2"/>
-              <path d="M8 22 L30 22" stroke="#FFF" stroke-width="2"/>
-              <path d="M8 28 L25 28" stroke="#FFF" stroke-width="2"/>
-              <text x="6" y="8" font-family="Arial" font-size="4" fill="#FFF">1</text>
-              <text x="6" y="14" font-family="Arial" font-size="4" fill="#FFF">2</text>
-              <text x="6" y="20" font-family="Arial" font-size="4" fill="#FFF">3</text>
-              <text x="6" y="26" font-family="Arial" font-size="4" fill="#FFF">4</text>
-              <path d="M36 8 L36 32 L32 28 L36 32 L40 28" stroke="#FFF" stroke-width="2" fill="none"/>
+              <path
+                fill="white"
+                d="M3 3h18v2H3V3zm0 4h12v2H3V7zm0 4h18v2H3v-2zm0 4h12v2H3v-2zm0 4h18v2H3v-2z"
+              />
             </svg>
           </div>
 
@@ -50,19 +45,19 @@ interface ReadingOrderIssue {
             <span>{{ states[currentState] }}</span>
             <div
               class="dots"
-              [ngClass]="{ inactive: states[currentState] === base }"
+              [ngClass]="{ inactive: currentState === 0 }"
             >
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Analyze Reading Order' }"
+                [ngClass]="{ active: currentState === 1 }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Show Issues' }"
+                [ngClass]="{ active: currentState === 2 }"
               ></div>
               <div
                 class="dot"
-                [ngClass]="{ active: states[currentState] === 'Visualize Order' }"
+                [ngClass]="{ active: currentState === 3 }"
               ></div>
             </div>
           </div>
@@ -70,7 +65,7 @@ interface ReadingOrderIssue {
       </div>
 
       <astral-widget-checkmark
-        [isActive]="states[currentState] !== base"
+        [isActive]="currentState !== 0"
       ></astral-widget-checkmark>
     </button>
 
@@ -241,8 +236,13 @@ export class ReadingOrderValidatorComponent implements OnDestroy {
 
   document = inject(DOCUMENT);
   currentState = 0;
-  base = "Reading Order Validator";
-  states = [this.base, "Analyze Reading Order", "Show Issues", "Visualize Order"];
+  base = this.i18n.getTranslation('reading-order-validator');
+  states = [
+    this.i18n.getTranslation('reading-order-validator'),
+    this.i18n.getTranslation('validate-reading-order'),
+    this.i18n.getTranslation('reading-order-valid'),
+    this.i18n.getTranslation('reading-order-issues')
+  ];
   
   readingOrderIssues: ReadingOrderIssue[] = [];
   headingElements: HTMLElement[] = [];

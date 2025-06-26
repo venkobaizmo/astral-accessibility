@@ -195,29 +195,31 @@ export class PageStructureComponent implements OnInit, OnDestroy {
     this.renderer.appendChild(document.body, this.overlayElement);
 
     // Add event listeners
-    const closeButton = this.overlayElement.querySelector('#close-structure') as HTMLElement;
-    const refreshButton = this.overlayElement.querySelector('#refresh-structure') as HTMLElement;
-    
-    if (closeButton) {
-      closeButton.addEventListener('click', () => this.hideStructureNavigation());
-      closeButton.focus();
-    }
-    
-    if (refreshButton) {
-      refreshButton.addEventListener('click', () => {
-        this.hideStructureNavigation();
-        setTimeout(() => this.showStructureNavigation(), 100);
-      });
-    }
+    if (this.overlayElement) {
+      const closeButton = this.overlayElement.querySelector('#close-structure') as HTMLElement;
+      const refreshButton = this.overlayElement.querySelector('#refresh-structure') as HTMLElement;
+      
+      if (closeButton) {
+        closeButton.addEventListener('click', () => this.hideStructureNavigation());
+        closeButton.focus();
+      }
+      
+      if (refreshButton) {
+        refreshButton.addEventListener('click', () => {
+          this.hideStructureNavigation();
+          setTimeout(() => this.showStructureNavigation(), 100);
+        });
+      }
 
-    // Add navigation functionality
-    const structureButtons = this.overlayElement.querySelectorAll('.structure-item');
-    structureButtons.forEach(button => {
-      button.addEventListener('click', (e) => {
-        const index = parseInt((e.target as HTMLElement).getAttribute('data-index') || '0');
-        this.navigateToStructureItem(index);
+      // Add navigation functionality
+      const structureButtons = this.overlayElement.querySelectorAll('.structure-item');
+      structureButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+          const index = parseInt((e.target as HTMLElement).getAttribute('data-index') || '0');
+          this.navigateToStructureItem(index);
+        });
       });
-    });
+    }
 
     // Escape key handler
     const keyHandler = (e: KeyboardEvent) => {
