@@ -1,10 +1,11 @@
-import { Component, OnInit, Renderer2 } from "@angular/core";
+import { Component, OnInit, Renderer2, Optional, SkipSelf } from "@angular/core";
 import { NgIf, NgClass } from "@angular/common";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
+import { IzmoAccessibilityComponent } from "../izmo-accessibility.component";
 
 @Component({
-  selector: "astral-color-blind-support",
+  selector: "izmo-color-blind-support",
   standalone: true,  template: `
     <button
       (click)="toggle()"
@@ -15,27 +16,27 @@ import { I18nService } from "../services/i18n.service";
       <div class="title">        <div class="icon-state-wrap">
           <div class="icon action-icon" [ngClass]="{ inactive: !isActive, active: isActive }">
             <svg
-              width="25"
-              height="25"
+              width="32"
+              height="32"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 d="M12 4.5C7 4.5 2.73 7.61 1 12C2.73 16.39 7 19.5 12 19.5C17 19.5 21.27 16.39 23 12C21.27 7.61 17 4.5 12 4.5Z"
-                stroke="#fff"
+                stroke="currentColor"
                 stroke-width="2"
                 fill="none"
               />
               <path
                 d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
-                stroke="#fff"
+                stroke="currentColor"
                 stroke-width="2"
                 fill="none"
               />
               <path
                 d="M9 9L15 15"
-                stroke="#fff"
+                stroke="currentColor"
                 stroke-width="2"
                 stroke-linecap="round"
                 *ngIf="currentMode !== 'none'"
@@ -52,21 +53,29 @@ import { I18nService } from "../services/i18n.service";
           </div>
         </div>
       </div>
-      <astral-widget-checkmark [isActive]="isActive"></astral-widget-checkmark>
+      <izmo-widget-checkmark [isActive]="isActive"></izmo-widget-checkmark>
     </button>
   `,
-  imports: [NgIf, NgClass, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, IzmoCheckmarkSvgComponent],
 })
 export class ColorBlindSupportComponent implements OnInit {
   isActive = false;
   currentMode: 'none' | 'protanopia' | 'deuteranopia' | 'tritanopia' = 'none';
   private styleElement?: HTMLStyleElement;
 
-  constructor(private renderer: Renderer2, public i18n: I18nService) {}
+  constructor(
+    private renderer: Renderer2, 
+    public i18n: I18nService,
+    @Optional() @SkipSelf() private parent?: IzmoAccessibilityComponent
+  ) {
+    if (this.parent) {
+      this.parent.resetEvent.subscribe(() => this.reset());
+    }
+  }
 
   ngOnInit() {
     // Check if color blind support is already applied
-    this.isActive = document.querySelector('.astral-color-blind-styles') !== null;
+    this.isActive = document.querySelector('.izmo-color-blind-styles') !== null;
   }
 
   toggle() {
@@ -102,7 +111,7 @@ export class ColorBlindSupportComponent implements OnInit {
     this.removeColorBlindSupport();
     
     this.styleElement = this.renderer.createElement('style');
-    this.renderer.addClass(this.styleElement, 'astral-color-blind-styles');
+    this.renderer.addClass(this.styleElement, 'izmo-color-blind-styles');
     
     let filterCSS = '';
     let additionalCSS = '';
@@ -111,17 +120,25 @@ export class ColorBlindSupportComponent implements OnInit {
       case 'protanopia':
         // Red-blind (missing L cones)
         filterCSS = `
-          html {
+          /* Apply protanopia filter to body content excluding widget */
+          body > *:not(izmo-accessibility) {
             filter: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><defs><filter id='protanopia'><feColorMatrix type='matrix' values='0.567,0.433,0,0,0 0.558,0.442,0,0,0 0,0.242,0.758,0,0 0,0,0,1,0'/></filter></defs></svg>#protanopia") !important;
           }
         `;
         additionalCSS = `
           /* Enhanced patterns and textures for red-green distinction */
-          .error, .danger, [style*="color: red"], [style*="background: red"], [style*="background-color: red"] {
+          body > *:not(izmo-accessibility) .error, 
+          body > *:not(izmo-accessibility) .danger, 
+          body > *:not(izmo-accessibility) [style*="color: red"], 
+          body > *:not(izmo-accessibility) [style*="background: red"], 
+          body > *:not(izmo-accessibility) [style*="background-color: red"] {
             background-image: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(255,255,255,0.2) 2px, rgba(255,255,255,0.2) 4px) !important;
             border: 2px solid #000 !important;
           }
-          .success, [style*="color: green"], [style*="background: green"], [style*="background-color: green"] {
+          body > *:not(izmo-accessibility) .success, 
+          body > *:not(izmo-accessibility) [style*="color: green"], 
+          body > *:not(izmo-accessibility) [style*="background: green"], 
+          body > *:not(izmo-accessibility) [style*="background-color: green"] {
             background-image: repeating-linear-gradient(-45deg, transparent, transparent 2px, rgba(255,255,255,0.2) 2px, rgba(255,255,255,0.2) 4px) !important;
             border: 2px dashed #000 !important;
           }
@@ -130,17 +147,25 @@ export class ColorBlindSupportComponent implements OnInit {
       case 'deuteranopia':
         // Green-blind (missing M cones)
         filterCSS = `
-          html {
+          /* Apply deuteranopia filter to body content excluding widget */
+          body > *:not(izmo-accessibility) {
             filter: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><defs><filter id='deuteranopia'><feColorMatrix type='matrix' values='0.625,0.375,0,0,0 0.7,0.3,0,0,0 0,0.3,0.7,0,0 0,0,0,1,0'/></filter></defs></svg>#deuteranopia") !important;
           }
         `;
         additionalCSS = `
           /* Enhanced patterns for deuteranopia */
-          .error, .danger, [style*="color: red"], [style*="background: red"], [style*="background-color: red"] {
+          body > *:not(izmo-accessibility) .error, 
+          body > *:not(izmo-accessibility) .danger, 
+          body > *:not(izmo-accessibility) [style*="color: red"], 
+          body > *:not(izmo-accessibility) [style*="background: red"], 
+          body > *:not(izmo-accessibility) [style*="background-color: red"] {
             background-image: repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0,0,0,0.3) 3px, rgba(0,0,0,0.3) 6px) !important;
             border: 3px solid #000 !important;
           }
-          .success, [style*="color: green"], [style*="background: green"], [style*="background-color: green"] {
+          body > *:not(izmo-accessibility) .success, 
+          body > *:not(izmo-accessibility) [style*="color: green"], 
+          body > *:not(izmo-accessibility) [style*="background: green"], 
+          body > *:not(izmo-accessibility) [style*="background-color: green"] {
             background-image: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.3) 3px, rgba(0,0,0,0.3) 6px) !important;
             border: 3px dotted #000 !important;
           }
@@ -149,17 +174,24 @@ export class ColorBlindSupportComponent implements OnInit {
       case 'tritanopia':
         // Blue-blind (missing S cones)
         filterCSS = `
-          html {
+          /* Apply tritanopia filter to body content excluding widget */
+          body > *:not(izmo-accessibility) {
             filter: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><defs><filter id='tritanopia'><feColorMatrix type='matrix' values='0.95,0.05,0,0,0 0,0.433,0.567,0,0 0,0.475,0.525,0,0 0,0,0,1,0'/></filter></defs></svg>#tritanopia") !important;
           }
         `;
         additionalCSS = `
           /* Enhanced patterns for tritanopia */
-          .info, [style*="color: blue"], [style*="background: blue"], [style*="background-color: blue"] {
+          body > *:not(izmo-accessibility) .info, 
+          body > *:not(izmo-accessibility) [style*="color: blue"], 
+          body > *:not(izmo-accessibility) [style*="background: blue"], 
+          body > *:not(izmo-accessibility) [style*="background-color: blue"] {
             background-image: repeating-linear-gradient(135deg, transparent, transparent 2px, rgba(255,255,255,0.3) 2px, rgba(255,255,255,0.3) 4px) !important;
             border: 2px solid #000 !important;
           }
-          .warning, [style*="color: yellow"], [style*="background: yellow"], [style*="background-color: yellow"] {
+          body > *:not(izmo-accessibility) .warning, 
+          body > *:not(izmo-accessibility) [style*="color: yellow"], 
+          body > *:not(izmo-accessibility) [style*="background: yellow"], 
+          body > *:not(izmo-accessibility) [style*="background-color: yellow"] {
             background-image: repeating-linear-gradient(-135deg, transparent, transparent 2px, rgba(0,0,0,0.3) 2px, rgba(0,0,0,0.3) 4px) !important;
             border: 2px double #000 !important;
           }
@@ -168,35 +200,41 @@ export class ColorBlindSupportComponent implements OnInit {
     }
 
     const fullCSS = `
-      /* Astral Color Blind Support - ${this.currentMode} */
+      /* Izmo Color Blind Support - ${this.currentMode} */
       ${filterCSS}
       
       ${additionalCSS}
       
       /* General improvements for color accessibility */
-      a:not([href]) {
+      body > *:not(izmo-accessibility) a:not([href]) {
         text-decoration: underline !important;
       }
       
       /* Add symbols to common UI elements */
-      .required::after, [required]::after {
+      body > *:not(izmo-accessibility) .required::after, 
+      body > *:not(izmo-accessibility) [required]::after {
         content: " *" !important;
         color: #000 !important;
         font-weight: bold !important;
       }
       
       /* Pattern overlays for charts and graphs */
-      .chart, .graph, .progress {
+      body > *:not(izmo-accessibility) .chart, 
+      body > *:not(izmo-accessibility) .graph, 
+      body > *:not(izmo-accessibility) .progress {
         position: relative !important;
       }
       
       /* High contrast borders for better separation */
-      button, input, select, textarea {
+      body > *:not(izmo-accessibility) button, 
+      body > *:not(izmo-accessibility) input, 
+      body > *:not(izmo-accessibility) select, 
+      body > *:not(izmo-accessibility) textarea {
         border: 2px solid #000 !important;
       }
       
       /* Enhanced focus indicators */
-      *:focus {
+      body > *:not(izmo-accessibility) *:focus {
         outline: 3px solid #000 !important;
         outline-offset: 2px !important;
       }
@@ -211,12 +249,15 @@ export class ColorBlindSupportComponent implements OnInit {
       this.renderer.removeChild(document.head, this.styleElement);
       this.styleElement = undefined;
     }
-  }  getAriaLabel(): string {
+  }
+
+  getAriaLabel(): string {
     if (!this.isActive) {
       return this.i18n.getTranslation('enable-color-blind-support');
     }
     return `${this.i18n.getTranslation('color-blind-support-active')}: ${this.currentMode}. Click to change mode.`;
   }
+
   private announceChange() {
     let message = '';
     if (!this.isActive) {
@@ -246,5 +287,11 @@ export class ColorBlindSupportComponent implements OnInit {
     setTimeout(() => {
       this.renderer.removeChild(document.body, announcement);
     }, 1000);
+  }
+
+  reset() {
+    this.removeColorBlindSupport();
+    this.currentMode = 'none';
+    this.isActive = false;
   }
 }

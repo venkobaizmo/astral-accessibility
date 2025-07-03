@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Astral Accessibility - Internationalization Demo</title>
+  <title>Izmo Accessibility - Internationalization Demo</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
     .language-selector {
@@ -86,14 +86,14 @@
     <div class="card">
       <div class="header">
         <div class="header-text">
-          <h1>Astral Accessibility - Internationalization Demo</h1>
+          <h1>Izmo Accessibility - Internationalization Demo</h1>
           <hr />
         </div>
       </div>
 
       <div class="i18n-info">
         <h2>🌍 Multi-Language Support</h2>
-        <p>This demo showcases the internationalization (i18n) capabilities of the Astral Accessibility widget. The widget now supports multiple languages and automatically detects your browser's language preference.</p>
+        <p>This demo showcases the internationalization (i18n) capabilities of the Izmo Accessibility widget. The widget now supports multiple languages and automatically detects your browser's language preference.</p>
         
         <button class="demo-button" id="init-widget">Initialize Widget</button>
         
@@ -263,7 +263,7 @@
       const statusDiv = document.getElementById('widget-status');
       
       function initializeWidget(locale = 'en-US') {
-        if (typeof window.initializeAstral === 'function') {
+        if (typeof window.initializeIzmo === 'function') {
           const features = {
             enabledFeatures: [
               "Contrast", "Bigger Text", "Screen Reader", "Text Spacing", 
@@ -280,13 +280,13 @@
             widgetHeight: "75vh"
           };
           
-          window.initializeAstral(features);
+          window.initializeIzmo(features);
           
           statusDiv.innerHTML = `<strong>✅ Widget Initialized!</strong> Widget is now running in <strong>${locale}</strong> language. Look for the accessibility icon in the bottom-right corner.`;
           console.log(`Widget initialized with locale: ${locale}`);
         } else {
-          statusDiv.innerHTML = '<strong>❌ Error:</strong> initializeAstral function not found. Make sure the widget is properly loaded.';
-          console.error('initializeAstral function not found');
+          statusDiv.innerHTML = '<strong>❌ Error:</strong> initializeIzmo function not found. Make sure the widget is properly loaded.';
+          console.error('initializeIzmo function not found');
         }
       }
       

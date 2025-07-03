@@ -1,7 +1,8 @@
 import { DOCUMENT, NgIf, NgClass } from "@angular/common";
-import { Component, inject, Renderer2, OnDestroy } from "@angular/core";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { Component, inject, Renderer2, OnDestroy, OnInit, Optional, SkipSelf } from "@angular/core";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
+import { IzmoAccessibilityComponent } from "../izmo-accessibility.component";
 
 interface TitleIssue {
   type: 'missing' | 'empty' | 'generic' | 'too-long' | 'duplicate' | 'good';
@@ -10,7 +11,7 @@ interface TitleIssue {
 }
 
 @Component({
-  selector: "astral-page-title-validator",
+  selector: "izmo-page-title-validator",
   standalone: true,
   template: `
     <button
@@ -27,17 +28,17 @@ interface TitleIssue {
             }"
           >
             <svg
-              width="25"
-              height="25"
+              width="32"
+              height="32"
               viewBox="0 0 41 41"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <rect x="4" y="8" width="33" height="25" fill="none" stroke="#FFF" stroke-width="2"/>
-              <rect x="8" y="12" width="25" height="3" fill="#FFF"/>
-              <rect x="8" y="18" width="20" height="2" fill="#FFF"/>
-              <rect x="8" y="22" width="18" height="2" fill="#FFF"/>
-              <rect x="8" y="26" width="22" height="2" fill="#FFF"/>
-              <text x="6" y="6" font-family="Arial" font-size="4" fill="#FFF">TITLE</text>
+              <rect x="4" y="8" width="33" height="25" fill="none" stroke="currentColor" stroke-width="2"/>
+              <rect x="8" y="12" width="25" height="3" fill="currentColor"/>
+              <rect x="8" y="18" width="20" height="2" fill="currentColor"/>
+              <rect x="8" y="22" width="18" height="2" fill="currentColor"/>
+              <rect x="8" y="26" width="22" height="2" fill="currentColor"/>
+              <text x="6" y="6" font-family="Arial" font-size="4" fill="currentColor">TITLE</text>
             </svg>
           </div>
 
@@ -60,9 +61,9 @@ interface TitleIssue {
         </div>
       </div>
 
-      <astral-widget-checkmark
+      <izmo-widget-checkmark
         [isActive]="currentState !== 0"
-      ></astral-widget-checkmark>
+      ></izmo-widget-checkmark>
     </button>
 
     <div 
@@ -133,23 +134,34 @@ interface TitleIssue {
       </div>
     </div>
   `,
-  imports: [NgIf, NgClass, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, IzmoCheckmarkSvgComponent],
 })
 export class PageTitleValidatorComponent implements OnDestroy {
   constructor(
     private renderer: Renderer2,
-    private i18n: I18nService
-  ) {}
+    private i18n: I18nService,
+    @Optional() @SkipSelf() private parent?: IzmoAccessibilityComponent
+  ) {
+    if (this.parent) {
+      this.parent.resetEvent.subscribe(() => this.reset());
+    }
+  }
 
   document = inject(DOCUMENT);
   currentState = 0;
-  base = this.i18n.getTranslation('page-title-validator');
-  states = [
-    this.i18n.getTranslation('page-title-validator'),
-    this.i18n.getTranslation('validate-page-title'),
-    this.i18n.getTranslation('page-title-valid'),
-    this.i18n.getTranslation('page-title-invalid')
-  ];
+  
+  get base() {
+    return this.i18n.getTranslation('page-title-validator');
+  }
+  
+  get states() {
+    return [
+      this.i18n.getTranslation('page-title-validator'),
+      this.i18n.getTranslation('validate-page-title'),
+      this.i18n.getTranslation('page-title-valid'),
+      this.i18n.getTranslation('page-title-invalid')
+    ];
+  }
   
   currentTitle = "";
   titleIssue: TitleIssue = { type: 'good', current: '', suggestion: '' };
@@ -350,6 +362,12 @@ export class PageTitleValidatorComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
+    this.stopTitleMonitoring();
+    this.showTitlePanel = false;
+  }
+
+  reset() {
+    this.currentState = 0;
     this.stopTitleMonitoring();
     this.showTitlePanel = false;
   }

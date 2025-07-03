@@ -1,7 +1,8 @@
 import { DOCUMENT, NgIf, NgClass, NgFor } from "@angular/common";
-import { Component, inject, Renderer2, OnDestroy } from "@angular/core";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { Component, inject, Renderer2, OnDestroy, Optional, SkipSelf } from "@angular/core";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
+import { IzmoAccessibilityComponent } from "../izmo-accessibility.component";
 
 interface LanguageIssue {
   element: HTMLElement;
@@ -11,7 +12,7 @@ interface LanguageIssue {
 }
 
 @Component({
-  selector: "astral-language-validator",
+  selector: "izmo-language-validator",
   standalone: true,
   template: `
     <button
@@ -28,16 +29,16 @@ interface LanguageIssue {
             }"
           >
             <svg
-              width="25"
-              height="25"
+              width="32"
+              height="32"
               viewBox="0 0 41 41"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <circle cx="20.5" cy="20.5" r="18" fill="none" stroke="#FFF" stroke-width="2"/>
-              <text x="11" y="17" font-family="Arial" font-size="10" fill="#FFF">EN</text>
-              <text x="6" y="28" font-family="Arial" font-size="8" fill="#FFF">LANG</text>
-              <path d="M8 8 L33 8 L33 12 L8 12 Z" fill="#FFF"/>
-              <path d="M8 30 L33 30 L33 34 L8 34 Z" fill="#FFF"/>
+              <circle cx="20.5" cy="20.5" r="18" fill="none" stroke="currentColor" stroke-width="2"/>
+              <text x="11" y="17" font-family="Arial" font-size="10" fill="currentColor">EN</text>
+              <text x="6" y="28" font-family="Arial" font-size="8" fill="currentColor">LANG</text>
+              <path d="M8 8 L33 8 L33 12 L8 12 Z" fill="currentColor"/>
+              <path d="M8 30 L33 30 L33 34 L8 34 Z" fill="currentColor"/>
             </svg>
           </div>
 
@@ -60,9 +61,9 @@ interface LanguageIssue {
         </div>
       </div>
 
-      <astral-widget-checkmark
+      <izmo-widget-checkmark
         [isActive]="currentState !== 0"
-      ></astral-widget-checkmark>
+      ></izmo-widget-checkmark>
     </button>
 
     <div 
@@ -173,23 +174,35 @@ interface LanguageIssue {
       </div>
     </div>
   `,
-  imports: [NgIf, NgClass, NgFor, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, NgFor, IzmoCheckmarkSvgComponent],
 })
 export class LanguageValidatorComponent implements OnDestroy {
   constructor(
     private renderer: Renderer2,
-    private i18n: I18nService
-  ) {}
+    private i18n: I18nService,
+    @Optional() @SkipSelf() private parent?: IzmoAccessibilityComponent
+  ) {
+    if (this.parent) {
+      this.parent.resetEvent.subscribe(() => this.reset());
+    }
+  }
 
   document = inject(DOCUMENT);
   currentState = 0;
-  base = this.i18n.getTranslation('language-validator');
-  states = [
-    this.i18n.getTranslation('language-validator'),
-    this.i18n.getTranslation('validate-language'),
-    this.i18n.getTranslation('language-valid'),
-    this.i18n.getTranslation('language-invalid')
-  ];
+  
+  // Make these reactive to language changes
+  get base() {
+    return this.i18n.getTranslation('language-validator');
+  }
+  
+  get states() {
+    return [
+      this.base,
+      this.i18n.getTranslation('validate-language'),
+      this.i18n.getTranslation('language-valid'),
+      this.i18n.getTranslation('language-invalid')
+    ];
+  }
   
   languageIssues: LanguageIssue[] = [];
   showLanguagePanel = false;
@@ -272,7 +285,7 @@ export class LanguageValidatorComponent implements OnDestroy {
     const elementsWithLang = this.document.querySelectorAll('[lang]') as NodeListOf<HTMLElement>;
     elementsWithLang.forEach(element => {
       // Skip elements that are part of the accessibility widget
-      if (element.closest('astral-accessibility')) return;
+      if (element.closest('izmo-accessibility')) return;
       
       const lang = element.getAttribute('lang');
       if (lang && !this.isValidLanguageCode(lang)) {
@@ -298,7 +311,7 @@ export class LanguageValidatorComponent implements OnDestroy {
     const textElements = this.document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, blockquote, div');
       textElements.forEach((element: Element) => {
       // Skip elements that are part of the accessibility widget
-      if (element.closest('astral-accessibility')) return;
+      if (element.closest('izmo-accessibility')) return;
       
       const text = element.textContent?.trim();
       if (!text || text.length < 20) return; // Skip short text
@@ -446,5 +459,11 @@ export class LanguageValidatorComponent implements OnDestroy {
   ngOnDestroy() {
     this.removeHighlights();
     this.showLanguagePanel = false;
+  }
+
+  reset() {
+    this.currentState = 0;
+    this.showLanguagePanel = false;
+    this.removeHighlights();
   }
 }

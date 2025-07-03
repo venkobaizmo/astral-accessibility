@@ -1,7 +1,7 @@
-# Astral Accessibility Widget - Demo Features Guide
+# Izmo Accessibility Widget - Demo Features Guide
 
 ## Overview
-The Astral Accessibility Widget now includes 23 comprehensive accessibility features, including 15 core accessibility tools and 8 WCAG 2.1 Level A/AA compliance tools. This demo page showcases all features with interactive examples.
+The Izmo Accessibility Widget now includes 23 comprehensive accessibility features, including 15 core accessibility tools and 8 WCAG 2.1 Level A/AA compliance tools. This demo page showcases all features with interactive examples.
 
 ## Core Accessibility Features
 

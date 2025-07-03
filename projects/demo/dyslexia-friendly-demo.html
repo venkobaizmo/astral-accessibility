@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dyslexia-Friendly Accessibility Demo - Astral Accessibility Widget</title>
+  <title>Dyslexia-Friendly Accessibility Demo - Izmo Accessibility Widget</title>
   <link rel="stylesheet" href="styles.css" />
   <!-- Load the widget bundle -->
   <script src="main.js"></script>
@@ -421,8 +421,8 @@
       const statusDiv = document.getElementById('widget-status');
       
       initButton.addEventListener('click', function() {
-        if (typeof initializeAstral === 'function') {
-          initializeAstral({
+        if (typeof initializeIzmo === 'function') {
+          initializeIzmo({
             enabledFeatures: [
               // Core accessibility features
               "Screen Reader",
@@ -446,7 +446,7 @@
           
           statusDiv.innerHTML = '<strong>✅ Dyslexia-Friendly Widget Initialized!</strong> The widget now includes specialized dyslexia-friendly features. Look for the accessibility icon in the bottom-right corner to access these features.';
         } else {
-          statusDiv.innerHTML = '<strong>❌ Error:</strong> initializeAstral function not found. Make sure the widget is properly loaded.';
+          statusDiv.innerHTML = '<strong>❌ Error:</strong> initializeIzmo function not found. Make sure the widget is properly loaded.';
         }
       });
     });

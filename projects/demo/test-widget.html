@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Astral Accessibility Widget - Full Feature Demo</title>
+  <title>Izmo Accessibility Widget - Full Feature Demo</title>
   <link rel="stylesheet" href="styles.css" />
   <!-- Load the widget bundle -->
   <script src="main.js"></script>
@@ -106,8 +106,8 @@
   </style>
 </head>
 <body>
-  <h1>Astral Accessibility Widget - Full Feature Demo</h1>
-  <p>This comprehensive demo showcases all accessibility features of the Astral Widget. Click the button below to initialize the widget, then use the accessibility icon in the bottom-right corner to test each feature.</p>
+  <h1>Izmo Accessibility Widget - Full Feature Demo</h1>
+  <p>This comprehensive demo showcases all accessibility features of the Izmo Widget. Click the button below to initialize the widget, then use the accessibility icon in the bottom-right corner to test each feature.</p>
   
   <button class="demo-button" id="init-widget">Initialize Accessibility Widget</button>
   
@@ -143,7 +143,7 @@
         <p>Identifies images missing alternative text and provides suggestions.</p>
         <div class="test-area">
           <p>Test images:</p>
-          <img src="banner.png" alt="Astral banner" width="100">
+          <img src="banner.png" alt="Izmo banner" width="100">
           <img src="bg.png" width="50" height="30"> <!-- Missing alt text -->
           <div class="missing-alt">Decorative div</div>
         </div>
@@ -153,7 +153,7 @@
         <h3>📝 Page Title Validator</h3>
         <p>Ensures pages have descriptive, meaningful titles.</p>
         <div class="test-area">
-          <p>Current page title: "Astral Accessibility Widget - Full Feature Demo"</p>
+          <p>Current page title: "Izmo Accessibility Widget - Full Feature Demo"</p>
         </div>
       </div>
       
@@ -268,8 +268,8 @@
       
       // Initialize widget
       initButton.addEventListener('click', function() {
-        if (typeof initializeAstral === 'function') {
-          initializeAstral({
+        if (typeof initializeIzmo === 'function') {
+          initializeIzmo({
             enabledFeatures: [
               // Core features
               "Screen Reader",
@@ -301,7 +301,7 @@
           
           statusDiv.innerHTML = '<strong>✅ Widget Initialized!</strong> The accessibility widget now includes 23 comprehensive accessibility features (15 core features + 8 WCAG 2.1 compliance features). Use the widget to scan this page and discover accessibility issues that can be automatically detected and improved.';
         } else {
-          statusDiv.innerHTML = '<strong>❌ Error:</strong> initializeAstral function not found. Make sure the widget is properly loaded.';
+          statusDiv.innerHTML = '<strong>❌ Error:</strong> initializeIzmo function not found. Make sure the widget is properly loaded.';
         }
       });
       

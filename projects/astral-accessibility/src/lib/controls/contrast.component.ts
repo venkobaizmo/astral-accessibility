@@ -1,10 +1,11 @@
 import { DOCUMENT, NgIf, NgClass } from "@angular/common";
-import { Component, inject } from "@angular/core";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { Component, inject, OnInit, OnDestroy, Renderer2 } from "@angular/core";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
+import { IzmoAccessibilityComponent } from '../izmo-accessibility.component';
 
 @Component({
-  selector: "astral-contrast",
+  selector: "izmo-contrast",
   standalone: true,
   template: `
     <button
@@ -28,8 +29,8 @@ import { I18nService } from "../services/i18n.service";
             }"
           >
             <svg
-              width="25"
-              height="25"
+              width="32"
+              height="32"
               viewBox="0 0 41 41"
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -45,7 +46,7 @@ import { I18nService } from "../services/i18n.service";
               </defs>
               <g clip-path="url(#j7jc4ss84a)" transform="translate(-1084 -366)">
                 <g clip-path="url(#t65z0zbfzb)" transform="translate(1084 366)">
-                  <path fill="#FFF" d="M0 0h41v41H0V0z" />
+                  <path fill="currentColor" d="M0 0h41v41H0V0z" />
                 </g>
               </g>
             </svg>
@@ -74,27 +75,46 @@ import { I18nService } from "../services/i18n.service";
         </div>
       </div>
 
-      <astral-widget-checkmark
+      <izmo-widget-checkmark
         [isActive]="currentState !== 0"
-      ></astral-widget-checkmark>
+      ></izmo-widget-checkmark>
     </button>
   `,
-  imports: [NgIf, NgClass, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, IzmoCheckmarkSvgComponent],
 })
-export class ContrastComponent {
+export class ContrastComponent implements OnInit, OnDestroy {
   document = inject(DOCUMENT);
   i18n = inject(I18nService);
+  parent = inject(IzmoAccessibilityComponent);
+  renderer = inject(Renderer2);
 
   currentState = 0;
-  base = this.i18n.getTranslation('contrast');
-  states = [
-    this.base, 
-    this.i18n.getTranslation('invert'), 
-    this.i18n.getTranslation('high-contrast'), 
-    this.i18n.getTranslation('dark-high-contrast')
-  ];
+  private styleElement?: HTMLStyleElement;
+  
+  // Make these reactive to language changes
+  get base() {
+    return this.i18n.getTranslation('contrast');
+  }
+  
+  get states() {
+    return [
+      this.base, 
+      this.i18n.getTranslation('invert'), 
+      this.i18n.getTranslation('high-contrast'), 
+      this.i18n.getTranslation('dark-high-contrast')
+    ];
+  }
 
-  _style: HTMLStyleElement;
+  ngOnInit() {
+    this.parent.resetEvent.subscribe(() => {
+      this.currentState = 0;
+      this._runStateLogic();
+    });
+  }
+
+  ngOnDestroy() {
+    this._resetContrast();
+  }
 
   nextState() {
     this.currentState += 1;
@@ -104,39 +124,68 @@ export class ContrastComponent {
   }
 
   private _runStateLogic() {
-    this._style?.remove?.();
-    this._style = this.document.createElement("style");    if (this.states[this.currentState] === this.i18n.getTranslation('invert')) {
-      this.document.documentElement.classList.add("astral_inverted");
-    } else {
-      this.document.documentElement.classList.remove("astral_inverted");
+    this._resetContrast();
+    
+    if (this.currentState === 0) {
+      return; // No contrast applied
+    }
+
+    // Create style element to apply contrast effects to body content excluding widget
+    this.styleElement = this.renderer.createElement('style');
+    this.renderer.addClass(this.styleElement, 'izmo-contrast-styles');
+    
+    let contrastCSS = '';
+    
+    if (this.states[this.currentState] === this.i18n.getTranslation('invert')) {
+      contrastCSS = `
+        /* Apply invert filter to body content excluding widget */
+        body > *:not(izmo-accessibility) {
+          filter: invert(1) !important;
+        }
+      `;
     }
 
     if (this.states[this.currentState] === this.i18n.getTranslation('high-contrast')) {
-      this._style.textContent = `
-            body > :not(astral-accessibility) * {
-                background: transparent !important;
-                color: #000 !important;
-            }
+      contrastCSS = `
+        /* Apply high contrast to body content excluding widget */
+        body > *:not(izmo-accessibility) * {
+          background: transparent !important;
+          color: #000 !important;
+        }
 
-            html body > :not(astral-accessibility) button {
-              background-color: #e8e8e8 !important;
-            }        `;
+        body > *:not(izmo-accessibility) button {
+          background-color: #e8e8e8 !important;
+        }
+      `;
     }
     
     if (this.states[this.currentState] === this.i18n.getTranslation('dark-high-contrast')) {
-      this._style.textContent = `
-            body > :not(astral-accessibility), body > :not(astral-accessibility) * {
-              background: black !important;
-              font-weight: 700;
-              color: #fff !important;
-            }
+      contrastCSS = `
+        /* Apply dark high contrast to body content excluding widget */
+        body > *:not(izmo-accessibility), body > *:not(izmo-accessibility) * {
+          background: black !important;
+          font-weight: 700;
+          color: #fff !important;
+        }
 
-            body > :not(astral-accessibility), body > :not(astral-accessibility) a {
-              color: #23ebf7 !important;
-            }
-        `;
+        body > *:not(izmo-accessibility) a {
+          color: #23ebf7 !important;
+        }
+      `;
     }
 
-    this.document.body.appendChild(this._style);
+    this.renderer.setProperty(this.styleElement, 'textContent', contrastCSS);
+    this.renderer.appendChild(document.head, this.styleElement);
+  }
+
+  private _resetContrast() {
+    // Remove the style element if it exists
+    if (this.styleElement) {
+      this.renderer.removeChild(document.head, this.styleElement);
+      this.styleElement = undefined;
+    }
+    
+    // Also remove any existing body classes for backward compatibility
+    this.document.body.classList.remove("izmo_inverted");
   }
 }

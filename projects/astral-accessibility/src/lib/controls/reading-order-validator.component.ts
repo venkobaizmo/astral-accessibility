@@ -1,7 +1,8 @@
 import { DOCUMENT, NgIf, NgClass, NgFor } from "@angular/common";
-import { Component, inject, Renderer2, OnDestroy } from "@angular/core";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { Component, inject, Renderer2, OnDestroy, OnInit } from "@angular/core";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
+import { IzmoAccessibilityComponent } from '../izmo-accessibility.component';
 
 interface ReadingOrderIssue {
   element: HTMLElement;
@@ -12,7 +13,7 @@ interface ReadingOrderIssue {
 }
 
 @Component({
-  selector: "astral-reading-order-validator",
+  selector: "izmo-reading-order-validator",
   standalone: true,
   template: `
     <button
@@ -64,9 +65,9 @@ interface ReadingOrderIssue {
         </div>
       </div>
 
-      <astral-widget-checkmark
+      <izmo-widget-checkmark
         [isActive]="currentState !== 0"
-      ></astral-widget-checkmark>
+      ></izmo-widget-checkmark>
     </button>
 
     <div 
@@ -226,23 +227,30 @@ interface ReadingOrderIssue {
       </div>
     </div>
   `,
-  imports: [NgIf, NgClass, NgFor, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, NgFor, IzmoCheckmarkSvgComponent],
 })
-export class ReadingOrderValidatorComponent implements OnDestroy {
+export class ReadingOrderValidatorComponent implements OnInit, OnDestroy {
   constructor(
     private renderer: Renderer2,
-    private i18n: I18nService
+    private i18n: I18nService,
+    private parent: IzmoAccessibilityComponent
   ) {}
 
   document = inject(DOCUMENT);
   currentState = 0;
-  base = this.i18n.getTranslation('reading-order-validator');
-  states = [
-    this.i18n.getTranslation('reading-order-validator'),
-    this.i18n.getTranslation('validate-reading-order'),
-    this.i18n.getTranslation('reading-order-valid'),
-    this.i18n.getTranslation('reading-order-issues')
-  ];
+  
+  get base() {
+    return this.i18n.getTranslation('reading-order-validator');
+  }
+  
+  get states() {
+    return [
+      this.i18n.getTranslation('reading-order-validator'),
+      this.i18n.getTranslation('validate-reading-order'),
+      this.i18n.getTranslation('reading-order-valid'),
+      this.i18n.getTranslation('reading-order-issues')
+    ];
+  }
   
   readingOrderIssues: ReadingOrderIssue[] = [];
   headingElements: HTMLElement[] = [];
@@ -254,6 +262,13 @@ export class ReadingOrderValidatorComponent implements OnDestroy {
   
   private highlightedElements: HTMLElement[] = [];
   private visualizationElements: HTMLElement[] = [];
+
+  ngOnInit() {
+    this.parent.resetEvent.subscribe(() => {
+      this.currentState = 0;
+      this._runStateLogic();
+    });
+  }
 
   nextState() {
     this.currentState += 1;
@@ -313,7 +328,7 @@ export class ReadingOrderValidatorComponent implements OnDestroy {
     const headings = this.document.querySelectorAll('h1, h2, h3, h4, h5, h6') as NodeListOf<HTMLElement>;
     headings.forEach(heading => {
       // Skip elements that are part of the accessibility widget
-      if (heading.closest('astral-accessibility')) return;
+      if (heading.closest('izmo-accessibility')) return;
       
       if (this.isElementVisible(heading)) {
         this.headingElements.push(heading);
@@ -339,7 +354,7 @@ export class ReadingOrderValidatorComponent implements OnDestroy {
       const elements = this.document.querySelectorAll(selector) as NodeListOf<HTMLElement>;
       elements.forEach(element => {
         // Skip elements that are part of the accessibility widget
-        if (element.closest('astral-accessibility')) return;
+        if (element.closest('izmo-accessibility')) return;
         
         if (this.isElementVisible(element) && !this.interactiveElements.includes(element)) {
           this.interactiveElements.push(element);
@@ -465,7 +480,7 @@ export class ReadingOrderValidatorComponent implements OnDestroy {
     const elementsWithFloats = this.document.querySelectorAll('*') as NodeListOf<HTMLElement>;
     
     elementsWithFloats.forEach(element => {
-      if (element.closest('astral-accessibility')) return;
+      if (element.closest('izmo-accessibility')) return;
       
       const style = window.getComputedStyle(element);
       

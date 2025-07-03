@@ -1,8 +1,8 @@
-# Astral Accessibility Widget - Internationalization (i18n) Guide
+# Izmo Accessibility Widget - Internationalization (i18n) Guide
 
 ## Overview
 
-The Astral Accessibility Widget now supports internationalization (i18n) with multiple languages. The widget automatically detects the user's browser language and displays all text content in the appropriate language.
+The Izmo Accessibility Widget now supports internationalization (i18n) with multiple languages. The widget automatically detects the user's browser language and displays all text content in the appropriate language.
 
 ## Supported Languages
 
@@ -42,7 +42,7 @@ All user-facing text is translated, including:
 ```html
 <script>
   // Initialize with default browser language
-  initializeAstral();
+  initializeIzmo();
 </script>
 ```
 
@@ -51,7 +51,7 @@ All user-facing text is translated, including:
 ```html
 <script>
   // Initialize with specific language
-  initializeAstral({
+  initializeIzmo({
     locale: 'es', // Spanish
     enabledFeatures: [
       "Contrast",
@@ -67,13 +67,13 @@ All user-facing text is translated, including:
 
 ```javascript
 // Remove existing widget
-const existing = document.querySelector('astral-accessibility');
+const existing = document.querySelector('izmo-accessibility');
 if (existing) {
   existing.remove();
 }
 
 // Reinitialize with new language
-initializeAstral({
+initializeIzmo({
   locale: 'fr', // French
   enabledFeatures: [
     "Skip Links",
@@ -207,7 +207,7 @@ getButtonLabel(): string {
 
 ### Widget Not Translating
 - Check if the locale code is supported
-- Verify the locale is being passed correctly to `initializeAstral()`
+- Verify the locale is being passed correctly to `initializeIzmo()`
 - Check browser console for any errors
 
 ### Missing Translations

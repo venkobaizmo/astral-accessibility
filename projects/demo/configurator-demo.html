@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Izmo Accessibility Widget - Configurator Demo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #4A90E2, #357ABD);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .demo-section {
+            margin-bottom: 40px;
+        }
+        
+        .demo-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .demo-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .demo-card h3 {
+            color: #495057;
+            margin-bottom: 15px;
+        }
+        
+        .demo-card p {
+            color: #6c757d;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(45deg, #6c757d, #495057);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #4A90E2, #357ABD);
+        }
+        
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .feature-item {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+            text-align: center;
+        }
+        
+        .feature-item h4 {
+            color: #495057;
+            margin-bottom: 8px;
+        }
+        
+        .feature-item p {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+        
+        .code-example {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        .highlight {
+            background: #4A90E2;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Izmo Accessibility Widget</h1>
+            <p>Fully customizable accessibility widget with configurable themes and features</p>
+        </div>
+        
+        <div class="content">
+            <div class="demo-section">
+                <h2>🚀 Quick Start</h2>
+                <div class="demo-grid">
+                    <div class="demo-card">
+                        <h3>1. Configure Your Widget</h3>
+                        <p>Use our interactive configurator to customize colors, features, and settings for your accessibility widget.</p>
+                        <a href="../widget-configurator.html" class="btn">Open Configurator</a>
+                    </div>
+                    <div class="demo-card">
+                        <h3>2. Generate Code</h3>
+                        <p>Get the generated script tag that you can embed on your website to display the customized widget.</p>
+                        <a href="#examples" class="btn btn-secondary">View Examples</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="demo-section">
+                <h2>✨ Key Features</h2>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <h4>🎨 Custom Themes</h4>
+                        <p>Fully customizable color schemes with 20+ configurable color properties</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>🌍 Multi-Language</h4>
+                        <p>Support for 11 languages including English, Spanish, French, German, and more</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>📱 Responsive Design</h4>
+                        <p>Adapts to different screen sizes with configurable layouts (1-3 columns)</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>♿ WCAG 2.1 Compliant</h4>
+                        <p>29 accessibility features including contrast, text sizing, screen reader support</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>⚡ Easy Integration</h4>
+                        <p>Simple script tag integration with no dependencies or complex setup</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>🔧 Feature Selection</h4>
+                        <p>Choose which accessibility features to enable for your users</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="demo-section" id="examples">
+                <h2>💻 Integration Examples</h2>
+                
+                <h3>Basic Integration</h3>
+                <div class="code-example">
+&lt;!-- Basic Izmo Accessibility Widget --&gt;
+&lt;script&gt;
+(function() {
+    // Widget configuration
+    window.izmoWidgetConfig = {
+        "locale": "en-US",
+        "layout": "responsive",
+        "widgetHeight": "75vh",
+        "enabledFeatures": ["Screen Reader", "Contrast", "Bigger Text"],
+        "theme": {
+            "primaryColor": "#4A90E2",
+            "secondaryColor": "#F5A623",
+            "backgroundColor": "#FFFFFF"
+        }
+    };
+    
+    // Initialize widget
+    if (typeof initializeIzmo === 'function') {
+        initializeIzmo(window.izmoWidgetConfig);
+    }
+})();
+&lt;/script&gt;
+                </div>
+                
+                <h3>Custom Theme Example</h3>
+                <div class="code-example">
+&lt;!-- Custom themed widget --&gt;
+&lt;script&gt;
+(function() {
+    window.izmoWidgetConfig = {
+        "locale": "es-ES",
+        "layout": "2-column",
+        "widgetHeight": "80vh",
+        "enabledFeatures": ["Screen Reader", "Contrast", "Dyslexia Friendly", "Text Spacing"],
+        "theme": {
+            "primaryColor": "#FF6B6B",
+            "secondaryColor": "#4ECDC4",
+            "accentColor": "#45B7D1",
+            "backgroundColor": "#F7F7F7",
+            "textColor": "#2C3E50",
+            "modalBackgroundColor": "#FFFFFF",
+            "actionBackgroundColor": "#F8F9FA",
+            "actionActiveBackgroundColor": "#FF6B6B",
+            "widgetIconBackgroundColor": "#FF6B6B",
+            "widgetIconColor": "#FFFFFF"
+        }
+    };
+    
+    if (typeof initializeIzmo === 'function') {
+        initializeIzmo(window.izmoWidgetConfig);
+    }
+})();
+&lt;/script&gt;
+                </div>
+            </div>
+            
+            <div class="demo-section">
+                <h2>🎯 Available Features</h2>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <h4>Screen Reader</h4>
+                        <p>Text-to-speech functionality</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Contrast</h4>
+                        <p>Adjust color contrast</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Bigger Text</h4>
+                        <p>Increase text size</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Text Spacing</h4>
+                        <p>Adjust line and word spacing</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Dyslexia Friendly</h4>
+                        <p>Font optimization for dyslexia</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Highlight Links</h4>
+                        <p>Emphasize clickable elements</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Cursor</h4>
+                        <p>Custom cursor options</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Tooltip</h4>
+                        <p>Enhanced tooltips</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Page Structure</h4>
+                        <p>Document outline navigation</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Dictionary</h4>
+                        <p>Word definitions</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Reduced Motion</h4>
+                        <p>Minimize animations</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Pause Animations</h4>
+                        <p>Stop moving content</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="demo-section">
+                <h2>🚀 Get Started</h2>
+                <div style="text-align: center; padding: 40px 0;">
+                    <p style="font-size: 1.2em; color: #6c757d; margin-bottom: 30px;">
+                        Ready to make your website more accessible? Start configuring your widget now!
+                    </p>
+                    <a href="../widget-configurator.html" class="btn btn-primary" style="font-size: 1.1em; padding: 15px 30px;">
+                        🎨 Open Widget Configurator
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

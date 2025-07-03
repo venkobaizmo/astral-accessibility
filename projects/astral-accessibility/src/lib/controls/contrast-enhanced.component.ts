@@ -1,6 +1,6 @@
 import { DOCUMENT, NgIf, NgClass } from "@angular/common";
 import { Component, inject, Renderer2, OnDestroy } from "@angular/core";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
 
 interface ContrastResult {
@@ -10,7 +10,7 @@ interface ContrastResult {
 }
 
 @Component({
-  selector: "astral-contrast-enhanced",
+  selector: "izmo-contrast-enhanced",
   standalone: true,
   template: `
     <button
@@ -27,8 +27,8 @@ interface ContrastResult {
             }"
           >
             <svg
-              width="25"
-              height="25"
+              width="32"
+              height="32"
               viewBox="0 0 41 41"
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -44,7 +44,7 @@ interface ContrastResult {
               </defs>
               <g clip-path="url(#j7jc4ss84a)" transform="translate(-1084 -366)">
                 <g clip-path="url(#t65z0zbfzb)" transform="translate(1084 366)">
-                  <path fill="#FFF" d="M0 0h41v41H0V0z" />
+                  <path fill="currentColor" d="M0 0h41v41H0V0z" />
                 </g>
               </g>
             </svg>
@@ -80,12 +80,12 @@ interface ContrastResult {
         </div>
       </div>
 
-      <astral-widget-checkmark
+      <izmo-widget-checkmark
         [isActive]="currentState !== 0"
-      ></astral-widget-checkmark>
+      ></izmo-widget-checkmark>
     </button>
   `,
-  imports: [NgIf, NgClass, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, IzmoCheckmarkSvgComponent],
 })
 export class ContrastEnhancedComponent implements OnDestroy {
   document = inject(DOCUMENT);
@@ -125,23 +125,23 @@ export class ContrastEnhancedComponent implements OnDestroy {
     this.removeContrastOverlay();
 
     if (this.currentState === 1) {
-      this.document.documentElement.classList.add("astral_inverted");
+      this.document.documentElement.classList.add("izmo_inverted");
     } else {
-      this.document.documentElement.classList.remove("astral_inverted");
+      this.document.documentElement.classList.remove("izmo_inverted");
     }
 
     if (this.currentState === 2) {
       this._style.textContent = `
-            body > :not(astral-accessibility) * {
+            body > :not(izmo-accessibility) * {
                 background: transparent !important;
                 color: #000 !important;
             }
 
-            html body > :not(astral-accessibility), html body > :not(astral-accessibility) a {
+            html body > :not(izmo-accessibility), html body > :not(izmo-accessibility) a {
               color: #23ebf7 !important;
             }
 
-            html body > :not(astral-accessibility) button {
+            html body > :not(izmo-accessibility) button {
               background-color: #e8e8e8 !important;
             }
         `;
@@ -149,13 +149,13 @@ export class ContrastEnhancedComponent implements OnDestroy {
 
     if (this.currentState === 3) {
       this._style.textContent = `
-            body > :not(astral-accessibility), body > :not(astral-accessibility) * {
+            body > :not(izmo-accessibility), body > :not(izmo-accessibility) * {
               background: black !important;
               font-weight: 700;
               color: #fff !important;
             }
 
-            body > :not(astral-accessibility), body > :not(astral-accessibility) a {
+            body > :not(izmo-accessibility), body > :not(izmo-accessibility) a {
               color: #23ebf7 !important;
             }
         `;

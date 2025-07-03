@@ -1,10 +1,11 @@
-import { Component, OnInit, Renderer2 } from "@angular/core";
+import { Component, OnInit, Renderer2, inject } from "@angular/core";
 import { NgIf, NgClass } from "@angular/common";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
+import { IzmoAccessibilityComponent } from '../izmo-accessibility.component';
 
 @Component({
-  selector: "astral-reduced-motion",
+  selector: "izmo-reduced-motion",
   standalone: true,
   template: `    <button
       (click)="toggle()"
@@ -16,23 +17,25 @@ import { I18nService } from "../services/i18n.service";
         <div class="icon-state-wrap">
           <div class="icon action-icon" [ngClass]="{ inactive: !isActive, active: isActive }">
           <svg
-            width="25"
-            height="25"
+            width="32"
+            height="32"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2Z"
-              stroke="#fff"
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+              stroke="currentColor"
               stroke-width="2"
               fill="none"
             />
             <path
-              d="M8 12H16"
-              stroke="#fff"
+              d="M12 6v6l4 2"
+              stroke="currentColor"
               stroke-width="2"
               stroke-linecap="round"
+              stroke-linejoin="round"
+              fill="none"
             />
           </svg>
         </div>        <div class="state-dots-wrap">
@@ -40,14 +43,15 @@ import { I18nService } from "../services/i18n.service";
         </div>
       </div>
     </div>
-    <astral-widget-checkmark [isActive]="isActive"></astral-widget-checkmark>
+    <izmo-widget-checkmark [isActive]="isActive"></izmo-widget-checkmark>
   </button>
   `,
-  imports: [NgIf, NgClass, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, IzmoCheckmarkSvgComponent],
 })
 export class ReducedMotionComponent implements OnInit {
   isActive = false;
   private styleElement?: HTMLStyleElement;
+  parent = inject(IzmoAccessibilityComponent);
   constructor(
     private renderer: Renderer2,
     public i18n: I18nService
@@ -62,7 +66,12 @@ export class ReducedMotionComponent implements OnInit {
     }
     
     // Check if reduced motion is already applied
-    this.isActive = this.isActive || document.querySelector('.astral-reduced-motion-styles') !== null;
+    this.isActive = this.isActive || document.querySelector('.izmo-reduced-motion-styles') !== null;
+
+    this.parent.resetEvent.subscribe(() => {
+      this.isActive = false;
+      this.removeReducedMotion();
+    });
   }
 
   toggle() {
@@ -77,9 +86,9 @@ export class ReducedMotionComponent implements OnInit {
 
   private applyReducedMotion() {
     this.styleElement = this.renderer.createElement('style');
-    this.renderer.addClass(this.styleElement, 'astral-reduced-motion-styles');
+    this.renderer.addClass(this.styleElement, 'izmo-reduced-motion-styles');
     this.renderer.setProperty(this.styleElement, 'textContent', `
-      /* Astral Reduced Motion Styles */
+      /* Izmo Reduced Motion Styles */
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;

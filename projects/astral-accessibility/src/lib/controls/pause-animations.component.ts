@@ -1,10 +1,11 @@
 import { DOCUMENT, NgIf, NgClass } from "@angular/common";
-import { Component, inject, Renderer2 } from "@angular/core";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { Component, inject, Renderer2, Optional, SkipSelf } from "@angular/core";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
+import { IzmoAccessibilityComponent } from "../izmo-accessibility.component";
 
 @Component({
-  selector: "astral-pause-animations",
+  selector: "izmo-pause-animations",
   standalone: true,
   template: `
     <button
@@ -21,16 +22,16 @@ import { I18nService } from "../services/i18n.service";
             }"
           >
             <svg
-              width="25"
-              height="25"
+              width="32"
+              height="32"
               viewBox="0 0 41 41"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <circle cx="20.5" cy="20.5" r="16" fill="none" stroke="#FFF" stroke-width="2"/>
-              <rect x="14" y="12" width="3" height="17" fill="#FFF"/>
-              <rect x="24" y="12" width="3" height="17" fill="#FFF"/>
-              <path d="M8 8 L33 8" stroke="#FFF" stroke-width="1" stroke-dasharray="2,2"/>
-              <path d="M8 33 L33 33" stroke="#FFF" stroke-width="1" stroke-dasharray="2,2"/>
+              <circle cx="20.5" cy="20.5" r="16" fill="none" stroke="currentColor" stroke-width="2"/>
+              <rect x="14" y="12" width="3" height="17" fill="currentColor"/>
+              <rect x="24" y="12" width="3" height="17" fill="currentColor"/>
+              <path d="M8 8 L33 8" stroke="currentColor" stroke-width="1" stroke-dasharray="2,2"/>
+              <path d="M8 33 L33 33" stroke="currentColor" stroke-width="1" stroke-dasharray="2,2"/>
             </svg>
           </div>
 
@@ -57,28 +58,48 @@ import { I18nService } from "../services/i18n.service";
         </div>
       </div>
 
-      <astral-widget-checkmark
+      <izmo-widget-checkmark
         [isActive]="currentState !== 0"
-      ></astral-widget-checkmark>
+      ></izmo-widget-checkmark>
     </button>
   `,
-  imports: [NgIf, NgClass, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, IzmoCheckmarkSvgComponent],
 })
 export class PauseAnimationsComponent {
   document = inject(DOCUMENT);
   renderer = inject(Renderer2);
   i18n = inject(I18nService);
 
+  constructor(
+    @Optional() @SkipSelf() private parent?: IzmoAccessibilityComponent
+  ) {
+    if (this.parent) {
+      this.parent.resetEvent.subscribe(() => this.reset());
+    }
+  }
+
   currentState = 0;
-  base = this.i18n.getTranslation('pause-animations');
-  states = [
-    this.i18n.getTranslation('pause-animations'),
-    this.i18n.getTranslation('pause-all'),
-    this.i18n.getTranslation('slow-motion'),
-    this.i18n.getTranslation('essential-only')
-  ];
+  
+  // Make these reactive to language changes
+  get base() {
+    return this.i18n.getTranslation('pause-animations');
+  }
+  
+  get states() {
+    return [
+      this.base,
+      this.i18n.getTranslation('pause-all'),
+      this.i18n.getTranslation('slow-motion'),
+      this.i18n.getTranslation('essential-only')
+    ];
+  }
 
   private styleElement?: HTMLStyleElement;
+
+  reset() {
+    this.currentState = 0;
+    this._runStateLogic();
+  }
 
   nextState() {
     this.currentState += 1;

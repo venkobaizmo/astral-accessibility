@@ -1,7 +1,8 @@
 import { DOCUMENT, NgIf, NgClass, NgFor } from "@angular/common";
-import { Component, inject, Renderer2, OnDestroy } from "@angular/core";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { Component, inject, Renderer2, OnDestroy, OnInit } from "@angular/core";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
+import { IzmoAccessibilityComponent } from '../izmo-accessibility.component';
 
 interface ImageIssue {
   element: HTMLImageElement;
@@ -10,7 +11,7 @@ interface ImageIssue {
 }
 
 @Component({
-  selector: "astral-alt-text-validator",
+  selector: "izmo-alt-text-validator",
   standalone: true,
   template: `
     <button
@@ -27,16 +28,15 @@ interface ImageIssue {
             }"
           >
             <svg
-              width="25"
-              height="25"
+              width="32"
+              height="32"
               viewBox="0 0 41 41"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path fill="#FFF" d="M3 8h35v25H3z"/>
-              <path fill="#000" d="M8 12h8v8h-8z"/>
-              <circle fill="#000" cx="12" cy="16" r="2"/>
-              <path fill="#000" d="M18 20l3-3 5 5H18z"/>
-              <text x="20" y="30" font-family="Arial" font-size="8" fill="#FFF">ALT</text>
+              <rect x="4" y="8" width="33" height="25" fill="none" stroke="currentColor" stroke-width="2"/>
+              <path fill="currentColor" d="M3 8h35v25H3z"/>
+              <circle cx="20.5" cy="20.5" r="8" fill="none" stroke="currentColor" stroke-width="2"/>
+              <text x="20" y="30" font-family="Arial" font-size="8" fill="currentColor">ALT</text>
             </svg>
           </div>
 
@@ -59,9 +59,9 @@ interface ImageIssue {
         </div>
       </div>
 
-      <astral-widget-checkmark
+      <izmo-widget-checkmark
         [isActive]="currentState !== 0"
-      ></astral-widget-checkmark>
+      ></izmo-widget-checkmark>
     </button>
 
     <div 
@@ -136,26 +136,40 @@ interface ImageIssue {
       </div>
     </div>
   `,
-  imports: [NgIf, NgClass, NgFor, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, NgFor, IzmoCheckmarkSvgComponent],
 })
-export class AltTextValidatorComponent implements OnDestroy {
+export class AltTextValidatorComponent implements OnInit, OnDestroy {
   constructor(
     private renderer: Renderer2,
-    private i18n: I18nService
+    private i18n: I18nService,
+    private parent: IzmoAccessibilityComponent
   ) {}
 
   document = inject(DOCUMENT);
   currentState = 0;
-  base = this.i18n.getTranslation('alt-text-validator');
-  states = [
-    this.i18n.getTranslation('alt-text-validator'),
-    this.i18n.getTranslation('validate-alt-text'),
-    this.i18n.getTranslation('alt-text-issues-found')
-  ];
+  
+  get base() {
+    return this.i18n.getTranslation('alt-text-validator');
+  }
+  
+  get states() {
+    return [
+      this.i18n.getTranslation('alt-text-validator'),
+      this.i18n.getTranslation('validate-alt-text'),
+      this.i18n.getTranslation('alt-text-issues-found')
+    ];
+  }
   
   imageIssues: ImageIssue[] = [];
   showIssuesPanel = false;
   highlightedElements: HTMLElement[] = [];
+
+  ngOnInit() {
+    this.parent.resetEvent.subscribe(() => {
+      this.currentState = 0;
+      this._runStateLogic();
+    });
+  }
 
   nextState() {
     this.currentState += 1;
@@ -184,7 +198,7 @@ export class AltTextValidatorComponent implements OnDestroy {
     
     images.forEach(img => {
       // Skip images that are part of the accessibility widget
-      if (img.closest('astral-accessibility')) return;
+      if (img.closest('izmo-accessibility')) return;
       
       const alt = img.getAttribute('alt');
       const src = img.src;

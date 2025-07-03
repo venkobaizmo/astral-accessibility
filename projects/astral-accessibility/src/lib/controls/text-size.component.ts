@@ -1,10 +1,11 @@
 import { DOCUMENT, NgIf, NgClass } from "@angular/common";
-import { Component, inject } from "@angular/core";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { Component, inject, OnInit } from "@angular/core";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
+import { IzmoAccessibilityComponent } from '../izmo-accessibility.component';
 
 @Component({
-  selector: "astral-text-size",
+  selector: "izmo-text-size",
   standalone: true,
   template: `
     <button
@@ -21,17 +22,18 @@ import { I18nService } from "../services/i18n.service";
             }"
           >
             <svg
-              width="25"
-              height="25"
+              width="32"
+              height="32"
               viewBox="0 0 41 41"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <text x="8" y="12" font-family="Arial" font-size="8" fill="#FFF">A</text>
-              <text x="12" y="20" font-family="Arial" font-size="10" fill="#FFF">A</text>
-              <text x="16" y="28" font-family="Arial" font-size="12" fill="#FFF">A</text>
-              <text x="20" y="36" font-family="Arial" font-size="14" fill="#FFF">A</text>
-              <path d="M6 6 L35 6" stroke="#FFF" stroke-width="1"/>
-              <path d="M6 38 L35 38" stroke="#FFF" stroke-width="1"/>
+              <rect x="4" y="8" width="33" height="25" fill="none" stroke="currentColor" stroke-width="2"/>
+              <text x="8" y="12" font-family="Arial" font-size="8" fill="currentColor">A</text>
+              <text x="12" y="20" font-family="Arial" font-size="10" fill="currentColor">A</text>
+              <text x="16" y="28" font-family="Arial" font-size="12" fill="currentColor">A</text>
+              <text x="20" y="36" font-family="Arial" font-size="14" fill="currentColor">A</text>
+              <path d="M6 6 L35 6" stroke="currentColor" stroke-width="1"/>
+              <path d="M6 38 L35 38" stroke="currentColor" stroke-width="1"/>
             </svg>
           </div>
 
@@ -58,26 +60,34 @@ import { I18nService } from "../services/i18n.service";
         </div>
       </div>
 
-      <astral-widget-checkmark
+      <izmo-widget-checkmark
         [isActive]="currentState !== 0"
-      ></astral-widget-checkmark>
+      ></izmo-widget-checkmark>
     </button>
   `,
-  imports: [NgIf, NgClass, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, IzmoCheckmarkSvgComponent],
 })
-export class TextSizeComponent {
+export class TextSizeComponent implements OnInit {
   document = inject(DOCUMENT);
   i18n = inject(I18nService);
+  parent = inject(IzmoAccessibilityComponent);
 
   currentState = 0;
   currentScale = 1;
-  base = this.i18n.getTranslation('bigger-text');
-  states = [
-    this.base, 
-    this.i18n.getTranslation('medium-text'), 
-    this.i18n.getTranslation('large-text'), 
-    this.i18n.getTranslation('extra-large-text')
-  ];
+  
+  // Make these reactive to language changes
+  get base() {
+    return this.i18n.getTranslation('bigger-text');
+  }
+  
+  get states() {
+    return [
+      this.base, 
+      this.i18n.getTranslation('medium-text'), 
+      this.i18n.getTranslation('large-text'), 
+      this.i18n.getTranslation('extra-large-text')
+    ];
+  }
   private readonly initialStyles = new WeakMap();
 
   _style: HTMLStyleElement;
@@ -105,7 +115,20 @@ export class TextSizeComponent {
     /* No observer here, we don't want it to be on by default */
   }
 
+  ngOnInit() {
+    this.parent.resetEvent.subscribe(() => {
+      this.currentState = 0;
+      this.currentScale = 1;
+      this._runStateLogic();
+    });
+  }
+
   updateTextSize(node: HTMLElement, scale: number, previousScale: number = 1) {
+    // Skip the widget element and its children
+    if (node.tagName === 'IZMO-ACCESSIBILITY' || node.closest('izmo-accessibility')) {
+      return;
+    }
+
     // keep initial styling
     if (!this.initialStyles.has(node)) {
       // store initial styling of fontSize, lineHeight, and wordSpacing
@@ -114,7 +137,9 @@ export class TextSizeComponent {
         "line-height": node.style.lineHeight,
         "word-spacing": node.style.wordSpacing,
       });
-    }    const children = node.children;
+    }
+    
+    const children = node.children;
     const excludeNodes = ["SCRIPT"];
     // traverse and update children first
     if (children.length > 0) {
@@ -141,14 +166,22 @@ export class TextSizeComponent {
       node.style.wordSpacing = `initial`;
     }
   }
+
   restoreTextSize(node: HTMLElement) {
+    // Skip the widget element and its children
+    if (node.tagName === 'IZMO-ACCESSIBILITY' || node.closest('izmo-accessibility')) {
+      return;
+    }
+
     const children = node.children;
     if (this.initialStyles.has(node)) {
       const styles = this.initialStyles.get(node) as Record<string, string>;
       for (const [key, value] of Object.entries(styles)) {
         (node.style as any)[key] = value;
       }
-    }    for (const child of Array.from(children)) {
+    }
+    
+    for (const child of Array.from(children)) {
       this.restoreTextSize(child as HTMLElement);
     }
   }

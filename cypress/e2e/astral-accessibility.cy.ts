@@ -44,12 +44,12 @@ describe("template spec", () => {
 
     // Low Saturation
     saturationComponent.click();
-    cy.document().find("html").should("have.class", "astral_low_saturation");
+    cy.document().find("body").should("have.class", "astral_low_saturation");
 
     // High Saturated
     saturationComponent.click();
     cy.document()
-      .find("html")
+      .find("body")
       .should("have.class", "astral_high_saturation")
       .and("not.have.class", "astral_low_saturation")
       .and("not.have.class", "astral_desaturated");
@@ -57,7 +57,7 @@ describe("template spec", () => {
     // Desaturated
     saturationComponent.click();
     cy.document()
-      .find("html")
+      .find("body")
       .should("have.class", "astral_desaturated")
       .and("not.have.class", "astral_high_saturation")
       .and("not.have.class", "astral_low_saturation");
@@ -66,7 +66,7 @@ describe("template spec", () => {
     saturationComponent.click();
     const defaultFontSize = 16;
     cy.document()
-      .find("html")
+      .find("body")
       .should("not.have.class", "astral_desaturated")
       .and("not.have.class", "astral_high_saturation")
       .and("not.have.class", "astral_low_saturation");

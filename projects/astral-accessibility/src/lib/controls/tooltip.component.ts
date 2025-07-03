@@ -1,10 +1,11 @@
 import { DOCUMENT, NgIf, NgClass } from "@angular/common";
-import { Component, inject, Renderer2 } from "@angular/core";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { Component, inject, Renderer2, OnDestroy, Optional, SkipSelf } from "@angular/core";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
+import { IzmoAccessibilityComponent } from "../izmo-accessibility.component";
 
 @Component({
-  selector: "astral-tooltip",
+  selector: "izmo-tooltip",
   standalone: true,
   template: `
     <button
@@ -56,26 +57,38 @@ import { I18nService } from "../services/i18n.service";
         </div>
       </div>
 
-      <astral-widget-checkmark
+      <izmo-widget-checkmark
         [isActive]="currentState !== 0"
-      ></astral-widget-checkmark>
+      ></izmo-widget-checkmark>
     </button>
   `,
-  imports: [NgIf, NgClass, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, IzmoCheckmarkSvgComponent],
 })
-export class TooltipComponent {
-  document = inject(DOCUMENT);
-  renderer = inject(Renderer2);
-  i18n = inject(I18nService);
+export class TooltipComponent implements OnDestroy {
+  constructor(
+    private renderer: Renderer2,
+    private i18n: I18nService,
+    @Optional() @SkipSelf() private parent?: IzmoAccessibilityComponent
+  ) {
+    if (this.parent) {
+      this.parent.resetEvent.subscribe(() => this.reset());
+    }
+  }
 
+  document = inject(DOCUMENT);
   currentState = 0;
-  base = this.i18n.getTranslation('tooltip');
-  states = [
-    this.i18n.getTranslation('tooltip'),
-    this.i18n.getTranslation('show-all-titles'),
-    this.i18n.getTranslation('enhanced-tooltips'),
-    this.i18n.getTranslation('context-helper')
-  ];
+  
+  get base() {
+    return this.i18n.getTranslation('tooltip');
+  }
+  
+  get states() {
+    return [
+      this.i18n.getTranslation('tooltip'),
+      this.i18n.getTranslation('show-tooltips'),
+      this.i18n.getTranslation('enhanced-tooltips')
+    ];
+  }
 
   private styleElement?: HTMLStyleElement;
   private tooltipElement?: HTMLElement;
@@ -155,7 +168,7 @@ export class TooltipComponent {
     if (this.currentState === 2) {
       css = `
         /* Create floating tooltip */
-        .astral-tooltip {
+        .izmo-tooltip {
           position: fixed;
           background: rgba(0, 0, 0, 0.9);
           color: white;
@@ -170,11 +183,11 @@ export class TooltipComponent {
           box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
         
-        .astral-tooltip.visible {
+        .izmo-tooltip.visible {
           opacity: 1;
         }
         
-        .astral-tooltip-arrow {
+        .izmo-tooltip-arrow {
           position: absolute;
           top: -5px;
           left: 50%;
@@ -198,7 +211,7 @@ export class TooltipComponent {
     if (this.currentState === 3) {
       css = `
         /* Context information overlay */
-        .astral-context-info {
+        .izmo-context-info {
           position: fixed;
           top: 10px;
           right: 10px;
@@ -212,7 +225,7 @@ export class TooltipComponent {
           box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
         
-        .astral-context-title {
+        .izmo-context-title {
           font-weight: bold;
           color: #0066cc;
           margin-bottom: 5px;
@@ -292,11 +305,11 @@ export class TooltipComponent {
   private addEnhancedTooltips() {
     // Create tooltip element
     this.tooltipElement = this.renderer.createElement('div');
-    this.renderer.addClass(this.tooltipElement, 'astral-tooltip');
+    this.renderer.addClass(this.tooltipElement, 'izmo-tooltip');
     this.renderer.appendChild(this.document.body, this.tooltipElement);
 
     const arrow = this.renderer.createElement('div');
-    this.renderer.addClass(arrow, 'astral-tooltip-arrow');
+    this.renderer.addClass(arrow, 'izmo-tooltip-arrow');
     this.renderer.appendChild(this.tooltipElement, arrow);
 
     // Add event listeners
@@ -325,10 +338,10 @@ export class TooltipComponent {
 
   private addContextHelper() {
     const contextInfo = this.renderer.createElement('div');
-    this.renderer.addClass(contextInfo, 'astral-context-info');
+    this.renderer.addClass(contextInfo, 'izmo-context-info');
     
     const title = this.renderer.createElement('div');
-    this.renderer.addClass(title, 'astral-context-title');
+    this.renderer.addClass(title, 'izmo-context-title');
     this.renderer.setProperty(title, 'textContent', 'Context Helper');
     this.renderer.appendChild(contextInfo, title);
 
@@ -377,6 +390,11 @@ export class TooltipComponent {
     return descriptions[elementType] || `${elementType.toUpperCase()} element - hover to see more details`;
   }
 
+  reset() {
+    this.currentState = 0;
+    this._runStateLogic();
+  }
+
   ngOnDestroy() {
     if (this.styleElement) {
       this.renderer.removeChild(this.document.head, this.styleElement);
@@ -384,7 +402,7 @@ export class TooltipComponent {
     if (this.tooltipElement) {
       this.renderer.removeChild(this.document.body, this.tooltipElement);
     }
-    const contextInfo = this.document.querySelector('.astral-context-info');
+    const contextInfo = this.document.querySelector('.izmo-context-info');
     if (contextInfo) {
       this.renderer.removeChild(this.document.body, contextInfo);
     }

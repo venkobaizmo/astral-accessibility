@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Izmo Accessibility Widget - Header & Language Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .demo-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+        
+        .demo-section h2 {
+            color: #555;
+            margin-top: 0;
+        }
+        
+        .config-example {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            margin: 10px 0;
+            border-left: 4px solid #0066cc;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .feature-list li:before {
+            content: "✓ ";
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .test-content {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .test-content h3 {
+            color: #495057;
+        }
+        
+        .test-content p {
+            line-height: 1.6;
+            color: #6c757d;
+        }
+        
+        .test-image {
+            max-width: 200px;
+            height: auto;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌟 Izmo Accessibility Widget - Header & Language Demo</h1>
+        
+        <div class="demo-section">
+            <h2>✨ New Features Added</h2>
+            <ul class="feature-list">
+                <li><strong>Modal Header:</strong> Clean header with title and controls</li>
+                <li><strong>Close Button:</strong> X button in top-right corner to close the widget</li>
+                <li><strong>Widget Border:</strong> Clean border around the entire modal</li>
+                <li><strong>Language Selector:</strong> Dropdown to change widget language</li>
+                <li><strong>Auto Language Detection:</strong> Detects browser language if not configured</li>
+                <li><strong>Language Persistence:</strong> Remembers language preference in localStorage</li>
+            </ul>
+        </div>
+        
+        <div class="demo-section">
+            <h2>🔧 Configuration Examples</h2>
+            
+            <h3>Basic Configuration with Language</h3>
+            <div class="config-example">
+izmo-features='{
+  "enabledFeatures": ["Contrast", "Bigger Text", "Screen Reader", "Text Spacing"],
+  "locale": "es-ES",
+  "layout": "2-column",
+  "widgetHeight": "70vh"
+}'
+            </div>
+            
+            <h3>Auto Language Detection</h3>
+            <div class="config-example">
+izmo-features='{
+  "enabledFeatures": ["Contrast", "Bigger Text", "Screen Reader"],
+  "layout": "responsive"
+}'
+            </div>
+            
+            <h3>Custom Theme with Language</h3>
+            <div class="config-example">
+izmo-features='{
+  "enabledFeatures": ["Contrast", "Bigger Text", "Screen Reader"],
+  "locale": "fr-FR",
+  "theme": {
+    "modalBackgroundColor": "#ffffff",
+    "modalBorderColor": "#0066cc",
+    "actionActiveBackgroundColor": "#0066cc"
+  }
+}'
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>🌍 Supported Languages</h2>
+            <ul class="feature-list">
+                <li>English (en-US)</li>
+                <li>Español (es-ES)</li>
+                <li>Français (fr-FR)</li>
+                <li>Deutsch (de-DE)</li>
+                <li>Italiano (it-IT)</li>
+                <li>Português (pt-PT)</li>
+                <li>Русский (ru-RU)</li>
+                <li>中文 (zh-CN)</li>
+                <li>日本語 (ja-JP)</li>
+                <li>한국어 (ko-KR)</li>
+                <li>العربية (ar-SA)</li>
+                <li>हिन्दी (hi-IN)</li>
+            </ul>
+        </div>
+        
+        <div class="test-content">
+            <h3>🧪 Test Content</h3>
+            <p>This page contains various elements to test the accessibility features:</p>
+            
+            <h4>Sample Images (for Alt Text Validator)</h4>
+            <img src="https://via.placeholder.com/200x150/0066cc/ffffff?text=Sample+Image" alt="A blue sample image" class="test-image">
+            <img src="https://via.placeholder.com/200x150/28a745/ffffff?text=Test+Image" alt="" class="test-image">
+            <img src="https://via.placeholder.com/200x150/dc3545/ffffff?text=No+Alt" class="test-image">
+            
+            <h4>Sample Form (for Form Enhancement)</h4>
+            <form>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+                <br><br>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <br><br>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Izmo Accessibility Widget -->
+    <izmo-accessibility 
+        izmo-features='{
+            "enabledFeatures": [
+                "Skip Links",
+                "Alt Text Validator", 
+                "Page Title Validator",
+                "Language Validator",
+                "Auto Refresh Controls",
+                "Focus Trap",
+                "Touch Target Validator",
+                "Reading Order Validator",
+                "Error Identification",
+                "Focus Enhancement",
+                "Contrast",
+                "Color Blind Support",
+                "Saturation",
+                "Dyslexia Friendly",
+                "Screen Reader",
+                "Bigger Text",
+                "Text Spacing",
+                "Line Height",
+                "Text Align",
+                "Dictionary",
+                "Highlight Links",
+                "Cursor",
+                "Tooltip",
+                "Reduced Motion",
+                "Pause Animations",
+                "Screen Mask",
+                "Hide Images",
+                "Page Structure",
+                "Form Enhancement"
+            ],
+            "locale": "en-US",
+            "layout": "responsive",
+            "widgetHeight": "75vh",
+            "theme": {
+                "modalBackgroundColor": "#ffffff",
+                "modalBorderColor": "#e8e8e8",
+                "actionActiveBackgroundColor": "#0066cc",
+                "actionActiveTextColor": "#ffffff"
+            }
+        }'>
+    </izmo-accessibility>
+
+    <script src="main.js"></script>
+</body>
+</html> 

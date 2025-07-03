@@ -1,7 +1,8 @@
 import { DOCUMENT, NgIf, NgClass, NgFor } from "@angular/common";
-import { Component, inject, Renderer2, OnDestroy } from "@angular/core";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { Component, inject, Renderer2, OnDestroy, OnInit } from "@angular/core";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
+import { IzmoAccessibilityComponent } from '../izmo-accessibility.component';
 
 interface FocusTrapInfo {
   element: HTMLElement;
@@ -12,7 +13,7 @@ interface FocusTrapInfo {
 }
 
 @Component({
-  selector: "astral-focus-trap",
+  selector: "izmo-focus-trap",
   standalone: true,
   template: `
     <button
@@ -29,15 +30,15 @@ interface FocusTrapInfo {
             }"
           >
             <svg
-              width="25"
-              height="25"
+              width="32"
+              height="32"
               viewBox="0 0 41 41"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <rect x="6" y="6" width="29" height="29" fill="none" stroke="#FFF" stroke-width="2"/>
-              <rect x="10" y="10" width="21" height="21" fill="none" stroke="#FFF" stroke-width="1" stroke-dasharray="2,2"/>
-              <circle cx="20.5" cy="20.5" r="3" fill="#FFF"/>
-              <text x="4" y="38" font-family="Arial" font-size="6" fill="#FFF">TRAP</text>
+              <rect x="6" y="6" width="29" height="29" fill="none" stroke="currentColor" stroke-width="2"/>
+              <rect x="10" y="10" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2,2"/>
+              <circle cx="20.5" cy="20.5" r="3" fill="currentColor"/>
+              <text x="4" y="38" font-family="Arial" font-size="6" fill="currentColor">TRAP</text>
             </svg>
           </div>
 
@@ -64,9 +65,9 @@ interface FocusTrapInfo {
         </div>
       </div>
 
-      <astral-widget-checkmark
+      <izmo-widget-checkmark
         [isActive]="currentState !== 0"
-      ></astral-widget-checkmark>
+      ></izmo-widget-checkmark>
     </button>
 
     <div 
@@ -213,23 +214,31 @@ interface FocusTrapInfo {
       </div>
     </div>
   `,
-  imports: [NgIf, NgClass, NgFor, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, NgFor, IzmoCheckmarkSvgComponent],
 })
-export class FocusTrapComponent implements OnDestroy {
+export class FocusTrapComponent implements OnInit, OnDestroy {
   constructor(
     private renderer: Renderer2,
-    private i18n: I18nService
+    private i18n: I18nService,
+    private parent: IzmoAccessibilityComponent
   ) {}
 
   document = inject(DOCUMENT);
   currentState = 0;
-  base = this.i18n.getTranslation('focus-trap');
-  states = [
-    this.i18n.getTranslation('focus-trap'),
-    this.i18n.getTranslation('enable-focus-trap'),
-    this.i18n.getTranslation('focus-trap-enabled'),
-    this.i18n.getTranslation('focus-trap-disabled')
-  ];
+  
+  // Make these reactive to language changes
+  get base() {
+    return this.i18n.getTranslation('focus-trap');
+  }
+  
+  get states() {
+    return [
+      this.base,
+      this.i18n.getTranslation('enable-focus-trap'),
+      this.i18n.getTranslation('focus-trap-enabled'),
+      this.i18n.getTranslation('focus-trap-disabled')
+    ];
+  }
   
   focusTraps: FocusTrapInfo[] = [];
   showFocusPanel = false;
@@ -238,6 +247,13 @@ export class FocusTrapComponent implements OnDestroy {
   private trapObserver?: MutationObserver;
   private activeListeners: Map<HTMLElement, { keydownListener: Function, firstFocus: HTMLElement, lastFocus: HTMLElement }> = new Map();
   private highlightedElements: HTMLElement[] = [];
+
+  ngOnInit() {
+    this.parent.resetEvent.subscribe(() => {
+      this.currentState = 0;
+      this._runStateLogic();
+    });
+  }
 
   nextState() {
     this.currentState += 1;
@@ -283,7 +299,7 @@ export class FocusTrapComponent implements OnDestroy {
       const elements = this.document.querySelectorAll(selector) as NodeListOf<HTMLElement>;
       elements.forEach(element => {
         // Skip elements that are part of the accessibility widget
-        if (element.closest('astral-accessibility')) return;
+        if (element.closest('izmo-accessibility')) return;
         
         // Check if element is visible
         if (this.isElementVisible(element)) {
@@ -312,7 +328,7 @@ export class FocusTrapComponent implements OnDestroy {
     allElements.forEach(element => {
       // Skip if already found or part of accessibility widget
       if (this.focusTraps.some(trap => trap.element === element) || 
-          element.closest('astral-accessibility')) return;
+          element.closest('izmo-accessibility')) return;
       
       const computedStyle = window.getComputedStyle(element);
       const zIndex = parseInt(computedStyle.zIndex) || 0;

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Astral Accessibility Widget - Auto Demo</title>
+  <title>Izmo Accessibility Widget - Auto Demo</title>
   <link rel="stylesheet" href="styles.css" />
   <!-- Load the widget bundle -->
   <script src="main.js"></script>
@@ -57,8 +57,8 @@
   <div class="notice">
     <strong>Accessibility Widget Active!</strong> Look for the accessibility icon in the bottom-right corner of the page.
   </div>
-  <h1>Astral Accessibility Widget - WCAG 2.1 AA Compliant Demo</h1>
-  <p>This page automatically loads the enhanced Astral Accessibility Widget with comprehensive WCAG 2.1 Level AA compliance features. The widget provides various accessibility features to improve the web experience for all users.</p>
+  <h1>Izmo Accessibility Widget - WCAG 2.1 AA Compliant Demo</h1>
+  <p>This page automatically loads the enhanced Izmo Accessibility Widget with comprehensive WCAG 2.1 Level AA compliance features. The widget provides various accessibility features to improve the web experience for all users.</p>
     <div class="card">
     <h2>WCAG 2.1 AA Compliant Features</h2>
     <p>The accessibility widget now includes comprehensive WCAG 2.1 Level AA compliant features:</p>
@@ -139,8 +139,8 @@
       
       // Auto-initialize widget after 3 seconds
       setTimeout(function() {
-        if (typeof initializeAstral === 'function') {
-          initializeAstral({
+        if (typeof initializeIzmo === 'function') {
+          initializeIzmo({
             enabledFeatures: [
               // WCAG 2.1 Core Navigation Features
               "Skip Links",
@@ -173,7 +173,7 @@
           });
           statusDiv.innerHTML = '<strong>✅ Widget Auto-Initialized!</strong> 20 WCAG 2.1 compliance features are now active. Look for the accessibility icon in the bottom-right corner.';
         } else {
-          statusDiv.innerHTML = '<strong>❌ Error:</strong> initializeAstral function not found. Make sure the widget is properly loaded.';
+          statusDiv.innerHTML = '<strong>❌ Error:</strong> initializeIzmo function not found. Make sure the widget is properly loaded.';
         }
       }, 3000);
     });

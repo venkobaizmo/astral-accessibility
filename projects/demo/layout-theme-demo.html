@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Izmo Widget - Layout & Theme Configuration Demo</title>
+  <script src="main.js"></script>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      margin: 20px; 
+      line-height: 1.6; 
+      background: #f5f5f5;
+    }
+    
+    .config-section { 
+      background: #fff; 
+      padding: 25px; 
+      margin: 20px 0; 
+      border-radius: 12px; 
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin: 20px 0;
+    }
+    
+    .demo-card {
+      background: #f8f9fa;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    button { 
+      background: #007bff; 
+      color: white; 
+      border: none; 
+      padding: 12px 24px; 
+      margin: 8px; 
+      border-radius: 6px; 
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    button:hover { 
+      background: #0056b3; 
+      transform: translateY(-1px);
+    }
+    
+    .theme-button {
+      margin: 5px;
+      padding: 8px 16px;
+      font-size: 12px;
+    }
+    
+    .layout-button {
+      background: #28a745;
+    }
+    
+    .layout-button:hover {
+      background: #1e7e34;
+    }
+    
+    .current-config {
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+      font-family: monospace;
+      font-size: 14px;
+    }
+    
+    h1 { color: #333; margin-bottom: 30px; }
+    h2 { color: #495057; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+    h3 { color: #6c757d; }
+    
+    .feature-highlight {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px 0;
+      text-align: center;
+    }
+    
+    .reset-button {
+      background: #dc3545;
+    }
+    
+    .reset-button:hover {
+      background: #c82333;
+    }
+    
+    .test-content {
+      margin: 30px 0;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+    
+    .info-box {
+      background: #e7f3ff;
+      border: 1px solid #b8daff;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎨 Izmo Widget - Layout & Theme Configuration Demo</h1>
+  
+  <div class="feature-highlight">
+    <h2 style="margin-top: 0; border: none; color: white;">✨ Complete Accessibility Suite</h2>
+    <p>This demo showcases the Izmo Accessibility Widget with ALL available features including layout customization (1, 2, 3 column, responsive), custom themes, and comprehensive accessibility tools!</p>
+  </div>
+
+  <div class="info-box">
+    <strong>🎯 How to Test:</strong> Click any button below to configure the widget, then look for the accessibility icon (♿) in the bottom-right corner to see the layout changes!
+  </div>
+
+  <div class="config-section">
+    <h2>🏗️ Layout Configuration</h2>
+    <p>Choose different column layouts for the accessibility widget panel:</p>
+    
+    <div class="demo-grid">
+      <div class="demo-card">
+        <h3>📱 1 Column</h3>
+        <p>Traditional single column layout - perfect for mobile and compact displays</p>
+        <button class="layout-button" onclick="initWidgetWithLayout('1-column')">
+          Apply 1 Column Layout
+        </button>
+      </div>
+      
+      <div class="demo-card">
+        <h3>📋 2 Column</h3>
+        <p>Two column grid layout - optimal for medium screen sizes</p>
+        <button class="layout-button" onclick="initWidgetWithLayout('2-column')">
+          Apply 2 Column Layout
+        </button>
+      </div>
+      
+      <div class="demo-card">
+        <h3>📊 3 Column</h3>
+        <p>Three column grid layout - great for wide screens and desktops</p>
+        <button class="layout-button" onclick="initWidgetWithLayout('3-column')">
+          Apply 3 Column Layout
+        </button>
+      </div>
+      
+      <div class="demo-card">
+        <h3>📐 Responsive</h3>
+        <p>Adaptive grid layout that adjusts based on screen size (default)</p>
+        <button class="layout-button" onclick="initWidgetWithLayout('responsive')">
+          Apply Responsive Layout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="config-section">
+    <h2>🎨 Theme Configuration</h2>
+    <p>Apply pre-configured theme presets to see color changes:</p>
+    
+    <button class="theme-button" onclick="applyTheme('dark')" style="background: #6c757d;">Dark Theme</button>
+    <button class="theme-button" onclick="applyTheme('ocean')" style="background: #007bff;">Ocean Blue</button>
+    <button class="theme-button" onclick="applyTheme('forest')" style="background: #28a745;">Forest Green</button>
+    <button class="theme-button" onclick="applyCustomTheme()">Custom Pink Theme</button>
+    <button class="theme-button" onclick="applyHighContrastTheme()">High Contrast</button>
+  </div>
+
+  <div class="config-section">
+    <h2>🔧 Combined Examples</h2>
+    <p>Examples combining layout and theme:</p>
+    
+    <button onclick="applyFullConfig()">3-Column + Dark Theme</button>
+    <button onclick="applyMobileConfig()">1-Column + High Contrast</button>
+    <button onclick="applyDesktopConfig()">Responsive + Ocean Theme</button>
+    <button class="reset-button" onclick="resetToDefault()">Reset to Default</button>
+  </div>
+
+  <div class="config-section">
+    <h2>📋 Current Configuration</h2>
+    <div class="current-config" id="current-config">
+      Click any configuration button above to see the current settings here.
+    </div>
+  </div>
+
+  <div class="config-section">
+    <h2>🔧 Available Features</h2>
+    <p>The widget includes these accessibility features:</p>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin: 20px 0;">
+      <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #007bff;">
+        <h4 style="margin: 0 0 10px 0; color: #007bff;">Navigation & Focus</h4>
+        <ul style="margin: 0; padding-left: 20px; font-size: 14px;">
+          <li>Skip Links</li>
+          <li>Keyboard Navigation</li>
+          <li>Focus Enhancement</li>
+          <li>Focus Trap</li>
+          <li>Highlight Links</li>
+          <li>Reading Line</li>
+        </ul>
+      </div>
+      
+      <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+        <h4 style="margin: 0 0 10px 0; color: #28a745;">Visual & Color</h4>
+        <ul style="margin: 0; padding-left: 20px; font-size: 14px;">
+          <li>Contrast</li>
+          <li>Color Blind Support</li>
+          <li>Saturation</li>
+          <li>Invert</li>
+          <li>Luminosity</li>
+          <li>Grayscale</li>
+          <li>Hide Images</li>
+          <li>Screen Mask</li>
+        </ul>
+      </div>
+      
+      <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107;">
+        <h4 style="margin: 0 0 10px 0; color: #ffc107;">Text & Reading</h4>
+        <ul style="margin: 0; padding-left: 20px; font-size: 14px;">
+          <li>Bigger Text</li>
+          <li>Text Spacing</li>
+          <li>Line Height</li>
+          <li>Text Align</li>
+          <li>Dyslexia Friendly</li>
+          <li>Cursor</li>
+          <li>Readable Font</li>
+          <li>Text Magnifier</li>
+          <li>Dictionary</li>
+        </ul>
+      </div>
+      
+      <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #dc3545;">
+        <h4 style="margin: 0 0 10px 0; color: #dc3545;">Motion & Interaction</h4>
+        <ul style="margin: 0; padding-left: 20px; font-size: 14px;">
+          <li>Reduced Motion</li>
+          <li>Pause Animations</li>
+          <li>Tooltip</li>
+          <li>Mute Sounds</li>
+        </ul>
+      </div>
+      
+      <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #6f42c1;">
+        <h4 style="margin: 0 0 10px 0; color: #6f42c1;">Validation & Testing</h4>
+        <ul style="margin: 0; padding-left: 20px; font-size: 14px;">
+          <li>Alt Text Validator</li>
+          <li>Page Title Validator</li>
+          <li>Language Validator</li>
+          <li>Touch Target Validator</li>
+          <li>Reading Order Validator</li>
+          <li>Error Identification</li>
+        </ul>
+      </div>
+      
+      <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #17a2b8;">
+        <h4 style="margin: 0 0 10px 0; color: #17a2b8;">Assistive & Structure</h4>
+        <ul style="margin: 0; padding-left: 20px; font-size: 14px;">
+          <li>Screen Reader</li>
+          <li>Page Structure</li>
+          <li>Form Enhancement</li>
+          <li>Auto Refresh Controls</li>
+          <li>Highlight Titles</li>
+          <li>Highlight All</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="test-content">
+    <h2>🧪 Test Content</h2>
+    <p>Use this content to test the accessibility features after configuring the widget:</p>
+    
+    <h3>Sample Text Content</h3>
+    <p>This is a <strong>sample paragraph</strong> with <em>various formatting</em> to test text-related accessibility features like text size, spacing, and line height adjustments.</p>
+    
+    <h3>Links and Interactive Elements</h3>
+    <p>Here are some <a href="#test1">test links</a> and <a href="#test2">more links</a> to demonstrate link highlighting features.</p>
+    
+    <button>Sample Button</button>
+    <button style="background: #28a745;">Another Button</button>
+    
+    <h3>Form Elements (for Form Enhancement)</h3>
+    <form style="margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required style="margin: 10px; padding: 8px;">
+      <br>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required style="margin: 10px; padding: 8px;">
+      <br>
+      <button type="submit">Submit Form</button>
+    </form>
+    
+    <h3>Images (for Alt Text Validator)</h3>
+    <img src="https://via.placeholder.com/200x150/0066cc/ffffff?text=Sample+Image" alt="A blue sample image" style="margin: 10px;">
+    <img src="https://via.placeholder.com/200x150/28a745/ffffff?text=Test+Image" alt="" style="margin: 10px;">
+    <img src="https://via.placeholder.com/200x150/dc3545/ffffff?text=No+Alt" style="margin: 10px;">
+    
+    <h3>Color Testing</h3>
+    <div style="background: #ffeb3b; padding: 10px; margin: 10px 0;">Yellow background for contrast testing</div>
+    <div style="background: #f44336; color: white; padding: 10px; margin: 10px 0;">Red background for color blind testing</div>
+    <div style="background: #4caf50; color: white; padding: 10px; margin: 10px 0;">Green background for saturation testing</div>
+    
+    <h3>Page Structure (for Page Structure Feature)</h3>
+    <div style="margin: 20px 0;">
+      <h4>Section 1</h4>
+      <p>This is the first section with some content.</p>
+      
+      <h4>Section 2</h4>
+      <p>This is the second section with more content.</p>
+      
+      <h4>Section 3</h4>
+      <p>This is the third section with additional content.</p>
+    </div>
+    
+    <h3>Touch Targets (for Touch Target Validator)</h3>
+    <div style="margin: 20px 0;">
+      <button style="width: 30px; height: 30px; margin: 5px;">S</button>
+      <button style="width: 50px; height: 50px; margin: 5px;">M</button>
+      <button style="width: 80px; height: 80px; margin: 5px;">L</button>
+    </div>
+  </div>
+
+  <script>
+    let currentConfig = {
+      layout: 'responsive',
+      theme: {},
+      locale: 'en-US',
+      widgetHeight: '75vh'
+    };
+
+    function updateConfigDisplay(config) {
+      currentConfig = { ...config };
+      const configDiv = document.getElementById('current-config');
+      const hasCustomTheme = Object.keys(config.theme || {}).length > 0;
+      
+      configDiv.innerHTML = `
+        <strong>🔧 Active Configuration:</strong><br>
+        <strong>Layout:</strong> ${config.layout || 'responsive'}<br>
+        <strong>Widget Height:</strong> ${config.widgetHeight || '75vh'}<br>
+        <strong>Custom Theme:</strong> ${hasCustomTheme ? 'Yes (' + Object.keys(config.theme).length + ' properties)' : 'No (using defaults)'}<br>
+        <strong>Features Count:</strong> ${(config.enabledFeatures || []).length} enabled
+      `;
+    }
+
+    function initWidgetWithLayout(layout) {
+      const config = {
+        layout: layout,
+        locale: 'en-US',
+        widgetHeight: '75vh',
+        theme: currentConfig.theme || {},
+        enabledFeatures: [
+          "Skip Links",
+          "Keyboard Navigation",
+          "Alt Text Validator", 
+          "Page Title Validator",
+          "Language Validator",
+          "Auto Refresh Controls",
+          "Focus Trap",
+          "Touch Target Validator",
+          "Reading Order Validator",
+          "Error Identification",
+          "Focus Enhancement",
+          "Contrast",
+          "Color Blind Support",
+          "Saturation",
+          "Invert",
+          "Luminosity",
+          "Grayscale",
+          "Dyslexia Friendly",
+          "Screen Reader",
+          "Bigger Text",
+          "Text Spacing",
+          "Line Height",
+          "Text Align",
+          "Dictionary",
+          "Highlight Links",
+          "Cursor",
+          "Tooltip",
+          "Readable Font",
+          "Text Magnifier",
+          "Reduced Motion",
+          "Pause Animations",
+          "Screen Mask",
+          "Hide Images",
+          "Page Structure",
+          "Form Enhancement",
+          "Reading Line",
+          "Highlight Titles",
+          "Highlight All",
+          "Mute Sounds"
+        ]
+      };
+      
+      initializeIzmo(config);
+      updateConfigDisplay(config);
+      console.log('Applied layout:', layout);
+    }
+
+    const themePresets = {
+      dark: {
+        modalBackgroundColor: '#2c3e50',
+        actionBackgroundColor: '#34495e',
+        actionActiveBackgroundColor: '#e74c3c',
+        actionIconActiveBackgroundColor: '#c0392b'
+      },
+      ocean: {
+        modalBackgroundColor: '#1e3a8a',
+        actionBackgroundColor: '#3b82f6',
+        actionActiveBackgroundColor: '#06b6d4',
+        actionIconActiveBackgroundColor: '#0891b2'
+      },
+      forest: {
+        modalBackgroundColor: '#1f2937',
+        actionBackgroundColor: '#374151',
+        actionActiveBackgroundColor: '#10b981',
+        actionIconActiveBackgroundColor: '#059669'
+      }
+    };
+
+    function applyTheme(themeName) {
+      const config = {
+        layout: currentConfig.layout || 'responsive',
+        theme: themePresets[themeName] || {},
+        locale: 'en-US',
+        widgetHeight: '75vh',
+        enabledFeatures: [
+          "Skip Links",
+          "Keyboard Navigation",
+          "Alt Text Validator", 
+          "Page Title Validator",
+          "Language Validator",
+          "Auto Refresh Controls",
+          "Focus Trap",
+          "Touch Target Validator",
+          "Reading Order Validator",
+          "Error Identification",
+          "Focus Enhancement",
+          "Contrast",
+          "Color Blind Support",
+          "Saturation",
+          "Invert",
+          "Luminosity",
+          "Grayscale",
+          "Dyslexia Friendly",
+          "Screen Reader",
+          "Bigger Text",
+          "Text Spacing",
+          "Line Height",
+          "Text Align",
+          "Dictionary",
+          "Highlight Links",
+          "Cursor",
+          "Tooltip",
+          "Readable Font",
+          "Text Magnifier",
+          "Reduced Motion",
+          "Pause Animations",
+          "Screen Mask",
+          "Hide Images",
+          "Page Structure",
+          "Form Enhancement",
+          "Reading Line",
+          "Highlight Titles",
+          "Highlight All",
+          "Mute Sounds"
+        ]
+      };
+      
+      initializeIzmo(config);
+      updateConfigDisplay(config);
+      console.log('Applied theme:', themeName);
+    }
+
+    function applyCustomTheme() {
+      const config = {
+        layout: currentConfig.layout || 'responsive',
+        theme: {
+          modalBackgroundColor: '#8e44ad',
+          actionBackgroundColor: '#9b59b6',
+          actionActiveBackgroundColor: '#e91e63',
+          actionIconActiveBackgroundColor: '#ad1457',
+          actionTextColor: '#ffffff',
+          actionActiveTextColor: '#ffffff'
+        },
+        locale: 'en-US',
+        widgetHeight: '75vh',
+        enabledFeatures: [
+          "Skip Links",
+          "Keyboard Navigation",
+          "Alt Text Validator", 
+          "Page Title Validator",
+          "Language Validator",
+          "Auto Refresh Controls",
+          "Focus Trap",
+          "Touch Target Validator",
+          "Reading Order Validator",
+          "Error Identification",
+          "Focus Enhancement",
+          "Contrast",
+          "Color Blind Support",
+          "Saturation",
+          "Invert",
+          "Luminosity",
+          "Grayscale",
+          "Dyslexia Friendly",
+          "Screen Reader",
+          "Bigger Text",
+          "Text Spacing",
+          "Line Height",
+          "Text Align",
+          "Dictionary",
+          "Highlight Links",
+          "Cursor",
+          "Tooltip",
+          "Readable Font",
+          "Text Magnifier",
+          "Reduced Motion",
+          "Pause Animations",
+          "Screen Mask",
+          "Hide Images",
+          "Page Structure",
+          "Form Enhancement",
+          "Reading Line",
+          "Highlight Titles",
+          "Highlight All",
+          "Mute Sounds"
+        ]
+      };
+      
+      initializeIzmo(config);
+      updateConfigDisplay(config);
+      console.log('Applied custom pink theme');
+    }
+
+    function applyHighContrastTheme() {
+      const config = {
+        layout: currentConfig.layout || 'responsive',
+        theme: {
+          modalBackgroundColor: '#000000',
+          actionBackgroundColor: '#333333',
+          actionActiveBackgroundColor: '#ffff00',
+          actionIconActiveBackgroundColor: '#ffff00',
+          actionTextColor: '#ffffff',
+          actionActiveTextColor: '#000000'
+        },
+        locale: 'en-US',
+        widgetHeight: '75vh',
+        enabledFeatures: [
+          "Skip Links",
+          "Keyboard Navigation",
+          "Alt Text Validator", 
+          "Page Title Validator",
+          "Language Validator",
+          "Auto Refresh Controls",
+          "Focus Trap",
+          "Touch Target Validator",
+          "Reading Order Validator",
+          "Error Identification",
+          "Focus Enhancement",
+          "Contrast",
+          "Color Blind Support",
+          "Saturation",
+          "Invert",
+          "Luminosity",
+          "Grayscale",
+          "Dyslexia Friendly",
+          "Screen Reader",
+          "Bigger Text",
+          "Text Spacing",
+          "Line Height",
+          "Text Align",
+          "Dictionary",
+          "Highlight Links",
+          "Cursor",
+          "Tooltip",
+          "Readable Font",
+          "Text Magnifier",
+          "Reduced Motion",
+          "Pause Animations",
+          "Screen Mask",
+          "Hide Images",
+          "Page Structure",
+          "Form Enhancement",
+          "Reading Line",
+          "Highlight Titles",
+          "Highlight All",
+          "Mute Sounds"
+        ]
+      };
+      
+      initializeIzmo(config);
+      updateConfigDisplay(config);
+      console.log('Applied high contrast theme');
+    }
+
+    function applyFullConfig() {
+      const config = {
+        layout: '3-column',
+        theme: themePresets.dark,
+        locale: 'en-US',
+        widgetHeight: '80vh',
+        enabledFeatures: [
+          "Skip Links",
+          "Keyboard Navigation",
+          "Alt Text Validator", 
+          "Page Title Validator",
+          "Language Validator",
+          "Auto Refresh Controls",
+          "Focus Trap",
+          "Touch Target Validator",
+          "Reading Order Validator",
+          "Error Identification",
+          "Focus Enhancement",
+          "Contrast",
+          "Color Blind Support",
+          "Saturation",
+          "Invert",
+          "Luminosity",
+          "Grayscale",
+          "Dyslexia Friendly",
+          "Screen Reader",
+          "Bigger Text",
+          "Text Spacing",
+          "Line Height",
+          "Text Align",
+          "Dictionary",
+          "Highlight Links",
+          "Cursor",
+          "Tooltip",
+          "Readable Font",
+          "Text Magnifier",
+          "Reduced Motion",
+          "Pause Animations",
+          "Screen Mask",
+          "Hide Images",
+          "Page Structure",
+          "Form Enhancement",
+          "Reading Line",
+          "Highlight Titles",
+          "Highlight All",
+          "Mute Sounds"
+        ]
+      };
+      
+      initializeIzmo(config);
+      updateConfigDisplay(config);
+      console.log('Applied 3-column + dark theme configuration');
+    }
+
+    function applyMobileConfig() {
+      const config = {
+        layout: '1-column',
+        theme: {
+          modalBackgroundColor: '#000000',
+          actionBackgroundColor: '#333333',
+          actionActiveBackgroundColor: '#ffff00',
+          actionTextColor: '#ffffff',
+          actionActiveTextColor: '#000000'
+        },
+        locale: 'en-US',
+        widgetHeight: '60vh',
+        enabledFeatures: [
+          "Skip Links",
+          "Keyboard Navigation",
+          "Alt Text Validator",
+          "Page Title Validator",
+          "Language Validator",
+          "Focus Trap",
+          "Touch Target Validator",
+          "Error Identification",
+          "Focus Enhancement",
+          "Contrast",
+          "Color Blind Support",
+          "Saturation",
+          "Invert",
+          "Luminosity",
+          "Grayscale",
+          "Screen Reader",
+          "Bigger Text",
+          "Text Spacing",
+          "Line Height",
+          "Text Align",
+          "Dictionary",
+          "Highlight Links",
+          "Cursor",
+          "Tooltip",
+          "Readable Font",
+          "Text Magnifier",
+          "Reduced Motion",
+          "Pause Animations",
+          "Screen Mask",
+          "Hide Images",
+          "Page Structure",
+          "Form Enhancement",
+          "Reading Line",
+          "Highlight Titles",
+          "Highlight All",
+          "Mute Sounds"
+        ]
+      };
+      
+      initializeIzmo(config);
+      updateConfigDisplay(config);
+      console.log('Applied mobile-optimized configuration');
+    }
+
+    function applyDesktopConfig() {
+      const config = {
+        layout: 'responsive',
+        theme: themePresets.ocean,
+        locale: 'en-US',
+        widgetHeight: '85vh',
+        enabledFeatures: [
+          "Skip Links",
+          "Keyboard Navigation",
+          "Alt Text Validator", 
+          "Page Title Validator",
+          "Language Validator",
+          "Auto Refresh Controls",
+          "Focus Trap",
+          "Touch Target Validator",
+          "Reading Order Validator",
+          "Error Identification",
+          "Focus Enhancement",
+          "Contrast",
+          "Color Blind Support",
+          "Saturation",
+          "Invert",
+          "Luminosity",
+          "Grayscale",
+          "Dyslexia Friendly",
+          "Screen Reader",
+          "Bigger Text",
+          "Text Spacing",
+          "Line Height",
+          "Text Align",
+          "Dictionary",
+          "Highlight Links",
+          "Cursor",
+          "Tooltip",
+          "Reduced Motion",
+          "Pause Animations",
+          "Screen Mask",
+          "Hide Images",
+          "Page Structure",
+          "Form Enhancement",
+          "Reading Line",
+          "Highlight Titles",
+          "Highlight All",
+          "Mute Sounds"
+        ]
+      };
+      
+      initializeIzmo(config);
+      updateConfigDisplay(config);
+      console.log('Applied desktop-optimized configuration');
+    }
+
+    function resetToDefault() {
+      const config = {
+        layout: 'responsive',
+        theme: {},
+        locale: 'en-US',
+        widgetHeight: '75vh',
+        enabledFeatures: [
+          "Skip Links",
+          "Keyboard Navigation",
+          "Alt Text Validator", 
+          "Page Title Validator",
+          "Language Validator",
+          "Auto Refresh Controls",
+          "Focus Trap",
+          "Touch Target Validator",
+          "Reading Order Validator",
+          "Error Identification",
+          "Focus Enhancement",
+          "Contrast",
+          "Color Blind Support",
+          "Saturation",
+          "Invert",
+          "Luminosity",
+          "Grayscale",
+          "Dyslexia Friendly",
+          "Screen Reader",
+          "Bigger Text",
+          "Text Spacing",
+          "Line Height",
+          "Text Align",
+          "Dictionary",
+          "Highlight Links",
+          "Cursor",
+          "Tooltip",
+          "Readable Font",
+          "Text Magnifier",
+          "Reduced Motion",
+          "Pause Animations",
+          "Screen Mask",
+          "Hide Images",
+          "Page Structure",
+          "Form Enhancement",
+          "Reading Line",
+          "Highlight Titles",
+          "Highlight All",
+          "Mute Sounds"
+        ]
+      };
+      
+      initializeIzmo(config);
+      updateConfigDisplay(config);
+      console.log('Reset to default configuration');
+    }
+
+    // Initialize with default responsive layout on page load
+    window.addEventListener('load', function() {
+      setTimeout(() => {
+        resetToDefault();
+      }, 500); // Small delay to ensure the widget script is loaded
+    });
+  </script>
+</body>
+</html>

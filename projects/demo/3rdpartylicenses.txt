@@ -10,7 +10,7 @@ MIT
 @angular/platform-browser
 MIT
 
-astral-accessibility
+izmo-accessibility
 
 rxjs
 Apache-2.0

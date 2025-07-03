@@ -1,10 +1,11 @@
 import { DOCUMENT, NgIf, NgClass } from "@angular/common";
-import { Component, inject, Renderer2 } from "@angular/core";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { Component, inject, Renderer2, OnInit } from "@angular/core";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
+import { IzmoAccessibilityComponent } from '../izmo-accessibility.component';
 
 @Component({
-  selector: "astral-highlight-links",
+  selector: "izmo-highlight-links",
   standalone: true,
   template: `
     <button
@@ -21,13 +22,13 @@ import { I18nService } from "../services/i18n.service";
             }"
           >
             <svg
-              width="25"
-              height="25"
+              width="32"
+              height="32"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                fill="white"
+                fill="currentColor"
                 d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"
               />
             </svg>
@@ -56,28 +57,43 @@ import { I18nService } from "../services/i18n.service";
         </div>
       </div>
 
-      <astral-widget-checkmark
+      <izmo-widget-checkmark
         [isActive]="currentState !== 0"
-      ></astral-widget-checkmark>
+      ></izmo-widget-checkmark>
     </button>
   `,
-  imports: [NgIf, NgClass, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, IzmoCheckmarkSvgComponent],
 })
-export class HighlightLinksComponent {
+export class HighlightLinksComponent implements OnInit {
   document = inject(DOCUMENT);
   renderer = inject(Renderer2);
   i18n = inject(I18nService);
+  parent = inject(IzmoAccessibilityComponent);
 
   currentState = 0;
-  base = this.i18n.getTranslation('highlight-links');
-  states = [
-    this.i18n.getTranslation('highlight-links'),
-    this.i18n.getTranslation('subtle-highlight'),
-    this.i18n.getTranslation('strong-highlight'),
-    this.i18n.getTranslation('underline-all')
-  ];
+  
+  // Make these reactive to language changes
+  get base() {
+    return this.i18n.getTranslation('highlight-links');
+  }
+  
+  get states() {
+    return [
+      this.base,
+      this.i18n.getTranslation('subtle-highlight'),
+      this.i18n.getTranslation('strong-highlight'),
+      this.i18n.getTranslation('underline-all')
+    ];
+  }
 
   private styleElement?: HTMLStyleElement;
+
+  ngOnInit() {
+    this.parent.resetEvent.subscribe(() => {
+      this.currentState = 0;
+      this._runStateLogic();
+    });
+  }
 
   nextState() {
     this.currentState += 1;

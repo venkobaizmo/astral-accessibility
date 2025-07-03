@@ -1,10 +1,11 @@
 import { DOCUMENT, NgIf, NgClass } from "@angular/common";
-import { Component, Renderer2, OnDestroy, inject } from "@angular/core";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { Component, Renderer2, OnDestroy, inject, OnInit } from "@angular/core";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
+import { IzmoAccessibilityComponent } from '../izmo-accessibility.component';
 
 @Component({
-  selector: "astral-dyslexia-friendly",
+  selector: "izmo-dyslexia-friendly",
   standalone: true,  template: `
     <button      (click)="nextState()"
       [ngClass]="{ 'in-use': !isBaseState() }"
@@ -27,7 +28,7 @@ import { I18nService } from "../services/i18n.service";
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                fill="white"
+                fill="currentColor"
                 d="M14,17H7V15H14M17,13H7V11H17M17,9H7V7H17M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3Z"
               />
             </svg>
@@ -56,20 +57,21 @@ import { I18nService } from "../services/i18n.service";
         </div>
       </div>
 
-      <astral-widget-checkmark
+      <izmo-widget-checkmark
         [isActive]="!isBaseState()"
-      ></astral-widget-checkmark>
+      ></izmo-widget-checkmark>
     </button>
   `,
-  imports: [NgIf, NgClass, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, IzmoCheckmarkSvgComponent],
 })
-export class DyslexiaFriendlyComponent implements OnDestroy {
+export class DyslexiaFriendlyComponent implements OnInit, OnDestroy {
   document = inject(DOCUMENT);
   
   currentState = 0;
   private styleElement?: HTMLStyleElement;
   private fontLoaded = false;
   private scrollHandler?: () => void;
+  parent = inject(IzmoAccessibilityComponent);
 
   constructor(private readonly renderer: Renderer2, public readonly i18n: I18nService) {}  get baseText() {
     return this.i18n.getTranslation('dyslexia-friendly' as any);
@@ -145,22 +147,22 @@ export class DyslexiaFriendlyComponent implements OnDestroy {
 
     if (this.isOpenDyslexicActive()) {
       css = `
-        body > :not(astral-accessibility) * {
+        body > :not(izmo-accessibility) * {
           font-family: 'OpenDyslexic', 'Comic Sans MS', 'Verdana', sans-serif !important;
         }
         
-        body > :not(astral-accessibility) p, 
-        body > :not(astral-accessibility) span, 
-        body > :not(astral-accessibility) div, 
-        body > :not(astral-accessibility) li, 
-        body > :not(astral-accessibility) td, 
-        body > :not(astral-accessibility) th, 
-        body > :not(astral-accessibility) h1, 
-        body > :not(astral-accessibility) h2, 
-        body > :not(astral-accessibility) h3, 
-        body > :not(astral-accessibility) h4, 
-        body > :not(astral-accessibility) h5, 
-        body > :not(astral-accessibility) h6 {
+        body > :not(izmo-accessibility) p, 
+        body > :not(izmo-accessibility) span, 
+        body > :not(izmo-accessibility) div, 
+        body > :not(izmo-accessibility) li, 
+        body > :not(izmo-accessibility) td, 
+        body > :not(izmo-accessibility) th, 
+        body > :not(izmo-accessibility) h1, 
+        body > :not(izmo-accessibility) h2, 
+        body > :not(izmo-accessibility) h3, 
+        body > :not(izmo-accessibility) h4, 
+        body > :not(izmo-accessibility) h5, 
+        body > :not(izmo-accessibility) h6 {
           line-height: 1.8 !important;
           word-spacing: 0.1em !important;
           letter-spacing: 0.05em !important;
@@ -170,28 +172,28 @@ export class DyslexiaFriendlyComponent implements OnDestroy {
 
     if (this.isHighReadabilityActive()) {
       css = `
-        body > :not(astral-accessibility) * {
+        body > :not(izmo-accessibility) * {
           font-family: 'OpenDyslexic', 'Verdana', 'Arial', sans-serif !important;
           font-weight: 400 !important;
         }
         
-        body > :not(astral-accessibility) {
+        body > :not(izmo-accessibility) {
           background-color: #fefefe !important;
           color: #1a1a1a !important;
         }
         
-        body > :not(astral-accessibility) p, 
-        body > :not(astral-accessibility) span, 
-        body > :not(astral-accessibility) div, 
-        body > :not(astral-accessibility) li, 
-        body > :not(astral-accessibility) td, 
-        body > :not(astral-accessibility) th, 
-        body > :not(astral-accessibility) h1, 
-        body > :not(astral-accessibility) h2, 
-        body > :not(astral-accessibility) h3, 
-        body > :not(astral-accessibility) h4, 
-        body > :not(astral-accessibility) h5, 
-        body > :not(astral-accessibility) h6 {
+        body > :not(izmo-accessibility) p, 
+        body > :not(izmo-accessibility) span, 
+        body > :not(izmo-accessibility) div, 
+        body > :not(izmo-accessibility) li, 
+        body > :not(izmo-accessibility) td, 
+        body > :not(izmo-accessibility) th, 
+        body > :not(izmo-accessibility) h1, 
+        body > :not(izmo-accessibility) h2, 
+        body > :not(izmo-accessibility) h3, 
+        body > :not(izmo-accessibility) h4, 
+        body > :not(izmo-accessibility) h5, 
+        body > :not(izmo-accessibility) h6 {
           line-height: 2.0 !important;
           word-spacing: 0.15em !important;
           letter-spacing: 0.1em !important;
@@ -201,13 +203,13 @@ export class DyslexiaFriendlyComponent implements OnDestroy {
         }
         
         /* Reduce visual clutter */
-        body > :not(astral-accessibility) * {
+        body > :not(izmo-accessibility) * {
           text-decoration: none !important;
           text-shadow: none !important;
         }
         
         /* Better contrast */
-        body > :not(astral-accessibility) a {
+        body > :not(izmo-accessibility) a {
           color: #0066cc !important;
           background-color: rgba(0, 102, 204, 0.1) !important;
           padding: 1px 2px !important;
@@ -215,7 +217,7 @@ export class DyslexiaFriendlyComponent implements OnDestroy {
         }
         
         /* Paragraph spacing */
-        body > :not(astral-accessibility) p {
+        body > :not(izmo-accessibility) p {
           margin-bottom: 1.5em !important;
         }
       `;
@@ -223,27 +225,27 @@ export class DyslexiaFriendlyComponent implements OnDestroy {
 
     if (this.isReadingGuideActive()) {
       css = `
-        body > :not(astral-accessibility) * {
+        body > :not(izmo-accessibility) * {
           font-family: 'OpenDyslexic', 'Verdana', 'Arial', sans-serif !important;
         }
         
-        body > :not(astral-accessibility) {
+        body > :not(izmo-accessibility) {
           background-color: #f9f7f4 !important;
           color: #2c2c2c !important;
         }
         
-        body > :not(astral-accessibility) p, 
-        body > :not(astral-accessibility) span, 
-        body > :not(astral-accessibility) div, 
-        body > :not(astral-accessibility) li, 
-        body > :not(astral-accessibility) td, 
-        body > :not(astral-accessibility) th, 
-        body > :not(astral-accessibility) h1, 
-        body > :not(astral-accessibility) h2, 
-        body > :not(astral-accessibility) h3, 
-        body > :not(astral-accessibility) h4, 
-        body > :not(astral-accessibility) h5, 
-        body > :not(astral-accessibility) h6 {
+        body > :not(izmo-accessibility) p, 
+        body > :not(izmo-accessibility) span, 
+        body > :not(izmo-accessibility) div, 
+        body > :not(izmo-accessibility) li, 
+        body > :not(izmo-accessibility) td, 
+        body > :not(izmo-accessibility) th, 
+        body > :not(izmo-accessibility) h1, 
+        body > :not(izmo-accessibility) h2, 
+        body > :not(izmo-accessibility) h3, 
+        body > :not(izmo-accessibility) h4, 
+        body > :not(izmo-accessibility) h5, 
+        body > :not(izmo-accessibility) h6 {
           line-height: 2.2 !important;
           word-spacing: 0.2em !important;
           letter-spacing: 0.12em !important;
@@ -251,7 +253,7 @@ export class DyslexiaFriendlyComponent implements OnDestroy {
         }
         
         /* Reading ruler/guide */
-        .astral-reading-guide {
+        .izmo-reading-guide {
           position: fixed;
           top: 0;
           left: 0;
@@ -263,18 +265,18 @@ export class DyslexiaFriendlyComponent implements OnDestroy {
         }
         
         /* Focus paragraph highlighting */
-        body > :not(astral-accessibility) p:hover, 
-        body > :not(astral-accessibility) li:hover {
+        body > :not(izmo-accessibility) p:hover, 
+        body > :not(izmo-accessibility) li:hover {
           background-color: rgba(255, 255, 0, 0.2) !important;
           border-left: 4px solid #ff6b6b !important;
           padding-left: 8px !important;
         }
         
         /* Column layout for better reading */
-        body > :not(astral-accessibility) .content, 
-        body > :not(astral-accessibility) .main, 
-        body > :not(astral-accessibility) article, 
-        body > :not(astral-accessibility) .post {
+        body > :not(izmo-accessibility) .content, 
+        body > :not(izmo-accessibility) .main, 
+        body > :not(izmo-accessibility) article, 
+        body > :not(izmo-accessibility) .post {
           column-width: 35em !important;
           column-gap: 2em !important;
           column-rule: 1px solid #ddd !important;
@@ -301,11 +303,11 @@ export class DyslexiaFriendlyComponent implements OnDestroy {
     this.fontLoaded = true;
   }
   private addReadingGuide() {
-    const existingGuide = this.document.querySelector('.astral-reading-guide');
+    const existingGuide = this.document.querySelector('.izmo-reading-guide');
     if (existingGuide) return;
 
     const guide = this.renderer.createElement('div');
-    this.renderer.addClass(guide, 'astral-reading-guide');
+    this.renderer.addClass(guide, 'izmo-reading-guide');
     this.renderer.appendChild(this.document.body, guide);
 
     // Follow scroll position
@@ -360,11 +362,18 @@ export class DyslexiaFriendlyComponent implements OnDestroy {
     }, 1000);
   }
 
+  ngOnInit() {
+    this.parent.resetEvent.subscribe(() => {
+      this.currentState = 0;
+      this._runStateLogic();
+    });
+  }
+
   ngOnDestroy() {
     if (this.styleElement) {
       this.renderer.removeChild(this.document.head, this.styleElement);
     }
-    const guide = this.document.querySelector('.astral-reading-guide');
+    const guide = this.document.querySelector('.izmo-reading-guide');
     if (guide) {
       this.renderer.removeChild(this.document.body, guide);
     }

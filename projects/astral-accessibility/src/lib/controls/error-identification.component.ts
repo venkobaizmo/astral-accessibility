@@ -1,7 +1,9 @@
 import { DOCUMENT, NgIf, NgClass, NgFor } from "@angular/common";
-import { Component, inject, Renderer2, OnDestroy } from "@angular/core";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { Component, inject, Renderer2, OnDestroy, OnInit, Optional, SkipSelf } from "@angular/core";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
+import { IzmoAccessibilityComponent } from "../izmo-accessibility.component";
+
 
 interface ErrorIdentificationIssue {
   element: HTMLElement;
@@ -13,7 +15,7 @@ interface ErrorIdentificationIssue {
 }
 
 @Component({
-  selector: "astral-error-identification",
+  selector: "izmo-error-identification",
   standalone: true,
   template: `
     <button
@@ -30,18 +32,18 @@ interface ErrorIdentificationIssue {
             }"
           >
             <svg
-              width="25"
-              height="25"
+              width="32"
+              height="32"
               viewBox="0 0 41 41"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <rect x="6" y="8" width="29" height="22" rx="2" fill="none" stroke="#FFF" stroke-width="2"/>
-              <path d="M10 15 L18 15" stroke="#FFF" stroke-width="2"/>
-              <path d="M10 20 L25 20" stroke="#FFF" stroke-width="2"/>
-              <rect x="10" y="23" width="15" height="3" rx="1" fill="none" stroke="#FFF" stroke-width="1"/>
+              <rect x="6" y="8" width="29" height="22" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+              <path d="M10 15 L18 15" stroke="currentColor" stroke-width="2"/>
+              <path d="M10 20 L25 20" stroke="currentColor" stroke-width="2"/>
+              <rect x="10" y="23" width="15" height="3" rx="1" fill="none" stroke="currentColor" stroke-width="1"/>
               <circle cx="32" cy="12" r="5" fill="#FF6B6B"/>
-              <text x="29" y="16" font-family="Arial" font-size="6" fill="#FFF">!</text>
-              <text x="8" y="37" font-family="Arial" font-size="5" fill="#FFF">ERROR</text>
+              <text x="29" y="16" font-family="Arial" font-size="6" fill="currentColor">!</text>
+              <text x="8" y="37" font-family="Arial" font-size="5" fill="currentColor">ERROR</text>
             </svg>
           </div>
 
@@ -68,9 +70,9 @@ interface ErrorIdentificationIssue {
         </div>
       </div>
 
-      <astral-widget-checkmark
+      <izmo-widget-checkmark
         [isActive]="currentState !== 0"
-      ></astral-widget-checkmark>
+      ></izmo-widget-checkmark>
     </button>
 
     <div 
@@ -256,23 +258,35 @@ interface ErrorIdentificationIssue {
       </div>
     </div>
   `,
-  imports: [NgIf, NgClass, NgFor, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, NgFor, IzmoCheckmarkSvgComponent],
 })
 export class ErrorIdentificationComponent implements OnDestroy {
   constructor(
     private renderer: Renderer2,
-    private i18n: I18nService
-  ) {}
+    private i18n: I18nService,
+    @Optional() @SkipSelf() private parent?: IzmoAccessibilityComponent
+  ) {
+    if (this.parent) {
+      this.parent.resetEvent.subscribe(() => this.reset());
+    }
+  }
 
   document = inject(DOCUMENT);
   currentState = 0;
-  base = this.i18n.getTranslation('error-identification');
-  states = [
-    this.i18n.getTranslation('error-identification'),
-    this.i18n.getTranslation('identify-errors'),
-    this.i18n.getTranslation('errors-found'),
-    this.i18n.getTranslation('error-identification-active')
-  ];
+  
+  // Make these reactive to language changes
+  get base() {
+    return this.i18n.getTranslation('error-identification');
+  }
+  
+  get states() {
+    return [
+      this.base,
+      this.i18n.getTranslation('identify-errors'),
+      this.i18n.getTranslation('errors-found'),
+      this.i18n.getTranslation('error-identification-active')
+    ];
+  }
   
   errorIdentificationIssues: ErrorIdentificationIssue[] = [];
   showErrorPanel = false;
@@ -330,7 +344,7 @@ export class ErrorIdentificationComponent implements OnDestroy {
     this.formsFound = forms.length;
     
     forms.forEach(form => {
-      if (form.closest('astral-accessibility')) return;
+      if (form.closest('izmo-accessibility')) return;
       
       this.analyzeForm(form);
     });
@@ -340,7 +354,7 @@ export class ErrorIdentificationComponent implements OnDestroy {
     this.inputFieldsFound = inputs.length;
     
     inputs.forEach(input => {
-      if (input.closest('astral-accessibility')) return;
+      if (input.closest('izmo-accessibility')) return;
       if (input.closest('form')) return; // Already analyzed as part of form
       
       this.analyzeInputField(input);
@@ -566,7 +580,7 @@ export class ErrorIdentificationComponent implements OnDestroy {
     
     // Generate unique ID if needed
     if (!input.id) {
-      const id = `astral-field-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      const id = `izmo-field-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
       this.renderer.setAttribute(input, 'id', id);
     }
     
@@ -685,7 +699,7 @@ export class ErrorIdentificationComponent implements OnDestroy {
     
     // Create new error container
     const errorContainer = this.renderer.createElement('div');
-    const errorId = `astral-error-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    const errorId = `izmo-error-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     
     this.renderer.setAttribute(errorContainer, 'id', errorId);
     this.renderer.setAttribute(errorContainer, 'role', 'alert');
@@ -977,5 +991,12 @@ export class ErrorIdentificationComponent implements OnDestroy {
     this.revertAllEnhancements();
     this.removeHighlights();
     this.showErrorPanel = false;
+  }
+
+  reset() {
+    this.currentState = 0;
+    this.showErrorPanel = false;
+    this.removeHighlights();
+    this.revertAllEnhancements();
   }
 }

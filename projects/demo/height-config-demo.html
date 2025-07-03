@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Astral Widget - Height Configuration Demo</title>
+  <title>Izmo Widget - Height Configuration Demo</title>
   <link rel="stylesheet" href="styles.css" />
   <!-- Load the widget bundle -->
   <script src="main.js"></script>
@@ -91,7 +91,7 @@
   </style>
 </head>
 <body>
-  <h1>🎛️ Astral Widget Height Configuration Demo</h1>
+  <h1>🎛️ Izmo Widget Height Configuration Demo</h1>
   
   <div class="card">
     <h2>🎛️ Widget Height Configuration</h2>
@@ -138,7 +138,7 @@
     
     <h3>Default Height (75vh)</h3>
     <div class="config-example">
-initializeAstral({
+initializeIzmo({
   enabledFeatures: [...],
   // No widgetHeight specified - uses default 75vh
 });
@@ -146,7 +146,7 @@ initializeAstral({
 
     <h3>Small Height (50vh)</h3>
     <div class="config-example">
-initializeAstral({
+initializeIzmo({
   enabledFeatures: [...],
   widgetHeight: "50vh"
 });
@@ -154,7 +154,7 @@ initializeAstral({
 
     <h3>Large Height (90vh)</h3>
     <div class="config-example">
-initializeAstral({
+initializeIzmo({
   enabledFeatures: [...],
   widgetHeight: "90vh"
 });
@@ -162,7 +162,7 @@ initializeAstral({
 
     <h3>Custom Pixel Height (400px)</h3>
     <div class="config-example">
-initializeAstral({
+initializeIzmo({
   enabledFeatures: [...],
   widgetHeight: "400px"
 });
@@ -214,7 +214,7 @@ initializeAstral({
       const statusDiv = document.getElementById('widget-status');
       
       function initializeWidget(config) {
-        if (typeof initializeAstral === 'function') {
+        if (typeof initializeIzmo === 'function') {
           let config = {
             enabledFeatures: [
               // Core accessibility features
@@ -247,12 +247,12 @@ initializeAstral({
             config.height = config.height;
           }
           
-          initializeAstral(config);
+          initializeIzmo(config);
           
           const heightText = config.height ? ` with ${config.height} height` : '';
           statusDiv.innerHTML = `<strong>✅ Widget Initialized!</strong> Widget is now running${heightText}. Look for the accessibility icon in the bottom-right corner.`;
         } else {
-          statusDiv.innerHTML = '<strong>❌ Error:</strong> initializeAstral function not found. Make sure the widget is properly loaded.';
+          statusDiv.innerHTML = '<strong>❌ Error:</strong> initializeIzmo function not found. Make sure the widget is properly loaded.';
         }
       }
       

@@ -1,10 +1,11 @@
 import { DOCUMENT, NgIf, NgClass } from "@angular/common";
-import { Component, inject, Renderer2 } from "@angular/core";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { Component, inject, Renderer2, Optional, SkipSelf } from "@angular/core";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
+import { IzmoAccessibilityComponent } from "../izmo-accessibility.component";
 
 @Component({
-  selector: "astral-screen-reader",
+  selector: "izmo-screen-reader",
   standalone: true,
   template: `
     <button
@@ -26,8 +27,8 @@ import { I18nService } from "../services/i18n.service";
             }"
           >
             <svg
-              width="25"
-              height="25"
+              width="32"
+              height="32"
               viewBox="0 0 40 27"
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -43,11 +44,11 @@ import { I18nService } from "../services/i18n.service";
               </defs>
               <g clip-path="url(#vlgiro5t1a)" transform="translate(-1084 -271)">
                 <g clip-path="url(#avls4jsytb)" transform="translate(1085 272)">
-                  <path fill="#FFF" d="M0 0h38v25H0V0z" />
+                  <path fill="currentColor" d="M0 0h38v25H0V0z" />
                 </g>
                 <path
                   d="M1104 297a1.247 1.247 0 0 1-1.25-1.057l-3.784-22.675-2.748 18.294a1.266 1.266 0 0 1-2.478.131l-2.563-9.811-1.63 3.668a1.267 1.267 0 0 1-1.159.749h-2.755a.633.633 0 1 1 0-1.265h2.755l1.632-3.67a1.267 1.267 0 0 1 2.383.195l2.563 9.812 2.748-18.293a1.266 1.266 0 0 1 2.502-.02l3.784 22.677 3.277-19.642a1.266 1.266 0 0 1 2.486-.07l3.184 14.086 1.909-6.482a1.266 1.266 0 0 1 2.417-.043l1.294 3.877.52-1.563a1.267 1.267 0 0 1 1.203-.864h2.077a.633.633 0 1 1 0 1.265h-2.077l-.52 1.562a1.267 1.267 0 0 1-2.403 0l-1.296-3.877-1.909 6.482c-.162.553-.679.926-1.255.907a1.25 1.25 0 0 1-1.196-.985l-3.184-14.084-3.277 19.639A1.247 1.247 0 0 1 1104 297z"
-                  stroke="#FFF"
+                  stroke="currentColor"
                   fill="none"
                   stroke-linejoin="round"
                 />
@@ -79,12 +80,12 @@ import { I18nService } from "../services/i18n.service";
         </div>
       </div>
 
-      <astral-widget-checkmark
+      <izmo-widget-checkmark
         [isActive]="currentState !== 0"
-      ></astral-widget-checkmark>
+      ></izmo-widget-checkmark>
     </button>
   `,
-  imports: [NgIf, NgClass, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, IzmoCheckmarkSvgComponent],
 })
 export class ScreenReaderComponent {
   globalListenFunction: Function;
@@ -96,76 +97,12 @@ export class ScreenReaderComponent {
   
   i18n = inject(I18nService);
 
-  constructor(private renderer: Renderer2) {}
-
-  readText(x: number, y: number) {
-    let element = document.elementFromPoint(x, y);
-
-    if (element) {
-      if (this.currentState !== 0) {
-        if (element.ariaLabel) {
-          // it has aria-label, use aria-label
-          this.speech.text = element.ariaLabel;
-        } else {
-          // otherwise get text content
-          this.speech.text = element.textContent || "";
-        }
-        // cancel before speech, otherwise doesn't work
-        speechSynthesis.cancel();
-        speechSynthesis.speak(this.speech);
-      }
-    }
-  }
-
-  getDefaultVoice(
-    voices: Array<SpeechSynthesisVoice>,
-    isApple = false,
-    isEdgeAndroid = false,
+  constructor(
+    private renderer: Renderer2,
+    @Optional() @SkipSelf() private parent?: IzmoAccessibilityComponent
   ) {
-    const defaultVoice = "Daniel";
-
-    // Note: Edge Android doesn't have any voices, but still works without setting the voice
-    if (voices.length > 0 || isEdgeAndroid) {
-      this.synthesisAvailable = true;
-    } else {
-      this.synthesisAvailable = false;
-      return null;
-    }
-
-    // use voice Daniel whenever available
-    const voice = voices.findIndex((v) => {
-      return v.name.toUpperCase().includes(defaultVoice.toUpperCase());
-    });
-    if (voice) {
-      this.synthesisAvailable = true;
-      return voices[voice];
-    }
-
-    // if voice Daniel not found, then pick another default voice that is not Flo
-    let i = 0;
-    voices = voices.filter((voice) => /en-US/i.test(voice.lang));
-    while (
-      !voices[i].default &&
-      i < voices.length &&
-      !voices[i].voiceURI.toUpperCase().includes("FLO")
-    ) {
-      i++;
-    }
-    if (i < voices.length) {
-      return voices[i];
-    } else {
-      return voices[0] || null;
-    }
-  }
-
-  ngOnInit() {
-    const apple = /iPhone|iPad|iPod|Safari/i;
-    const edgeAndroid = /EdgA/i;
-
-    if (apple.test(this.userAgent) && !/Chrome/.test(this.userAgent)) {
-      this.isApple = true;
-    } else if (edgeAndroid.test(this.userAgent)) {
-      this.isEdgeAndroid = true;
+    if (this.parent) {
+      this.parent.resetEvent.subscribe(() => this.reset());
     }
 
     // How to use Web Speech API
@@ -175,11 +112,14 @@ export class ScreenReaderComponent {
     voices = speechSynthesis.getVoices();
 
     // default settings, currently user has no way of modifying these
-    this.speech.voice = this.getDefaultVoice(
+    const defaultVoice = this.getDefaultVoice(
       voices,
       this.isApple,
       this.isEdgeAndroid,
     );
+    if (defaultVoice) {
+      this.speech.voice = defaultVoice;
+    }
     this.speech.lang = "en";
     this.speech.rate = 1;
     this.speech.pitch = 1;
@@ -190,11 +130,14 @@ export class ScreenReaderComponent {
     if (!voices.length) {
       speechSynthesis.addEventListener("voiceschanged", () => {
         voices = speechSynthesis.getVoices();
-        this.speech.voice = this.getDefaultVoice(
+        const newVoice = this.getDefaultVoice(
           voices,
           this.isApple,
           this.isEdgeAndroid,
         );
+        if (newVoice) {
+          this.speech.voice = newVoice;
+        }
       });
     }
 
@@ -223,14 +166,24 @@ export class ScreenReaderComponent {
 
   document = inject(DOCUMENT);
   currentState = 0;
-  base = this.i18n.getTranslation('screen-reader');
-  unavailableMessage = this.i18n.getTranslation('screen-reader-unavailable');
-  states = [
-    this.base, 
-    this.i18n.getTranslation('read-normal'), 
-    this.i18n.getTranslation('read-fast'), 
-    this.i18n.getTranslation('read-slow')
-  ];
+  
+  // Make these reactive to language changes
+  get base() {
+    return this.i18n.getTranslation('screen-reader');
+  }
+  
+  get unavailableMessage() {
+    return this.i18n.getTranslation('screen-reader-unavailable');
+  }
+  
+  get states() {
+    return [
+      this.base, 
+      this.i18n.getTranslation('read-normal'), 
+      this.i18n.getTranslation('read-fast'), 
+      this.i18n.getTranslation('read-slow')
+    ];
+  }
 
   _style: HTMLStyleElement;
 
@@ -262,5 +215,60 @@ export class ScreenReaderComponent {
       }
     }
     this.document.body.appendChild(this._style);
+  }
+
+  reset() {
+    this.currentState = 0;
+    speechSynthesis.cancel();
+  }
+
+  readText(x: number, y: number) {
+    let element = document.elementFromPoint(x, y);
+    if (element) {
+      if (this.currentState !== 0) {
+        if ((element as HTMLElement).ariaLabel) {
+          this.speech.text = (element as HTMLElement).ariaLabel ?? '';
+        } else {
+          this.speech.text = (element as HTMLElement).textContent || "";
+        }
+        speechSynthesis.cancel();
+        speechSynthesis.speak(this.speech);
+      }
+    }
+  }
+
+  getDefaultVoice(
+    voices: Array<SpeechSynthesisVoice>,
+    isApple = false,
+    isEdgeAndroid = false,
+  ): SpeechSynthesisVoice | undefined {
+    const defaultVoice = "Daniel";
+    if (voices.length > 0 || isEdgeAndroid) {
+      this.synthesisAvailable = true;
+    } else {
+      this.synthesisAvailable = false;
+      return undefined;
+    }
+    const voiceIdx = voices.findIndex((v) => {
+      return v.name.toUpperCase().includes(defaultVoice.toUpperCase());
+    });
+    if (voiceIdx !== -1) {
+      this.synthesisAvailable = true;
+      return voices[voiceIdx];
+    }
+    let i = 0;
+    voices = voices.filter((voice) => /en-US/i.test(voice.lang));
+    while (
+      !voices[i]?.default &&
+      i < voices.length &&
+      !voices[i]?.voiceURI?.toUpperCase().includes("FLO")
+    ) {
+      i++;
+    }
+    if (i < voices.length) {
+      return voices[i];
+    } else {
+      return voices[0];
+    }
   }
 }

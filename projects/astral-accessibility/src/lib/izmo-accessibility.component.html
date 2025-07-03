@@ -1,0 +1,251 @@
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, minimum-scale=1"
+/>
+<div class="izmo-accessibility d-flex align-items-end" role="complementary" [attr.aria-label]="i18n.getTranslation('accessibility-tools')">
+  <div>
+    <div class="izmo-inverted-corner"></div>
+    <button
+      *ngIf="!isModalOpen"
+      [class]="izmoAccessibilityIcon"
+      (click)="toggleModal()"
+      [attr.aria-label]="isModalOpen ? closeAccessibilityPanelText : openAccessibilityPanelText"
+      [attr.aria-expanded]="isModalOpen"
+      aria-haspopup="true"
+      aria-controls="izmo-panel"
+    >
+      <div *ngIf="!isModalOpen; else closeIconButton">
+        <svg viewBox="0 0 23 30" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <clipPath id="jna6sf4oza">
+              <path d="M1440 0v900H0V0h1440z" />
+            </clipPath>
+            <clipPath id="nita020wtb">
+              <path
+                d="M1.769 6.604c.149.04.298.093.442.152 1.454.44 5.997 1.728 9.264 1.728 3.521 0 8.513-1.488 9.54-1.81l.166-.053.023-.006.027-.006C22.281 6.316 23 7.453 23 8.484c0 1.032-.884 1.518-1.769 1.87a.521.521 0 0 1-.088.029l-4.936 1.828c-.636.252-.907.516-.968.633 0 .006-.005.011-.005.011-.061.118-.249.627-.017 2.163l.32 2.636 1.797 10.237c.017.082.033.158.045.24.132.95-.526 1.869-1.77 1.869-1.083 0-1.558-.791-1.768-1.87l-.019-.107c-.181-1.033-1.622-9.127-2.347-9.127-.724 0-2.127 8.094-2.303 9.127l-.018.108C8.949 29.209 8.468 30 7.384 30c-1.243 0-1.895-.92-1.768-1.863l.011-.076.017-.088 1.774-10.33.32-2.637c.061-.428.244-1.658.017-2.28-.072-.193-.215-.415-.752-.632l-5.262-1.74v-.018C.868 9.984 0 9.498 0 8.473 0 7.44.719 6.31 1.769 6.603zM11.503 0c1.708 0 3.095 1.47 3.095 3.281 0 1.81-1.387 3.281-3.095 3.281-1.708 0-3.096-1.47-3.096-3.28C8.407 1.47 9.795 0 11.503 0z"
+              />
+            </clipPath>
+          </defs>
+          <g clip-path="url(#jna6sf4oza)" transform="translate(-995 -777)">
+            <g clip-path="url(#nita020wtb)" transform="translate(995 777)">
+              <path d="M0 0h23v30H0V0z" style="fill: var(--izmo-header-icon-svg-color)"/>
+            </g>
+          </g>
+        </svg>
+      </div>
+      <ng-template #closeIconButton>
+        <div class="izmo-close-icon">
+          <svg
+            width="19"
+            height="30"
+            viewBox="0 0 19 30"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M17.77 15.087C17.7721 15.4546 17.7016 15.819 17.5626 16.1593C17.4236 16.4996 17.2188 16.8092 16.96 17.0701L5.78761 28.2425C5.26166 28.7684 4.54832 29.0639 3.80451 29.0639C3.06071 29.0639 2.34737 28.7684 1.82142 28.2425C1.29547 27.7165 1 27.0032 1 26.2594C1 25.5156 1.29547 24.8022 1.82142 24.2763L11.0665 15.087L2.18452 5.86987C1.89882 5.61293 1.6692 5.2998 1.51004 4.95007C1.35087 4.60034 1.26558 4.22153 1.25949 3.83733C1.2534 3.45314 1.32665 3.07181 1.47466 2.71722C1.62267 2.36262 1.84225 2.04238 2.11967 1.77651C2.3971 1.51065 2.72639 1.30489 3.08696 1.1721C3.44753 1.0393 3.83162 0.98234 4.21522 1.00476C4.59881 1.02719 4.97365 1.12852 5.31629 1.30241C5.65894 1.47631 5.96201 1.71904 6.20657 2.01541L11.5972 7.60158L16.9879 13.1878C17.4804 13.6985 17.76 14.3776 17.77 15.087Z"
+              fill="white"
+            />
+          </svg>
+        </div>
+      </ng-template>
+    </button>
+  </div>
+  <div
+    [class]="
+      isModalOpen ? izmoAccessibilityPanel + ' active' : 'izmo-modal'
+    "
+    id="izmo-panel"
+    role="dialog"
+    [attr.aria-hidden]="!isModalOpen"
+    [attr.aria-label]="i18n.getTranslation('accessibility-options-panel')"
+    [attr.aria-modal]="isModalOpen"
+  >
+    <!-- HEADER: Accessibility Icon and Title -->
+    <div class="izmo-header">
+      <div class="izmo-header-main-row">
+        <div class="izmo-header-icon-title">
+          <svg viewBox="0 0 23 30" width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <clipPath id="jna6sf4oza">
+                <path d="M1440 0v900H0V0h1440z" />
+              </clipPath>
+              <clipPath id="nita020wtb">
+                <path
+                  d="M1.769 6.604c.149.04.298.093.442.152 1.454.44 5.997 1.728 9.264 1.728 3.521 0 8.513-1.488 9.54-1.81l.166-.053.023-.006.027-.006C22.281 6.316 23 7.453 23 8.484c0 1.032-.884 1.518-1.769 1.87a.521.521 0 0 1-.088.029l-4.936 1.828c-.636.252-.907.516-.968.633 0 .006-.005.011-.005.011-.061.118-.249.627-.017 2.163l.32 2.636 1.797 10.237c.017.082.033.158.045.24.132.95-.526 1.869-1.77 1.869-1.083 0-1.558-.791-1.768-1.87l-.019-.107c-.181-1.033-1.622-9.127-2.347-9.127-.724 0-2.127 8.094-2.303 9.127l-.018.108C8.949 29.209 8.468 30 7.384 30c-1.243 0-1.895-.92-1.768-1.863l.011-.076.017-.088 1.774-10.33.32-2.637c.061-.428.244-1.658.017-2.28-.072-.193-.215-.415-.752-.632l-5.262-1.74v-.018C.868 9.984 0 9.498 0 8.473 0 7.44.719 6.31 1.769 6.603zM11.503 0c1.708 0 3.095 1.47 3.095 3.281 0 1.81-1.387 3.281-3.095 3.281-1.708 0-3.096-1.47-3.096-3.28C8.407 1.47 9.795 0 11.503 0z"
+                />
+              </clipPath>
+            </defs>
+            <g clip-path="url(#jna6sf4oza)" transform="translate(-995 -777)">
+              <g clip-path="url(#nita020wtb)" transform="translate(995 777)">
+                <path d="M0 0h23v30H0V0z" style="fill: var(--izmo-header-icon-svg-color)"/>
+              </g>
+            </g>
+          </svg>
+          <span class="izmo-header-title">{{ i18n.getTranslation('accessibility-title') }}</span>
+        </div>
+        <button class="izmo-header-close" (click)="closeModal()" [attr.aria-label]="closeAccessibilityPanelText">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="4" y1="4" x2="16" y2="16" stroke="currentColor" stroke-width="2"/>
+            <line x1="16" y1="4" x2="4" y2="16" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </button>
+      </div>
+      <div class="izmo-header-lang-row">
+        <label for="izmo-lang-select" class="izmo-lang-label">{{ i18n.getTranslation('language-title') }}</label>
+        <select
+          id="izmo-lang-select"
+          class="izmo-lang-select"
+          [(ngModel)]="currentLanguage"
+          (change)="onLanguageChange($event)"
+          [attr.aria-label]="i18n.getTranslation('select-language')"
+        >
+          <option *ngFor="let lang of availableLanguages" [value]="lang.code">{{ lang.name }}</option>
+        </select>
+      </div>
+      <div class="izmo-header-controls-title-row">
+        <span class="izmo-controls-title">{{ i18n.getTranslation('accessibility-controls-title') }}</span>
+      </div>
+    </div>
+    <!-- CONTROLS: Actions -->
+    <div class="actions" role="group" [attr.aria-label]="i18n.getTranslation('accessibility-features')">
+      <!-- WCAG 2.1 Core Features -->
+      <div class="action" *ngIf="this.enabledFeatures.includes('Skip Links')">
+        <izmo-skip-links></izmo-skip-links>
+      </div>
+
+      <!-- New WCAG 2.1 Level A/AA Features -->
+      <div class="action" *ngIf="this.enabledFeatures.includes('Alt Text Validator')">
+        <izmo-alt-text-validator></izmo-alt-text-validator>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Page Title Validator')">
+        <izmo-page-title-validator></izmo-page-title-validator>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Language Validator')">
+        <izmo-language-validator></izmo-language-validator>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Auto Refresh Controls')">
+        <izmo-auto-refresh-controls></izmo-auto-refresh-controls>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Focus Trap')">
+        <izmo-focus-trap></izmo-focus-trap>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Touch Target Validator')">
+        <izmo-touch-target-validator></izmo-touch-target-validator>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Reading Order Validator')">
+        <izmo-reading-order-validator></izmo-reading-order-validator>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Error Identification')">
+        <izmo-error-identification></izmo-error-identification>
+      </div>
+
+      <!-- Focus and Navigation Features -->
+      <div class="action" *ngIf="this.enabledFeatures.includes('Focus Enhancement')">
+        <izmo-focus-enhancement></izmo-focus-enhancement>
+      </div>
+      
+      <!-- Color and Visual Features -->
+      <div class="action" *ngIf="this.enabledFeatures.includes('Contrast')">
+        <izmo-contrast></izmo-contrast>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Color Blind Support')">
+        <izmo-color-blind-support></izmo-color-blind-support>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Saturation')">
+        <izmo-saturate></izmo-saturate>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Luminosity')">
+        <izmo-luminosity></izmo-luminosity>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Grayscale')">
+        <izmo-grayscale></izmo-grayscale>
+      </div>
+        <!-- Text and Reading Features -->
+      <div class="action" *ngIf="this.enabledFeatures.includes('Dyslexia Friendly')">
+        <izmo-dyslexia-friendly></izmo-dyslexia-friendly>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Screen Reader')">
+        <izmo-screen-reader></izmo-screen-reader>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Bigger Text')">
+        <izmo-text-size></izmo-text-size>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Text Spacing')">
+        <izmo-text-spacing></izmo-text-spacing>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Line Height')">
+        <izmo-line-height></izmo-line-height>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Text Align')">
+        <izmo-text-align></izmo-text-align>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Dictionary')">
+        <izmo-dictionary></izmo-dictionary>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Highlight Links')">
+        <izmo-highlight-links></izmo-highlight-links>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Cursor')">
+        <izmo-cursor></izmo-cursor>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Tooltip')">
+        <izmo-tooltip></izmo-tooltip>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Readable Font')">
+        <izmo-readable-font></izmo-readable-font>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Text Magnifier')">
+        <izmo-text-magnifier></izmo-text-magnifier>
+      </div>
+      
+      <!-- Motion and Animation Features -->
+      <div class="action" *ngIf="this.enabledFeatures.includes('Reduced Motion')">
+        <izmo-reduced-motion></izmo-reduced-motion>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Pause Animations')">
+        <izmo-pause-animations></izmo-pause-animations>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Screen Mask')">
+        <izmo-screen-mask></izmo-screen-mask>
+      </div>
+      
+      <!-- Visual and Content Features -->
+      <div class="action" *ngIf="this.enabledFeatures.includes('Hide Images')">
+        <izmo-hide-images></izmo-hide-images>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Page Structure')">
+        <izmo-page-structure></izmo-page-structure>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Form Enhancement')">
+        <izmo-form-enhancement></izmo-form-enhancement>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Reading Line')">
+        <izmo-reading-line></izmo-reading-line>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Highlight Titles')">
+        <izmo-highlight-titles></izmo-highlight-titles>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Highlight All')">
+        <izmo-highlight-all></izmo-highlight-all>
+      </div>
+      <div class="action" *ngIf="this.enabledFeatures.includes('Mute Sounds')">
+        <izmo-mute-sounds></izmo-mute-sounds>
+      </div>
+    </div>
+    <!-- FOOTER -->
+    <div class="izmo-footer">
+      <button class="reset-all-btn" (click)="resetAllSelections()" [attr.aria-label]="i18n.getTranslation('reset-all')">
+        {{ i18n.getTranslation('reset-all') }}
+      </button>
+      <span class="footer-powered">
+        {{ i18n.getTranslation('powered-by') }}
+        <strong>
+          <a rel="noreferrer" href="http://www.izmocars.com" target="_blank" aria-label="izmo cars - open in a new tab">
+            <span style="color: var(--izmo-footer-izmo-color) !important">izmo</span><span style="color: var(--izmo-footer-cars-color) !important">cars</span>
+          </a>
+        </strong>
+      </span>
+    </div>
+  </div>
+</div>

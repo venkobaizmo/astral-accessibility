@@ -2,7 +2,7 @@ import { DOCUMENT, NgIf, NgClass } from "@angular/common";
 import { Component, inject } from "@angular/core";
 
 @Component({
-  selector: "astral-invert",
+  selector: "izmo-invert",
   standalone: true,
   template: `
     <button
@@ -30,14 +30,14 @@ export class InvertComponent {
   document = inject(DOCUMENT);
 
   get inverted() {
-    return this.document.documentElement.classList.contains("astral_inverted");
+    return this.document.documentElement.classList.contains("izmo_inverted");
   }
 
   invertPage() {
-    this.document.documentElement.classList.add("astral_inverted");
+    this.document.documentElement.classList.add("izmo_inverted");
   }
 
   removeInvertCss() {
-    this.document.documentElement.classList.remove("astral_inverted");
+    this.document.documentElement.classList.remove("izmo_inverted");
   }
 }

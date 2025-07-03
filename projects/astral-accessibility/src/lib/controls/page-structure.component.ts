@@ -1,7 +1,8 @@
-import { Component, OnInit, Renderer2, OnDestroy } from "@angular/core";
+import { Component, OnInit, Renderer2, OnDestroy, inject } from "@angular/core";
 import { NgIf, NgClass } from "@angular/common";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
+import { IzmoAccessibilityComponent } from '../izmo-accessibility.component';
 
 interface StructureItem {
   element: HTMLElement;
@@ -11,7 +12,7 @@ interface StructureItem {
 }
 
 @Component({
-  selector: "astral-page-structure",
+  selector: "izmo-page-structure",
   standalone: true,
   template: `
     <button
@@ -24,22 +25,21 @@ interface StructureItem {
         <div class="icon-state-wrap">
           <div class="icon action-icon" [ngClass]="{ inactive: !isActive, active: isActive }">
             <svg
-              width="25"
-              height="25"
+              width="32"
+              height="32"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M3 5H21M3 12H21M3 19H21"
-                stroke="#fff"
+                d="M3 3h18v18H3V3zm2 2v14h14V5H5zm2 2h10v2H7V7zm0 4h10v2H7v-2zm0 4h6v2H7v-2z"
+                stroke="currentColor"
                 stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                fill="none"
               />
-              <circle cx="7" cy="5" r="1" fill="#fff"/>
-              <circle cx="7" cy="12" r="1" fill="#fff"/>
-              <circle cx="7" cy="19" r="1" fill="#fff"/>
+              <circle cx="7" cy="5" r="1" fill="currentColor"/>
+              <circle cx="7" cy="12" r="1" fill="currentColor"/>
+              <circle cx="7" cy="19" r="1" fill="currentColor"/>
             </svg>
           </div>
           <div class="state-dots-wrap">
@@ -47,15 +47,16 @@ interface StructureItem {
           </div>
         </div>
       </div>
-      <astral-widget-checkmark [isActive]="isActive"></astral-widget-checkmark>
+      <izmo-widget-checkmark [isActive]="isActive"></izmo-widget-checkmark>
     </button>
   `,
-  imports: [NgIf, NgClass, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, IzmoCheckmarkSvgComponent],
 })
 export class PageStructureComponent implements OnInit, OnDestroy {
   isActive = false;
   private overlayElement?: HTMLElement;
   private structureItems: StructureItem[] = [];
+  parent = inject(IzmoAccessibilityComponent);
 
   constructor(
     private renderer: Renderer2,
@@ -63,6 +64,10 @@ export class PageStructureComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.parent.resetEvent.subscribe(() => {
+      this.isActive = false;
+      this.hideStructureNavigation();
+    });
     this.scanPageStructure();
   }
 

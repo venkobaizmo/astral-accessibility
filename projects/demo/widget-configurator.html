@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Izmo Accessibility Widget Configurator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #4A90E2, #357ABD);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .config-section {
+            padding: 30px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .config-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4A90E2;
+        }
+
+        .color-picker {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .color-picker input[type="color"] {
+            width: 60px;
+            height: 40px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .generate-section {
+            background: #f8f9fa;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .generate-btn {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .output-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #2d3748;
+            border-radius: 8px;
+            color: white;
+        }
+
+        .output-section h3 {
+            margin-bottom: 15px;
+            color: #68d391;
+        }
+
+        .code-output {
+            background: #1a202c;
+            padding: 20px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            background: #4A90E2;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .copy-btn:hover {
+            background: #357ABD;
+        }
+
+        .preview-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .preview-section h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .color-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .color-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+
+        .color-swatch {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .color-label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .reset-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .reset-btn:hover {
+            background: #c82333;
+        }
+
+        @media (max-width: 1100px) {
+            .container { flex-direction: column !important; }
+            .container > div { max-width: 100% !important; }
+            #widgetPreviewFrame { height: 400px !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" style="display: flex; flex-direction: row; gap: 32px; align-items: flex-start;">
+        <!-- Left: Configurator Form -->
+        <div style="flex: 1 1 0; min-width: 350px;">
+            <div class="header">
+                <h1>🎨 Izmo Accessibility Widget Configurator</h1>
+                <p>Customize your accessibility widget with colors, features, and settings</p>
+            </div>
+
+            <form id="widgetConfigForm">
+                <!-- Basic Configuration -->
+                <div class="config-section">
+                    <h2 class="section-title">⚙️ Basic Configuration</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="locale">Default Language</label>
+                            <select id="locale" name="locale">
+                                <option value="en-US">English (United States)</option>
+                                <option value="es-ES">Español (España)</option>
+                                <option value="fr-FR">Français (France)</option>
+                                <option value="de-DE">Deutsch (Deutschland)</option>
+                                <option value="it-IT">Italiano (Italia)</option>
+                                <option value="pt-BR">Português (Brasil)</option>
+                                <option value="ru-RU">Русский (Россия)</option>
+                                <option value="ja-JP">日本語 (日本)</option>
+                                <option value="ko-KR">한국어 (대한민국)</option>
+                                <option value="ar-SA">العربية (السعودية)</option>
+                                <option value="hi-IN">हिन्दी (भारत)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="layout">Layout Type</label>
+                            <select id="layout" name="layout">
+                                <option value="responsive">Responsive</option>
+                                <option value="1-column">1 Column</option>
+                                <option value="2-column">2 Columns</option>
+                                <option value="3-column">3 Columns</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="widgetHeight">Widget Height</label>
+                            <input type="text" id="widgetHeight" name="widgetHeight" value="75vh" placeholder="e.g., 75vh, 500px">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features Selection -->
+                <div class="config-section">
+                    <h2 class="section-title">🔧 Features Selection</h2>
+                    <div class="checkbox-group" id="featuresGroup">
+                        <!-- Features will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Color Theme -->
+                <div class="config-section">
+                    <h2 class="section-title">🎨 Color Theme</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Primary Color</label>
+                            <div class="color-picker">
+                                <input type="color" id="primaryColor" name="primaryColor" value="#4A90E2">
+                                <input type="text" id="primaryColorText" value="#4A90E2" placeholder="#4A90E2">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Secondary Color</label>
+                            <div class="color-picker">
+                                <input type="color" id="secondaryColor" name="secondaryColor" value="#F5A623">
+                                <input type="text" id="secondaryColorText" value="#F5A623" placeholder="#F5A623">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Accent Color</label>
+                            <div class="color-picker">
+                                <input type="color" id="accentColor" name="accentColor" value="#7ED321">
+                                <input type="text" id="accentColorText" value="#7ED321" placeholder="#7ED321">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Background Color</label>
+                            <div class="color-picker">
+                                <input type="color" id="backgroundColor" name="backgroundColor" value="#FFFFFF">
+                                <input type="text" id="backgroundColorText" value="#FFFFFF" placeholder="#FFFFFF">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Text Color</label>
+                            <div class="color-picker">
+                                <input type="color" id="textColor" name="textColor" value="#333333">
+                                <input type="text" id="textColorText" value="#333333" placeholder="#333333">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Border Color</label>
+                            <div class="color-picker">
+                                <input type="color" id="borderColor" name="borderColor" value="#E1E8ED">
+                                <input type="text" id="borderColorText" value="#E1E8ED" placeholder="#E1E8ED">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Colors -->
+                <div class="config-section">
+                    <h2 class="section-title">🎨 Advanced Colors</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Modal Background</label>
+                            <div class="color-picker">
+                                <input type="color" id="modalBackgroundColor" name="modalBackgroundColor" value="#FFFFFF">
+                                <input type="text" id="modalBackgroundColorText" value="#FFFFFF">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Action Background</label>
+                            <div class="color-picker">
+                                <input type="color" id="actionBackgroundColor" name="actionBackgroundColor" value="#F8F9FA">
+                                <input type="text" id="actionBackgroundColorText" value="#F8F9FA">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Action Active Background</label>
+                            <div class="color-picker">
+                                <input type="color" id="actionActiveBackgroundColor" name="actionActiveBackgroundColor" value="#E3F2FD">
+                                <input type="text" id="actionActiveBackgroundColorText" value="#E3F2FD">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Widget Icon Background</label>
+                            <div class="color-picker">
+                                <input type="color" id="widgetIconBackgroundColor" name="widgetIconBackgroundColor" value="#4A90E2">
+                                <input type="text" id="widgetIconBackgroundColorText" value="#4A90E2">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Widget Icon Color</label>
+                            <div class="color-picker">
+                                <input type="color" id="widgetIconColor" name="widgetIconColor" value="#FFFFFF">
+                                <input type="text" id="widgetIconColorText" value="#FFFFFF">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Header Background</label>
+                            <div class="color-picker">
+                                <input type="color" id="headerBackgroundColor" name="headerBackgroundColor" value="#F8F9FA">
+                                <input type="text" id="headerBackgroundColorText" value="#F8F9FA">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generate Section -->
+                <div class="generate-section">
+                    <button type="button" class="generate-btn" onclick="generatePixelCode()">
+                        🚀 Generate Widget Code
+                    </button>
+                    <button type="button" class="reset-btn" onclick="resetForm()">
+                        🔄 Reset to Defaults
+                    </button>
+                </div>
+            </form>
+
+            <!-- Output Section (restored) -->
+            <div id="outputSection" style="display: none;">
+                <div class="output-section">
+                    <h3>📋 Generated Widget Code</h3>
+                    <div class="code-output" id="codeOutput"></div>
+                    <button class="copy-btn" onclick="copyToClipboard()">📋 Copy to Clipboard</button>
+                </div>
+                <div class="preview-section">
+                    <h3>👀 Color Preview</h3>
+                    <div class="color-preview" id="colorPreview"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Right: Preview -->
+        <div style="flex: 1 1 0; min-width: 350px; max-width: 600px;">
+            <div style="text-align: center; margin-bottom: 16px;">
+                <button type="button" class="generate-btn" onclick="previewWidget()">👀 Preview Widget</button>
+            </div>
+            <iframe id="widgetPreviewFrame" style="width: 100%; height: 700px; border: 1px solid #ccc; border-radius: 8px;"></iframe>
+        </div>
+    </div>
+
+    <script>
+        // Available features
+        const availableFeatures = [
+            "Screen Reader", "Contrast", "Highlight Links", "Bigger Text", "Text Spacing",
+            "Line Height", "Text Align", "Saturation", "Pause Animations", "Hide Images",
+            "Dyslexia Friendly", "Cursor", "Tooltip", "Page Structure", "Dictionary",
+            "Alt Text Validator", "Page Title Validator", "Language Validator",
+            "Auto Refresh Controls", "Focus Trap", "Touch Target Validator",
+            "Reading Order Validator", "Form Enhancement", "Skip Links", "Focus Enhancement",
+            "Color Blind Support", "Screen Mask", "Reduced Motion", "Invert"
+        ];
+
+        // Default theme colors
+        const defaultColors = {
+            primaryColor: "#4A90E2",
+            secondaryColor: "#F5A623",
+            accentColor: "#7ED321",
+            backgroundColor: "#FFFFFF",
+            textColor: "#333333",
+            borderColor: "#E1E8ED",
+            modalBackgroundColor: "#FFFFFF",
+            actionBackgroundColor: "#F8F9FA",
+            actionActiveBackgroundColor: "#E3F2FD",
+            widgetIconBackgroundColor: "#4A90E2",
+            widgetIconColor: "#FFFFFF",
+            headerBackgroundColor: "#F8F9FA"
+        };
+
+        // Initialize the form
+        function initializeForm() {
+            // Populate features
+            const featuresGroup = document.getElementById('featuresGroup');
+            availableFeatures.forEach(feature => {
+                const checkboxItem = document.createElement('div');
+                checkboxItem.className = 'checkbox-item';
+                checkboxItem.innerHTML = `
+                    <input type="checkbox" id="feature_${feature.replace(/\s+/g, '_')}" 
+                           name="features" value="${feature}" checked>
+                    <label for="feature_${feature.replace(/\s+/g, '_')}">${feature}</label>
+                `;
+                featuresGroup.appendChild(checkboxItem);
+            });
+
+            // Set up color picker synchronization
+            setupColorPickers();
+        }
+
+        // Setup color picker synchronization
+        function setupColorPickers() {
+            const colorInputs = document.querySelectorAll('input[type="color"]');
+            colorInputs.forEach(input => {
+                const textInput = document.getElementById(input.id + 'Text');
+                if (textInput) {
+                    // Sync color picker with text input
+                    input.addEventListener('input', () => {
+                        textInput.value = input.value;
+                        updateColorPreview();
+                    });
+
+                    // Sync text input with color picker
+                    textInput.addEventListener('input', () => {
+                        if (/^#[0-9A-F]{6}$/i.test(textInput.value)) {
+                            input.value = textInput.value;
+                            updateColorPreview();
+                        }
+                    });
+                }
+            });
+        }
+
+        // Generate pixel code
+        function generatePixelCode() {
+            const formData = new FormData(document.getElementById('widgetConfigForm'));
+            const config = {
+                locale: formData.get('locale'),
+                layout: formData.get('layout'),
+                widgetHeight: formData.get('widgetHeight'),
+                enabledFeatures: Array.from(formData.getAll('features')),
+                theme: getThemeColors()
+            };
+
+            const pixelCode = generateScriptTag(config);
+            
+            document.getElementById('codeOutput').textContent = pixelCode;
+            document.getElementById('outputSection').style.display = 'block';
+            updateColorPreview();
+            
+            // Scroll to output
+            document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Get theme colors from form
+        function getThemeColors() {
+            const theme = {};
+            const colorInputs = document.querySelectorAll('input[type="color"]');
+            colorInputs.forEach(input => {
+                const propertyName = input.name;
+                if (propertyName) {
+                    theme[propertyName] = input.value;
+                }
+            });
+            return theme;
+        }
+
+        // Generate script tag
+        function generateScriptTag(config) {
+            const configJson = JSON.stringify(config, null, 2);
+            return `<!-- Izmo Accessibility Widget -->
+<script>
+(function() {
+    // Widget configuration
+    window.izmoWidgetConfig = ${configJson};
+    
+    // Initialize widget
+    if (typeof initializeIzmo === 'function') {
+        initializeIzmo(window.izmoWidgetConfig);
+    } else {
+        console.warn('Izmo Accessibility Widget not loaded');
+    }
+})();
+<\/script>`;
+        }
+
+        // Update color preview
+        function updateColorPreview() {
+            const preview = document.getElementById('colorPreview');
+            preview.innerHTML = '';
+            
+            const colorInputs = document.querySelectorAll('input[type="color"]');
+            colorInputs.forEach(input => {
+                const colorItem = document.createElement('div');
+                colorItem.className = 'color-item';
+                colorItem.innerHTML = `
+                    <div class="color-swatch" style="background-color: ${input.value}"></div>
+                    <div class="color-label">${input.name}</div>
+                `;
+                preview.appendChild(colorItem);
+            });
+        }
+
+        // Copy to clipboard
+        function copyToClipboard() {
+            const codeOutput = document.getElementById('codeOutput');
+            const textArea = document.createElement('textarea');
+            textArea.value = codeOutput.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            // Show feedback
+            const copyBtn = document.querySelector('.copy-btn');
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = '✅ Copied!';
+            setTimeout(() => {
+                copyBtn.textContent = originalText;
+            }, 2000);
+        }
+
+        // Reset form to defaults
+        function resetForm() {
+            document.getElementById('widgetConfigForm').reset();
+            
+            // Reset colors to defaults
+            Object.entries(defaultColors).forEach(([key, value]) => {
+                const colorInput = document.getElementById(key);
+                const textInput = document.getElementById(key + 'Text');
+                if (colorInput) colorInput.value = value;
+                if (textInput) textInput.value = value;
+            });
+            
+            updateColorPreview();
+        }
+
+        // Preview widget
+        function previewWidget() {
+            const formData = new FormData(document.getElementById('widgetConfigForm'));
+            const config = {
+                locale: formData.get('locale'),
+                layout: formData.get('layout'),
+                widgetHeight: formData.get('widgetHeight'),
+                enabledFeatures: Array.from(formData.getAll('features')),
+                theme: getThemeColors()
+            };
+            const previewFrame = document.getElementById('widgetPreviewFrame');
+            const previewDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+            previewDoc.open();
+            previewDoc.write(
+                `<!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>Widget Preview</title>
+                    <script src='/main.js'><\/script>
+                </head>
+                <body>
+                    <div id='widget-mount'></div>
+                    <script>
+                        window.izmoWidgetConfig = ${JSON.stringify(config)};
+                        if (typeof initializeIzmo === 'function') {
+                            initializeIzmo(window.izmoWidgetConfig);
+                        } else {
+                            document.body.innerHTML += '<div style="color:red;text-align:center;margin-top:40px;">Widget library not loaded in preview.<\/div>';
+                        }
+                    <\/script>
+                </body>
+                </html>`
+            );
+            previewDoc.close();
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initializeForm);
+    </script>
+</body>
+</html> 

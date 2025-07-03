@@ -1,10 +1,11 @@
 import { DOCUMENT, NgIf, NgClass } from "@angular/common";
-import { Component, inject, Renderer2 } from "@angular/core";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { Component, inject, Renderer2, Optional, SkipSelf } from "@angular/core";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
+import { IzmoAccessibilityComponent } from "../izmo-accessibility.component";
 
 @Component({
-  selector: "astral-text-align",
+  selector: "izmo-text-align",
   standalone: true,
   template: `
     <button
@@ -21,13 +22,13 @@ import { I18nService } from "../services/i18n.service";
             }"
           >
             <svg
-              width="25"
-              height="25"
+              width="32"
+              height="32"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                fill="white"
+                fill="currentColor"
                 d="M3 3h18v2H3V3zm0 4h12v2H3V7zm0 4h18v2H3v-2zm0 4h12v2H3v-2zm0 4h18v2H3v-2z"
               />
             </svg>
@@ -56,28 +57,48 @@ import { I18nService } from "../services/i18n.service";
         </div>
       </div>
 
-      <astral-widget-checkmark
+      <izmo-widget-checkmark
         [isActive]="currentState !== 0"
-      ></astral-widget-checkmark>
+      ></izmo-widget-checkmark>
     </button>
   `,
-  imports: [NgIf, NgClass, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, IzmoCheckmarkSvgComponent],
 })
 export class TextAlignComponent {
   document = inject(DOCUMENT);
   renderer = inject(Renderer2);
   i18n = inject(I18nService);
 
+  constructor(
+    @Optional() @SkipSelf() private parent?: IzmoAccessibilityComponent
+  ) {
+    if (this.parent) {
+      this.parent.resetEvent.subscribe(() => this.reset());
+    }
+  }
+
   currentState = 0;
-  base = this.i18n.getTranslation('text-align');
-  states = [
-    this.i18n.getTranslation('text-align'),
-    this.i18n.getTranslation('left-align'),
-    this.i18n.getTranslation('center-align'),
-    this.i18n.getTranslation('right-align')
-  ];
+  
+  // Make these reactive to language changes
+  get base() {
+    return this.i18n.getTranslation('text-align');
+  }
+  
+  get states() {
+    return [
+      this.base,
+      this.i18n.getTranslation('left-align'),
+      this.i18n.getTranslation('center-align'),
+      this.i18n.getTranslation('right-align')
+    ];
+  }
 
   private styleElement?: HTMLStyleElement;
+
+  reset() {
+    this.currentState = 0;
+    this._runStateLogic();
+  }
 
   nextState() {
     this.currentState += 1;
@@ -102,7 +123,7 @@ export class TextAlignComponent {
 
     if (this.currentState === 1) {
       css = `
-        body *:not(.astral-accessibility *):not(svg):not(path):not(g) {
+        body *:not(.izmo-accessibility *):not(svg):not(path):not(g) {
           text-align: left !important;
         }
       `;
@@ -110,7 +131,7 @@ export class TextAlignComponent {
 
     if (this.currentState === 2) {
       css = `
-        body *:not(.astral-accessibility *):not(svg):not(path):not(g) {
+        body *:not(.izmo-accessibility *):not(svg):not(path):not(g) {
           text-align: center !important;
         }
       `;
@@ -118,7 +139,7 @@ export class TextAlignComponent {
 
     if (this.currentState === 3) {
       css = `
-        body *:not(.astral-accessibility *):not(svg):not(path):not(g) {
+        body *:not(.izmo-accessibility *):not(svg):not(path):not(g) {
           text-align: right !important;
         }
       `;

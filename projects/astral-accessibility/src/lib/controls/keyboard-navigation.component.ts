@@ -1,10 +1,11 @@
-import { Component, OnInit, Renderer2, HostListener, OnDestroy } from "@angular/core";
+import { Component, OnInit, Renderer2, HostListener, OnDestroy, inject } from "@angular/core";
 import { NgIf, NgClass } from "@angular/common";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
+import { IzmoAccessibilityComponent } from '../izmo-accessibility.component';
 
 @Component({
-  selector: "astral-keyboard-navigation",
+  selector: "izmo-keyboard-navigation",
   standalone: true,
   template: `
     <button
@@ -17,27 +18,24 @@ import { I18nService } from "../services/i18n.service";
         <div class="icon-state-wrap">
           <div class="icon action-icon" [ngClass]="{ inactive: !isActive, active: isActive }">
             <svg
-              width="25"
-              height="25"
+              width="32"
+              height="32"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <rect
-                x="2"
-                y="5"
-                width="20"
-                height="14"
-                rx="2"
-                stroke="#fff"
+              <path
+                d="M3 3h18v18H3V3zm2 2v14h14V5H5zm2 2h10v2H7V7zm0 4h10v2H7v-2zm0 4h6v2H7v-2z"
+                stroke="currentColor"
                 stroke-width="2"
                 fill="none"
               />
               <path
-                d="M6 15H8M10 15H14M16 15H18M6 11H8M10 11H14M16 11H18M6 7H18"
-                stroke="#fff"
-                stroke-width="1.5"
+                d="M8 9h2M12 9h2M16 9h2M8 13h2M12 13h2M16 13h2M8 17h2M12 17h2"
+                stroke="currentColor"
+                stroke-width="1"
                 stroke-linecap="round"
+                fill="none"
               />
             </svg>
           </div>          <div class="state-dots-wrap">
@@ -45,10 +43,10 @@ import { I18nService } from "../services/i18n.service";
           </div>
         </div>
       </div>
-      <astral-widget-checkmark [isActive]="isActive"></astral-widget-checkmark>
+      <izmo-widget-checkmark [isActive]="isActive"></izmo-widget-checkmark>
     </button>
   `,
-  imports: [NgIf, NgClass, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, IzmoCheckmarkSvgComponent],
 })
 export class KeyboardNavigationComponent implements OnInit, OnDestroy {
   isActive = false;
@@ -57,13 +55,18 @@ export class KeyboardNavigationComponent implements OnInit, OnDestroy {
   private currentIndex = 0;
   private focusableElements: HTMLElement[] = [];
   private keyboardListeners: (() => void)[] = [];
+  parent = inject(IzmoAccessibilityComponent);
 
   constructor(
     private renderer: Renderer2,
     public i18n: I18nService
   ) {}
   ngOnInit() {
-    this.isActive = document.querySelector('.astral-keyboard-navigation-styles') !== null;
+    this.parent.resetEvent.subscribe(() => {
+      this.isActive = false;
+      // Add any additional deselect/hide logic here if needed
+    });
+    this.isActive = document.querySelector('.izmo-keyboard-navigation-styles') !== null;
     this.updateFocusableElements();
   }
 
@@ -233,7 +236,7 @@ export class KeyboardNavigationComponent implements OnInit, OnDestroy {
 
   private applyKeyboardNavigation() {
     this.styleElement = this.renderer.createElement('style');
-    this.renderer.addClass(this.styleElement, 'astral-keyboard-navigation-styles');
+    this.renderer.addClass(this.styleElement, 'izmo-keyboard-navigation-styles');
     
     const css = `
       /* Enhanced keyboard navigation styles */

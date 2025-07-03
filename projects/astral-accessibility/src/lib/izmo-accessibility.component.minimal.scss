@@ -1,0 +1,39 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  z-index: 999999;
+  bottom: 43px;
+  right: 0px;
+  transition: max-width 0.1s ease-in-out;
+
+  &.izmo-layout-1-column .actions {
+    grid-template-columns: 1fr;
+  }
+  &.izmo-layout-2-column .actions {
+    grid-template-columns: 1fr 1fr;
+  }
+  &.izmo-layout-3-column .actions, &.izmo-layout-default .actions {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  @media (max-width: 900px) {
+    &.izmo-layout-3-column .actions,
+    &.izmo-layout-2-column .actions {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    &.izmo-layout-3-column .actions,
+    &.izmo-layout-2-column .actions,
+    &.izmo-layout-1-column .actions {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.actions {
+  display: grid;
+  gap: 14px;
+  margin: 18px 0;
+}

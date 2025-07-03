@@ -1,7 +1,8 @@
 import { DOCUMENT, NgIf, NgClass, NgFor } from "@angular/common";
-import { Component, inject, Renderer2, OnDestroy } from "@angular/core";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { Component, inject, Renderer2, OnDestroy, Optional, SkipSelf } from "@angular/core";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
+import { IzmoAccessibilityComponent } from "../izmo-accessibility.component";
 
 interface TouchTargetIssue {
   element: HTMLElement;
@@ -12,7 +13,7 @@ interface TouchTargetIssue {
 }
 
 @Component({
-  selector: "astral-touch-target-validator",
+  selector: "izmo-touch-target-validator",
   standalone: true,
   template: `
     <button
@@ -29,15 +30,15 @@ interface TouchTargetIssue {
             }"
           >
             <svg
-              width="25"
-              height="25"
+              width="32"
+              height="32"
               viewBox="0 0 41 41"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <rect x="8" y="8" width="25" height="25" fill="none" stroke="#FFF" stroke-width="2"/>
-              <circle cx="20.5" cy="20.5" r="6" fill="none" stroke="#FFF" stroke-width="2"/>
-              <circle cx="20.5" cy="20.5" r="2" fill="#FFF"/>
-              <text x="4" y="38" font-family="Arial" font-size="6" fill="#FFF">TOUCH</text>
+              <rect x="8" y="8" width="25" height="25" fill="none" stroke="currentColor" stroke-width="2"/>
+              <circle cx="20.5" cy="20.5" r="6" fill="none" stroke="currentColor" stroke-width="2"/>
+              <circle cx="20.5" cy="20.5" r="2" fill="currentColor"/>
+              <text x="4" y="38" font-family="Arial" font-size="6" fill="currentColor">TOUCH</text>
             </svg>
           </div>
 
@@ -64,9 +65,9 @@ interface TouchTargetIssue {
         </div>
       </div>
 
-      <astral-widget-checkmark
+      <izmo-widget-checkmark
         [isActive]="currentState !== 0"
-      ></astral-widget-checkmark>
+      ></izmo-widget-checkmark>
     </button>
 
     <div 
@@ -242,23 +243,34 @@ interface TouchTargetIssue {
       </div>
     </div>
   `,
-  imports: [NgIf, NgClass, NgFor, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, NgFor, IzmoCheckmarkSvgComponent],
 })
 export class TouchTargetValidatorComponent implements OnDestroy {
   constructor(
     private renderer: Renderer2,
-    private i18n: I18nService
-  ) {}
+    private i18n: I18nService,
+    @Optional() @SkipSelf() private parent?: IzmoAccessibilityComponent
+  ) {
+    if (this.parent) {
+      this.parent.resetEvent.subscribe(() => this.reset());
+    }
+  }
 
   document = inject(DOCUMENT);
   currentState = 0;
-  base = this.i18n.getTranslation('touch-target-validator');
-  states = [
-    this.i18n.getTranslation('touch-target-validator'),
-    this.i18n.getTranslation('validate-touch-targets'),
-    this.i18n.getTranslation('touch-targets-valid'),
-    this.i18n.getTranslation('touch-targets-invalid')
-  ];
+  
+  get base() {
+    return this.i18n.getTranslation('touch-target-validator');
+  }
+  
+  get states() {
+    return [
+      this.i18n.getTranslation('touch-target-validator'),
+      this.i18n.getTranslation('validate-touch-targets'),
+      this.i18n.getTranslation('touch-targets-valid'),
+      this.i18n.getTranslation('touch-targets-invalid')
+    ];
+  }
   
   touchTargetIssues: TouchTargetIssue[] = [];
   showTouchPanel = false;
@@ -325,7 +337,7 @@ export class TouchTargetValidatorComponent implements OnDestroy {
       const elements = this.document.querySelectorAll(selector) as NodeListOf<HTMLElement>;
       elements.forEach(element => {
         // Skip elements that are part of the accessibility widget
-        if (element.closest('astral-accessibility')) return;
+        if (element.closest('izmo-accessibility')) return;
         
         // Skip hidden elements
         if (!this.isElementVisible(element)) return;
@@ -402,10 +414,10 @@ export class TouchTargetValidatorComponent implements OnDestroy {
 
   private hasNearbyTargets(element: HTMLElement): boolean {
     const rect = element.getBoundingClientRect();
-    const allTargets = this.document.querySelectorAll('button, a[href], input[type="button"], input[type="submit"], [role="button"]') as NodeListOf<HTMLElement>;
+    const allTargets = Array.from(this.document.querySelectorAll('button, a[href], input[type="button"], input[type="submit"], [role="button"]')) as HTMLElement[];
     
     for (const target of allTargets) {
-      if (target === element || target.closest('astral-accessibility')) continue;
+      if (target === element || target.closest('izmo-accessibility')) continue;
       if (!this.isElementVisible(target)) continue;
       
       const targetRect = target.getBoundingClientRect();
@@ -687,5 +699,12 @@ export class TouchTargetValidatorComponent implements OnDestroy {
     this.revertAllFixes();
     this.removeHighlights();
     this.showTouchPanel = false;
+  }
+
+  reset() {
+    this.currentState = 0;
+    this.showTouchPanel = false;
+    this.removeHighlights();
+    this.revertAllFixes();
   }
 }

@@ -1,10 +1,11 @@
-import { Component, OnInit, Renderer2, OnDestroy } from "@angular/core";
+import { Component, OnInit, Renderer2, OnDestroy, Optional, SkipSelf } from "@angular/core";
 import { NgIf, NgClass } from "@angular/common";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
+import { IzmoAccessibilityComponent } from "../izmo-accessibility.component";
 
 @Component({
-  selector: "astral-form-enhancement",
+  selector: "izmo-form-enhancement",
   standalone: true,
   template: `
     <button
@@ -17,30 +18,20 @@ import { I18nService } from "../services/i18n.service";
         <div class="icon-state-wrap">
           <div class="icon action-icon" [ngClass]="{ inactive: !isActive, active: isActive }">
             <svg
-              width="25"
-              height="25"
+              width="32"
+              height="32"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <rect
-                x="3"
-                y="4"
-                width="18"
-                height="16"
-                rx="2"
-                stroke="#fff"
+              <path
+                d="M3 3h18v18H3V3zm2 2v14h14V5H5zm2 2h10v2H7V7zm0 4h10v2H7v-2zm0 4h6v2H7v-2z"
+                stroke="currentColor"
                 stroke-width="2"
                 fill="none"
               />
-              <path
-                d="M7 8H17M7 12H17M7 16H13"
-                stroke="#fff"
-                stroke-width="2"
-                stroke-linecap="round"
-              />
-              <circle cx="17" cy="16" r="2" stroke="#fff" stroke-width="2" fill="none"/>
-              <path d="L16 17L17 18L19 16" stroke="#fff" stroke-width="2" fill="none"/>
+              <circle cx="17" cy="16" r="2" stroke="currentColor" stroke-width="2" fill="none"/>
+              <path d="L16 17L17 18L19 16" stroke="currentColor" stroke-width="2" fill="none"/>
             </svg>
           </div>
           <div class="state-dots-wrap">
@@ -48,10 +39,10 @@ import { I18nService } from "../services/i18n.service";
           </div>
         </div>
       </div>
-      <astral-widget-checkmark [isActive]="isActive"></astral-widget-checkmark>
+      <izmo-widget-checkmark [isActive]="isActive"></izmo-widget-checkmark>
     </button>
   `,
-  imports: [NgIf, NgClass, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, IzmoCheckmarkSvgComponent],
 })
 export class FormEnhancementComponent implements OnInit, OnDestroy {
   isActive = false;
@@ -61,11 +52,16 @@ export class FormEnhancementComponent implements OnInit, OnDestroy {
 
   constructor(
     private renderer: Renderer2,
-    public i18n: I18nService
-  ) {}
+    public i18n: I18nService,
+    @Optional() @SkipSelf() private parent?: IzmoAccessibilityComponent
+  ) {
+    if (this.parent) {
+      this.parent.resetEvent.subscribe(() => this.reset());
+    }
+  }
 
   ngOnInit() {
-    this.isActive = document.querySelector('.astral-form-enhancement-styles') !== null;
+    this.isActive = document.querySelector('.izmo-form-enhancement-styles') !== null;
     if (this.isActive) {
       this.enhanceAllForms();
     }
@@ -96,23 +92,23 @@ export class FormEnhancementComponent implements OnInit, OnDestroy {
 
   private createStyles() {
     this.styleElement = this.renderer.createElement('style');
-    this.renderer.addClass(this.styleElement, 'astral-form-enhancement-styles');
+    this.renderer.addClass(this.styleElement, 'izmo-form-enhancement-styles');
     
     const css = `
       /* Enhanced form field visibility */
-      .astral-required-field::after {
+      .izmo-required-field::after {
         content: " *";
         color: #d73527;
         font-weight: bold;
         font-size: 1.2em;
       }
       
-      .astral-field-error {
+      .izmo-field-error {
         border: 2px solid #d73527 !important;
         background-color: #fdf2f2 !important;
       }
       
-      .astral-error-message {
+      .izmo-error-message {
         color: #d73527;
         font-size: 0.9em;
         margin-top: 4px;
@@ -120,21 +116,21 @@ export class FormEnhancementComponent implements OnInit, OnDestroy {
         font-weight: 500;
       }
       
-      .astral-field-help {
+      .izmo-field-help {
         color: #666;
         font-size: 0.9em;
         margin-top: 4px;
         display: block;
       }
       
-      .astral-enhanced-label {
+      .izmo-enhanced-label {
         font-weight: 600 !important;
         color: #333 !important;
         margin-bottom: 4px !important;
         display: block !important;
       }
       
-      .astral-form-group {
+      .izmo-form-group {
         margin-bottom: 20px !important;
         position: relative;
       }
@@ -152,12 +148,12 @@ export class FormEnhancementComponent implements OnInit, OnDestroy {
       }
       
       /* Success state */
-      .astral-field-success {
+      .izmo-field-success {
         border: 2px solid #28a745 !important;
         background-color: #f8fff9 !important;
       }
       
-      .astral-success-message {
+      .izmo-success-message {
         color: #28a745;
         font-size: 0.9em;
         margin-top: 4px;
@@ -222,10 +218,10 @@ export class FormEnhancementComponent implements OnInit, OnDestroy {
   }
 
   private createOrGetFieldContainer(field: HTMLElement): HTMLElement {
-    let container = field.closest('.astral-form-group');
+    let container = field.closest('.izmo-form-group');
     if (!container) {
       container = this.renderer.createElement('div');
-      this.renderer.addClass(container, 'astral-form-group');
+      this.renderer.addClass(container, 'izmo-form-group');
       
       if (field.parentNode) {
         this.renderer.insertBefore(field.parentNode, container, field);
@@ -238,14 +234,14 @@ export class FormEnhancementComponent implements OnInit, OnDestroy {
   private enhanceFieldLabel(field: HTMLElement) {
     let label = this.findLabelForField(field);
     if (label) {
-      this.renderer.addClass(label, 'astral-enhanced-label');
+      this.renderer.addClass(label, 'izmo-enhanced-label');
     } else {
       // Create label if none exists and field has placeholder or name
       const input = field as HTMLInputElement;
       const labelText = input.placeholder || input.name || 'Form field';
       if (labelText && labelText !== 'Form field') {
         label = this.renderer.createElement('label');
-        this.renderer.addClass(label, 'astral-enhanced-label');
+        this.renderer.addClass(label, 'izmo-enhanced-label');
         this.renderer.setProperty(label, 'textContent', labelText);
         this.renderer.setAttribute(label, 'for', input.id || this.generateId(input));
         
@@ -279,15 +275,15 @@ export class FormEnhancementComponent implements OnInit, OnDestroy {
 
   private addRequiredIndicator(field: HTMLElement) {
     const label = this.findLabelForField(field);
-    if (label && !label.classList.contains('astral-required-field')) {
-      this.renderer.addClass(label, 'astral-required-field');
+    if (label && !label.classList.contains('izmo-required-field')) {
+      this.renderer.addClass(label, 'izmo-required-field');
     }
   }
 
   private addHelpText(field: HTMLElement, helpText: string) {
     const container = this.createOrGetFieldContainer(field);
     const helpElement = this.renderer.createElement('span');
-    this.renderer.addClass(helpElement, 'astral-field-help');
+    this.renderer.addClass(helpElement, 'izmo-field-help');
     this.renderer.setProperty(helpElement, 'textContent', helpText);
     
     const helpId = `help-${this.generateId(field)}`;
@@ -333,12 +329,12 @@ export class FormEnhancementComponent implements OnInit, OnDestroy {
   }
 
   private showFieldError(field: HTMLElement, message: string) {
-    this.renderer.addClass(field, 'astral-field-error');
+    this.renderer.addClass(field, 'izmo-field-error');
     this.renderer.setAttribute(field, 'aria-invalid', 'true');
     
     const container = this.createOrGetFieldContainer(field);
     const errorElement = this.renderer.createElement('span');
-    this.renderer.addClass(errorElement, 'astral-error-message');
+    this.renderer.addClass(errorElement, 'izmo-error-message');
     this.renderer.setProperty(errorElement, 'textContent', message);
     this.renderer.setAttribute(errorElement, 'role', 'alert');
     
@@ -353,16 +349,16 @@ export class FormEnhancementComponent implements OnInit, OnDestroy {
   }
 
   private showFieldSuccess(field: HTMLElement) {
-    this.renderer.addClass(field, 'astral-field-success');
+    this.renderer.addClass(field, 'izmo-field-success');
     this.renderer.setAttribute(field, 'aria-invalid', 'false');
   }
 
   private clearFieldError(field: HTMLElement) {
-    this.renderer.removeClass(field, 'astral-field-error');
-    this.renderer.removeClass(field, 'astral-field-success');
+    this.renderer.removeClass(field, 'izmo-field-error');
+    this.renderer.removeClass(field, 'izmo-field-success');
     
     const container = this.createOrGetFieldContainer(field);
-    const errorMessages = container.querySelectorAll('.astral-error-message');
+    const errorMessages = container.querySelectorAll('.izmo-error-message');
     errorMessages.forEach(error => this.renderer.removeChild(container, error));
     
     // Clean up aria-describedby
@@ -397,7 +393,7 @@ export class FormEnhancementComponent implements OnInit, OnDestroy {
       this.announceMessage('Form contains errors. Please review and correct them.');
       
       // Focus first error field
-      const firstErrorField = form.querySelector('.astral-field-error') as HTMLElement;
+      const firstErrorField = form.querySelector('.izmo-field-error') as HTMLElement;
       if (firstErrorField) {
         firstErrorField.focus();
       }
@@ -407,7 +403,7 @@ export class FormEnhancementComponent implements OnInit, OnDestroy {
   private generateId(element: HTMLElement): string {
     if (element.id) return element.id;
     
-    const id = `astral-field-${Math.random().toString(36).substr(2, 9)}`;
+    const id = `izmo-field-${Math.random().toString(36).substr(2, 9)}`;
     this.renderer.setAttribute(element, 'id', id);
     return id;
   }
@@ -459,14 +455,14 @@ export class FormEnhancementComponent implements OnInit, OnDestroy {
     
     // Remove enhancement classes and attributes
     this.enhancedElements.forEach(element => {
-      this.renderer.removeClass(element, 'astral-field-error');
-      this.renderer.removeClass(element, 'astral-field-success');
-      this.renderer.removeClass(element, 'astral-required-field');
-      this.renderer.removeClass(element, 'astral-enhanced-label');
+      this.renderer.removeClass(element, 'izmo-field-error');
+      this.renderer.removeClass(element, 'izmo-field-success');
+      this.renderer.removeClass(element, 'izmo-required-field');
+      this.renderer.removeClass(element, 'izmo-enhanced-label');
     });
     
     // Remove error messages
-    const errorMessages = document.querySelectorAll('.astral-error-message');
+    const errorMessages = document.querySelectorAll('.izmo-error-message');
     errorMessages.forEach(error => {
       if (error.parentNode) {
         this.renderer.removeChild(error.parentNode, error);
@@ -497,5 +493,12 @@ export class FormEnhancementComponent implements OnInit, OnDestroy {
         this.renderer.removeChild(document.body, announcement);
       }
     }, 1000);
+  }
+
+  reset() {
+    if (this.isActive) {
+      this.removeFormEnhancements();
+      this.isActive = false;
+    }
   }
 }

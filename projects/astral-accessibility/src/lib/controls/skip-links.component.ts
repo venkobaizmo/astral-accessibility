@@ -1,10 +1,11 @@
-import { Component, OnInit, Renderer2 } from "@angular/core";
+import { Component, OnInit, Renderer2, Optional, SkipSelf } from "@angular/core";
 import { NgIf, NgClass } from "@angular/common";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
+import { IzmoAccessibilityComponent } from "../izmo-accessibility.component";
 
 @Component({
-  selector: "astral-skip-links",
+  selector: "izmo-skip-links",
   standalone: true,
   template: `    <button
       (click)="toggle()"
@@ -16,26 +17,25 @@ import { I18nService } from "../services/i18n.service";
         <div class="icon-state-wrap">
           <div class="icon action-icon" [ngClass]="{ inactive: !isActive, active: isActive }">
           <svg
-            width="25"
-            height="25"
+            width="32"
+            height="32"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M12 2L2 7V10C2 16 6 20.5 12 22C18 20.5 22 16 22 10V7L12 2Z"
-              stroke="#fff"
+              d="M3 3h18v2H3V3zm0 4h12v2H3V7zm0 4h18v2H3v-2zm0 4h12v2H3v-2z"
+              stroke="currentColor"
+              stroke-width="2"
+              fill="none"
+            />
+            <path
+              d="M12 15l3-3 3 3"
+              stroke="currentColor"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
               fill="none"
-            />
-            <path
-              d="M9 12L11 14L15 10"
-              stroke="#fff"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
             />
           </svg>
         </div>        <div class="state-dots-wrap">
@@ -43,10 +43,10 @@ import { I18nService } from "../services/i18n.service";
         </div>
       </div>
     </div>
-    <astral-widget-checkmark [isActive]="isActive"></astral-widget-checkmark>
+    <izmo-widget-checkmark [isActive]="isActive"></izmo-widget-checkmark>
   </button>
   `,
-  imports: [NgIf, NgClass, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, IzmoCheckmarkSvgComponent],
 })
 export class SkipLinksComponent implements OnInit {
   isActive = false;
@@ -54,12 +54,23 @@ export class SkipLinksComponent implements OnInit {
 
   constructor(
     private renderer: Renderer2,
-    public i18n: I18nService
+    public i18n: I18nService,
+    @Optional() @SkipSelf() private parent?: IzmoAccessibilityComponent
   ) {}
 
   ngOnInit() {
     // Check if skip links are already enabled
-    this.isActive = document.querySelector('.astral-skip-links') !== null;
+    this.isActive = document.querySelector('.izmo-skip-links') !== null;
+    if (this.parent) {
+      this.parent.resetEvent.subscribe(() => this.reset());
+    }
+  }
+
+  reset() {
+    if (this.isActive) {
+      this.removeSkipLinks();
+      this.isActive = false;
+    }
   }
 
   toggle() {
@@ -75,7 +86,7 @@ export class SkipLinksComponent implements OnInit {
   private addSkipLinks() {
     // Create skip links container
     this.skipLinksContainer = this.renderer.createElement('div');
-    this.renderer.addClass(this.skipLinksContainer, 'astral-skip-links');
+    this.renderer.addClass(this.skipLinksContainer, 'izmo-skip-links');
     this.renderer.setStyle(this.skipLinksContainer, 'position', 'fixed');
     this.renderer.setStyle(this.skipLinksContainer, 'top', '0');
     this.renderer.setStyle(this.skipLinksContainer, 'left', '0');

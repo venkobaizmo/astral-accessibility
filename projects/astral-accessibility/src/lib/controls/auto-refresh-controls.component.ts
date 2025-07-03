@@ -1,7 +1,8 @@
 import { DOCUMENT, NgIf, NgClass, NgFor } from "@angular/common";
-import { Component, inject, Renderer2, OnDestroy } from "@angular/core";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { Component, inject, Renderer2, OnDestroy, Optional, SkipSelf } from "@angular/core";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
+import { IzmoAccessibilityComponent } from "../izmo-accessibility.component";
 
 interface AutoRefreshInfo {
   type: 'meta-refresh' | 'javascript-timer' | 'auto-redirect';
@@ -12,7 +13,7 @@ interface AutoRefreshInfo {
 }
 
 @Component({
-  selector: "astral-auto-refresh-controls",
+  selector: "izmo-auto-refresh-controls",
   standalone: true,
   template: `
     <button
@@ -29,15 +30,15 @@ interface AutoRefreshInfo {
             }"
           >
             <svg
-              width="25"
-              height="25"
+              width="32"
+              height="32"
               viewBox="0 0 41 41"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <circle cx="20.5" cy="20.5" r="16" fill="none" stroke="#FFF" stroke-width="2"/>
-              <path d="M20.5 8 L20.5 20.5 L28 20.5" stroke="#FFF" stroke-width="2" fill="none"/>
-              <path d="M8 12 L12 8 L8 4" stroke="#FFF" stroke-width="2" fill="none"/>
-              <text x="4" y="38" font-family="Arial" font-size="6" fill="#FFF">AUTO</text>
+              <circle cx="20.5" cy="20.5" r="16" fill="none" stroke="currentColor" stroke-width="2"/>
+              <path d="M20.5 8 L20.5 20.5 L28 20.5" stroke="currentColor" stroke-width="2" fill="none"/>
+              <path d="M8 12 L12 8 L8 4" stroke="currentColor" stroke-width="2" fill="none"/>
+              <text x="4" y="38" font-family="Arial" font-size="6" fill="currentColor">AUTO</text>
             </svg>
           </div>
 
@@ -64,9 +65,9 @@ interface AutoRefreshInfo {
         </div>
       </div>
 
-      <astral-widget-checkmark
+      <izmo-widget-checkmark
         [isActive]="currentState !== 0"
-      ></astral-widget-checkmark>
+      ></izmo-widget-checkmark>
     </button>
 
     <div 
@@ -217,23 +218,42 @@ interface AutoRefreshInfo {
       </div>
     </div>
   `,
-  imports: [NgIf, NgClass, NgFor, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, NgFor, IzmoCheckmarkSvgComponent],
 })
 export class AutoRefreshControlsComponent implements OnDestroy {
+  reset() {
+    this.currentState = 0;
+    this.showControlPanel = false;
+    this.resumeAllAutoRefresh();
+    this.globalPauseEnabled = false;
+  }
+
   constructor(
     private renderer: Renderer2,
-    private i18n: I18nService
-  ) {}
+    private i18n: I18nService,
+    @Optional() @SkipSelf() private parent?: IzmoAccessibilityComponent
+  ) {
+    if (this.parent) {
+      this.parent.resetEvent.subscribe(() => this.reset());
+    }
+  }
 
   document = inject(DOCUMENT);
   currentState = 0;
-  base = this.i18n.getTranslation('auto-refresh-controls');
-  states = [
-    this.i18n.getTranslation('auto-refresh-controls'),
-    this.i18n.getTranslation('auto-refresh-detected'),
-    this.i18n.getTranslation('pause-auto-refresh'),
-    this.i18n.getTranslation('resume-auto-refresh')
-  ];
+  
+  // Make these reactive to language changes
+  get base() {
+    return this.i18n.getTranslation('auto-refresh-controls');
+  }
+  
+  get states() {
+    return [
+      this.base,
+      this.i18n.getTranslation('auto-refresh-detected'),
+      this.i18n.getTranslation('pause-auto-refresh'),
+      this.i18n.getTranslation('resume-auto-refresh')
+    ];
+  }
   
   autoRefreshItems: AutoRefreshInfo[] = [];
   showControlPanel = false;

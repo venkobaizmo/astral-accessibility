@@ -1,1 +1,1051 @@
-<html><head><script src="main.10d54846a1b3fd47.js" type="module"></script></head><body></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Izmo Accessibility Widget - Comprehensive Feature Testing Demo</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="main.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 25px;
+      margin: 25px 0;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    h1, h2, h3, h4 {
+      color: #333;
+      margin-top: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      font-size: 2.5em;
+      margin-bottom: 30px;
+    }
+    button {
+      background: linear-gradient(45deg, #007bff, #0056b3);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 10px 5px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      background: linear-gradient(45deg, #0056b3, #004085);
+      transform: translateY(-1px);
+    }
+    a {
+      color: #007bff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    a:hover {
+      color: #0056b3;
+      text-decoration: underline;
+    }
+    .demo-button {
+      background: linear-gradient(45deg, #28a745, #1e7e34);
+      font-size: 18px;
+      padding: 18px 36px;
+      margin: 30px auto;
+      display: block;
+      border-radius: 8px;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 25px;
+      margin: 25px 0;
+    }
+    .feature-card {
+      background: #f8f9fa;
+      border: 2px solid #e9ecef;
+      border-radius: 10px;
+      padding: 20px;
+      transition: all 0.3s ease;
+    }
+    .feature-card:hover {
+      border-color: #007bff;
+      box-shadow: 0 4px 12px rgba(0,123,255,0.15);
+    }
+    .feature-card h3 {
+      color: #495057;
+      margin-top: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .test-area {
+      background: #fff3cd;
+      border: 1px solid #ffeaa7;
+      border-radius: 6px;
+      padding: 15px;
+      margin: 15px 0;
+      position: relative;
+    }
+    .test-area::before {
+      content: "🧪 Test Area";
+      position: absolute;
+      top: -10px;
+      left: 10px;
+      background: #ffc107;
+      color: #000;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .missing-alt {
+      width: 120px;
+      height: 60px;
+      background: linear-gradient(45deg, #ddd, #bbb);
+      display: inline-block;
+      border-radius: 4px;
+      margin: 5px;
+    }
+    form {
+      margin: 20px 0;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+    form label {
+      display: block;
+      margin: 10px 0 5px 0;
+      font-weight: bold;
+      color: #495057;
+    }
+    form input, form select, form textarea {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .error-demo {
+      border: 2px solid #dc3545;
+      padding: 15px;
+      margin: 15px 0;
+      background: #f8d7da;
+      border-radius: 6px;
+    }
+    .small-target {
+      width: 25px;
+      height: 25px;
+      background: #007bff;
+      color: white;
+      border: none;
+      font-size: 10px;
+      border-radius: 4px;
+    }
+    .medium-target {
+      width: 35px;
+      height: 35px;
+      background: #28a745;
+      color: white;
+      border: none;
+      font-size: 12px;
+      border-radius: 4px;
+    }
+    .large-target {
+      width: 50px;
+      height: 50px;
+      background: #dc3545;
+      color: white;
+      border: none;
+      font-size: 14px;
+      border-radius: 6px;
+    }
+    .animation-demo {
+      padding: 20px;
+      background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+      color: white;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+    .color-test {
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 6px;
+    }
+    .low-contrast {
+      background: #f0f0f0;
+      color: #cccccc;
+    }
+    .medium-contrast {
+      background: #e8f4fd;
+      color: #0066cc;
+    }
+    .high-contrast {
+      background: #000000;
+      color: #ffffff;
+    }
+    .language-test {
+      padding: 15px;
+      background: #e8f5e8;
+      border-radius: 6px;
+      margin: 10px 0;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+    }
+    .modal-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      max-width: 500px;
+      width: 90%;
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .close {
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .status-indicator {
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+      font-weight: bold;
+    }
+    .status-success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .status-error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    .status-info {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+    .feature-item {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 6px;
+      border-left: 4px solid #007bff;
+    }
+    .feature-item h4 {
+      margin: 0 0 10px 0;
+      color: #495057;
+    }
+    .feature-item p {
+      margin: 0;
+      font-size: 14px;
+      color: #6c757d;
+    }
+    .test-section {
+      margin: 30px 0;
+      padding: 25px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      border: 2px solid #e9ecef;
+    }
+    .test-section h3 {
+      color: #495057;
+      border-bottom: 2px solid #dee2e6;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+    .image-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+    .image-item {
+      text-align: center;
+      padding: 10px;
+      background: white;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+    }
+    .image-item img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+    .image-item p {
+      margin: 10px 0 0 0;
+      font-size: 12px;
+      color: #666;
+    }
+    .form-test {
+      background: white;
+      padding: 25px;
+      border-radius: 8px;
+      border: 2px solid #dee2e6;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 15px 0;
+    }
+    .form-group {
+      margin: 15px 0;
+    }
+    .required {
+      color: #dc3545;
+    }
+    .help-text {
+      font-size: 12px;
+      color: #6c757d;
+      margin-top: 5px;
+    }
+    .keyboard-nav {
+      background: #e3f2fd;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    .keyboard-nav h4 {
+      color: #1976d2;
+      margin-bottom: 15px;
+    }
+    .keyboard-nav button {
+      margin: 5px;
+      background: #1976d2;
+    }
+    .keyboard-nav button:focus {
+      outline: 3px solid #ff9800;
+      outline-offset: 2px;
+    }
+    
+    @keyframes pulse {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.05); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    
+    @keyframes slide {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .pulse-animation {
+      animation: pulse 2s infinite;
+    }
+    
+    .slide-animation {
+      animation: slide 3s infinite;
+    }
+    
+    .rotate-animation {
+      animation: rotate 4s linear infinite;
+    }
+    
+    .reading-content {
+      max-width: 70ch;
+      margin: 20px auto;
+      line-height: 1.8;
+      font-size: 16px;
+    }
+    
+    .reading-content h2 {
+      color: #2c3e50;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 10px;
+    }
+    
+    .reading-content p {
+      margin: 20px 0;
+      text-align: justify;
+    }
+    
+    .reading-content blockquote {
+      border-left: 4px solid #3498db;
+      padding-left: 20px;
+      margin: 20px 0;
+      font-style: italic;
+      color: #555;
+    }
+    
+    .accessibility-issues {
+      background: #fff3cd;
+      border: 2px solid #ffc107;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    
+    .accessibility-issues h3 {
+      color: #856404;
+      margin-top: 0;
+    }
+    
+    .issue-list {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .issue-list li {
+      padding: 10px;
+      margin: 10px 0;
+      background: #fff;
+      border-radius: 4px;
+      border-left: 4px solid #ffc107;
+    }
+    
+    .issue-list li::before {
+      content: "⚠️ ";
+      margin-right: 10px;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        margin: 10px;
+        padding: 20px;
+      }
+      
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      
+      h1 {
+        font-size: 2em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌟 Izmo Accessibility Widget - Comprehensive Feature Testing</h1>
+    <p style="text-align: center; font-size: 18px; color: #666; margin-bottom: 30px;">
+      This comprehensive demo showcases all 23 accessibility features with extensive test content to validate every capability.
+    </p>
+    
+    <button class="demo-button" id="init-widget">🚀 Initialize Accessibility Widget</button>
+    
+    <div class="card">
+      <h2>🎯 Core Accessibility Features (15 Features)</h2>
+      <p>The widget includes these established accessibility enhancements:</p>
+      
+      <div class="feature-list">
+        <div class="feature-item">
+          <h4>🔊 Screen Reader</h4>
+          <p>Enhanced screen reader support with ARIA live announcements and semantic markup</p>
+        </div>
+        <div class="feature-item">
+          <h4>🎨 Contrast</h4>
+          <p>Adjustable contrast levels (normal, high, very high) for better visibility</p>
+        </div>
+        <div class="feature-item">
+          <h4>🔗 Highlight Links</h4>
+          <p>Makes links more visible with background highlighting and enhanced styling</p>
+        </div>
+        <div class="feature-item">
+          <h4>📏 Bigger Text</h4>
+          <p>Dynamic text size adjustment from 100% to 200% for easier reading</p>
+        </div>
+        <div class="feature-item">
+          <h4>📐 Text Spacing</h4>
+          <p>Adjust letter spacing, word spacing, and paragraph spacing</p>
+        </div>
+        <div class="feature-item">
+          <h4>📏 Line Height</h4>
+          <p>Customizable line spacing (1.2x to 2.0x) for improved readability</p>
+        </div>
+        <div class="feature-item">
+          <h4>📝 Text Align</h4>
+          <p>Adjust text alignment (left, center, right, justify) for better reading flow</p>
+        </div>
+        <div class="feature-item">
+          <h4>🌈 Saturation</h4>
+          <p>Control color saturation (0% to 200%) for visual comfort and color blindness support</p>
+        </div>
+        <div class="feature-item">
+          <h4>⏸️ Pause Animations</h4>
+          <p>Stop or reduce motion for users with vestibular disorders</p>
+        </div>
+        <div class="feature-item">
+          <h4>🖼️ Hide Images</h4>
+          <p>Conceal images to focus on text content and reduce visual clutter</p>
+        </div>
+        <div class="feature-item">
+          <h4>📚 Dyslexia Friendly</h4>
+          <p>Apply OpenDyslexic font and enhanced spacing for reading difficulties</p>
+        </div>
+        <div class="feature-item">
+          <h4>🖱️ Cursor</h4>
+          <p>Enhance cursor visibility and size for better tracking</p>
+        </div>
+        <div class="feature-item">
+          <h4>💡 Tooltip</h4>
+          <p>Enhanced tooltips and context information for better understanding</p>
+        </div>
+        <div class="feature-item">
+          <h4>🏗️ Page Structure</h4>
+          <p>Visualize and navigate page structure with heading and landmark highlighting</p>
+        </div>
+        <div class="feature-item">
+          <h4>📖 Dictionary</h4>
+          <p>Look up word definitions on demand for better comprehension</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🆕 WCAG 2.1 Compliance Features (8 Features)</h2>
+      <p>The widget now includes advanced accessibility validation and enhancement tools:</p>
+      
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h3>🖼️ Alt Text Validator</h3>
+          <p>Identifies images missing alternative text and provides context-aware suggestions.</p>
+          <div class="test-area">
+            <p>Test images with various accessibility issues:</p>
+            <div class="image-gallery">
+              <div class="image-item">
+                <img src="banner.png" alt="Izmo Accessibility Widget banner with accessibility icon" width="100">
+                <p>✅ Good alt text</p>
+              </div>
+              <div class="image-item">
+                <img src="bg.png" width="80" height="40">
+                <p>❌ Missing alt text</p>
+              </div>
+              <div class="image-item">
+                <img src="banner.png" alt="" width="80">
+                <p>⚠️ Empty alt text</p>
+              </div>
+              <div class="image-item">
+                <div class="missing-alt"></div>
+                <p>❌ Decorative div (no alt)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="feature-card">
+          <h3>📝 Page Title Validator</h3>
+          <p>Ensures pages have descriptive, meaningful titles that meet WCAG standards.</p>
+          <div class="test-area">
+            <p><strong>Current page title:</strong> "Izmo Accessibility Widget - Comprehensive Feature Testing Demo"</p>
+            <p><strong>Analysis:</strong> ✅ Descriptive and meaningful</p>
+            <p><strong>Length:</strong> 67 characters (good for screen readers)</p>
+          </div>
+        </div>
+        
+        <div class="feature-card">
+          <h3>🌐 Language Validator</h3>
+          <p>Checks for proper language attributes on HTML elements and detects mixed language content.</p>
+          <div class="test-area">
+            <div class="language-test">
+              <p><strong>Page language:</strong> <code>lang="en"</code></p>
+              <p lang="es">Este texto está en español y debería tener un atributo lang apropiado.</p>
+              <p lang="fr">Ce texte est en français et devrait avoir un attribut lang approprié.</p>
+              <p>This text has no language attribute but is in English.</p>
+              <p lang="de">Dieser Text ist auf Deutsch und sollte ein angemessenes lang-Attribut haben.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="feature-card">
+          <h3>🔄 Auto-refresh Controls</h3>
+          <p>Manages and controls automatic page refreshes, timers, and dynamic content updates.</p>
+          <div class="test-area">
+            <p>Monitors for: setTimeout, setInterval, meta refresh, and dynamic content</p>
+            <button id="test-timer">⏰ Test Timer (1s)</button>
+            <button id="test-interval">🔄 Test Interval (2s)</button>
+            <button id="test-refresh">🔄 Test Meta Refresh</button>
+            <p id="timer-test">Auto-refresh timer: 0</p>
+            <p id="interval-test">Interval counter: 0</p>
+          </div>
+        </div>
+        
+        <div class="feature-card">
+          <h3>🎯 Focus Trap Management</h3>
+          <p>Creates accessible focus containment for modals, dialogs, and complex interfaces.</p>
+          <div class="test-area">
+            <button id="open-modal">🚪 Open Test Modal</button>
+            <button id="open-dialog">💬 Open Dialog</button>
+            <p>Test keyboard navigation: Tab, Shift+Tab, Escape</p>
+          </div>
+        </div>
+        
+        <div class="feature-card">
+          <h3>📱 Touch Target Validator</h3>
+          <p>Validates mobile touch target sizes (minimum 44x44px) and spacing between targets.</p>
+          <div class="test-area">
+            <p>Touch target size test:</p>
+            <button class="small-target" title="Too small (25x25px)">X</button>
+            <button class="medium-target" title="Medium (35x35px)">Y</button>
+            <button class="large-target" title="Good size (50x50px)">Z</button>
+            <button style="width: 44px; height: 44px; background: #28a745; color: white; border: none; border-radius: 4px;">✅</button>
+            <p style="font-size: 12px; color: #666;">Hover over buttons to see sizes</p>
+          </div>
+        </div>
+        
+        <div class="feature-card">
+          <h3>📖 Reading Order Validator</h3>
+          <p>Checks logical heading structure, reading flow, and document outline.</p>
+          <div class="test-area">
+            <h1>H1 - Main Heading</h1>
+            <h3>H3 - Missing H2 (Invalid)</h3>
+            <h2>H2 - Out of Order (Invalid)</h2>
+            <h4>H4 - Missing H3 (Invalid)</h4>
+            <h2>H2 - Correct Order</h2>
+            <h3>H3 - Correct Order</h3>
+            <h4>H4 - Correct Order</h4>
+            <h2>H2 - Another Section</h2>
+            <h3>H3 - Subsection</h3>
+          </div>
+        </div>
+        
+        <div class="feature-card">
+          <h3>🎨 Form Enhancement</h3>
+          <p>Improves form accessibility with better labels, validation, and error handling.</p>
+          <div class="test-area">
+            <div class="form-test">
+              <form id="test-form">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="firstname">First Name <span class="required">*</span></label>
+                    <input type="text" id="firstname" name="firstname" required>
+                    <div class="help-text">Enter your first name</div>
+                  </div>
+                  <div class="form-group">
+                    <label for="lastname">Last Name <span class="required">*</span></label>
+                    <input type="text" id="lastname" name="lastname" required>
+                    <div class="help-text">Enter your last name</div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="email">Email Address <span class="required">*</span></label>
+                  <input type="email" id="email" name="email" required>
+                  <div class="help-text">Enter a valid email address</div>
+                </div>
+                <div class="form-group">
+                  <label for="phone">Phone Number</label>
+                  <input type="tel" id="phone" name="phone">
+                  <div class="help-text">Optional: Enter your phone number</div>
+                </div>
+                <div class="form-group">
+                  <label for="country">Country</label>
+                  <select id="country" name="country">
+                    <option value="">Select a country</option>
+                    <option value="us">United States</option>
+                    <option value="ca">Canada</option>
+                    <option value="uk">United Kingdom</option>
+                    <option value="au">Australia</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="message">Message</label>
+                  <textarea id="message" name="message" rows="4" placeholder="Enter your message here..."></textarea>
+                </div>
+                <button type="submit">📤 Submit Form</button>
+                <button type="reset">🔄 Reset Form</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-section">
+      <h3>🧪 Comprehensive Test Areas</h3>
+      <p>Use these areas to thoroughly test all accessibility features:</p>
+      
+      <div class="test-area">
+        <h4>📝 Text Content & Typography Test</h4>
+        <div class="reading-content">
+          <p>This comprehensive paragraph contains <strong>bold text</strong>, <em>italic text</em>, <u>underlined text</u>, and a <a href="#test" target="_blank">test link that opens in a new tab</a> to demonstrate various text formatting and link highlighting features.</p>
+          
+          <p>Another paragraph with different content to test text spacing, line height, and text alignment features. This text includes numbers (123), special characters (@#$%), and mixed case letters (aBcDeF) to test various typography scenarios.</p>
+          
+          <blockquote>
+            "This is a blockquote that tests how the accessibility widget handles quoted text and different text formatting within complex content structures."
+          </blockquote>
+          
+          <p>This paragraph contains <code>inline code</code> and <kbd>keyboard shortcuts</kbd> to test how the widget handles technical content and different text elements.</p>
+        </div>
+      </div>
+      
+      <div class="test-area">
+        <h4>🎨 Color & Contrast Test</h4>
+        <div class="color-test low-contrast">
+          <p>This text has very low contrast (light gray on light background) - should be flagged by contrast validator</p>
+        </div>
+        <div class="color-test medium-contrast">
+          <p>This text has medium contrast (blue on light blue background) - may need improvement</p>
+        </div>
+        <div class="color-test high-contrast">
+          <p>This text has high contrast (white on black background) - meets accessibility standards</p>
+        </div>
+        <div style="background: linear-gradient(45deg, #ff6b6b, #4ecdc4); padding: 15px; border-radius: 6px; margin: 10px 0;">
+          <p style="color: white;">This text tests color saturation features on a gradient background</p>
+        </div>
+      </div>
+      
+      <div class="test-area">
+        <h4>🎬 Animation & Motion Test</h4>
+        <div class="animation-demo">
+          <p class="pulse-animation">This text has a pulsing animation - test pause animations feature</p>
+          <p class="slide-animation">This text slides across the screen - should be pausable</p>
+          <div class="rotate-animation" style="display: inline-block; font-size: 24px;">🔄</div>
+          <p>This emoji rotates continuously - test motion reduction</p>
+        </div>
+      </div>
+      
+      <div class="test-area">
+        <h4>⌨️ Keyboard Navigation Test</h4>
+        <div class="keyboard-nav">
+          <h4>Test keyboard navigation with these interactive elements:</h4>
+          <button>Button 1</button>
+          <button>Button 2</button>
+          <button>Button 3</button>
+          <a href="#test1">Link 1</a>
+          <a href="#test2">Link 2</a>
+          <a href="#test3">Link 3</a>
+          <input type="text" placeholder="Text input" style="margin: 10px 0;">
+          <select style="margin: 10px 0;">
+            <option>Option 1</option>
+            <option>Option 2</option>
+            <option>Option 3</option>
+          </select>
+          <p>Use Tab, Shift+Tab, Enter, Space, and arrow keys to navigate</p>
+        </div>
+      </div>
+      
+      <div class="test-area">
+        <h4>📱 Mobile & Touch Test</h4>
+        <p>Test touch target sizes and mobile accessibility:</p>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+          <button class="small-target" title="Too small for touch">X</button>
+          <button class="medium-target" title="Borderline size">Y</button>
+          <button class="large-target" title="Good touch target">Z</button>
+          <button style="width: 44px; height: 44px; background: #28a745; color: white; border: none; border-radius: 4px;">✅</button>
+          <button style="width: 60px; height: 60px; background: #007bff; color: white; border: none; border-radius: 6px;">Large</button>
+        </div>
+        <p style="font-size: 12px; color: #666; margin-top: 10px;">Minimum recommended touch target: 44x44px</p>
+      </div>
+      
+      <div class="test-area">
+        <h4>🌐 Internationalization Test</h4>
+        <div class="language-test">
+          <h5>Mixed Language Content:</h5>
+          <p><strong>English:</strong> This is the primary language of the page.</p>
+          <p lang="es"><strong>Español:</strong> Este es contenido en español que debería tener el atributo lang apropiado.</p>
+          <p lang="fr"><strong>Français:</strong> Ceci est du contenu en français qui devrait avoir l'attribut lang approprié.</p>
+          <p lang="de"><strong>Deutsch:</strong> Dies ist deutscher Inhalt, der das entsprechende lang-Attribut haben sollte.</p>
+          <p lang="ja"><strong>日本語:</strong> これは適切なlang属性を持つべき日本語のコンテンツです。</p>
+          <p lang="zh"><strong>中文:</strong>这是应该具有适当lang属性的中文内容。</p>
+          <p lang="ar"><strong>العربية:</strong> هذا محتوى باللغة العربية يجب أن يحتوي على سمة lang مناسبة.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="accessibility-issues">
+      <h3>⚠️ Intentional Accessibility Issues for Testing</h3>
+      <p>This demo page intentionally includes accessibility issues to demonstrate the widget's detection capabilities:</p>
+      
+      <ul class="issue-list">
+        <li><strong>Images without alt text:</strong> Several images are missing alternative text attributes</li>
+        <li><strong>Poor color contrast:</strong> Some text has insufficient contrast ratios</li>
+        <li><strong>Small touch targets:</strong> Some buttons are smaller than the recommended 44x44px</li>
+        <li><strong>Improper heading hierarchy:</strong> H3 appears before H2, breaking the logical structure</li>
+        <li><strong>Form fields without proper labels:</strong> Some form elements may have accessibility issues</li>
+        <li><strong>Auto-refreshing content:</strong> Timers and intervals that can be controlled</li>
+        <li><strong>Modal dialogs:</strong> Test focus trap management</li>
+        <li><strong>Mixed language content:</strong> Text in different languages without proper lang attributes</li>
+        <li><strong>Animations:</strong> Content with motion that can be paused</li>
+        <li><strong>Keyboard navigation:</strong> Test tab order and focus management</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>📊 Widget Status & Information</h2>
+      <div id="widget-status" class="status-indicator status-info">
+        <p><strong>Status:</strong> Widget not initialized. Click the "Initialize Accessibility Widget" button above to start.</p>
+      </div>
+      
+      <div class="feature-list">
+        <div class="feature-item">
+          <h4>🎯 Total Features</h4>
+          <p>23 comprehensive accessibility features (15 core + 8 WCAG 2.1 compliance)</p>
+        </div>
+        <div class="feature-item">
+          <h4>🔍 Detection Capabilities</h4>
+          <p>Real-time scanning for accessibility issues and compliance violations</p>
+        </div>
+        <div class="feature-item">
+          <h4>⚡ Performance</h4>
+          <p>Lightweight implementation with minimal impact on page performance</p>
+        </div>
+        <div class="feature-item">
+          <h4>🌍 Internationalization</h4>
+          <p>Full i18n support with multiple language interfaces</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for testing focus trap -->
+  <div id="testModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>🧪 Test Modal Dialog</h3>
+        <button class="close" id="close-modal">&times;</button>
+      </div>
+      <p>This modal tests focus trap management. Use Tab to navigate between elements and Escape to close.</p>
+      <div style="margin: 20px 0;">
+        <button>Modal Button 1</button>
+        <button>Modal Button 2</button>
+        <button>Modal Button 3</button>
+      </div>
+      <input type="text" placeholder="Text input in modal" style="width: 100%; margin: 10px 0;">
+      <select style="width: 100%; margin: 10px 0;">
+        <option>Select option</option>
+        <option>Option 1</option>
+        <option>Option 2</option>
+      </select>
+      <p><strong>Test Instructions:</strong></p>
+      <ul>
+        <li>Tab through all elements - focus should stay within modal</li>
+        <li>Shift+Tab to go backwards</li>
+        <li>Escape key should close modal</li>
+        <li>Click outside modal should close it</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // Wait for the page to load
+    document.addEventListener('DOMContentLoaded', function() {
+      const initButton = document.getElementById('init-widget');
+      const testTimerButton = document.getElementById('test-timer');
+      const testIntervalButton = document.getElementById('test-interval');
+      const testRefreshButton = document.getElementById('test-refresh');
+      const openModalButton = document.getElementById('open-modal');
+      const closeModalButton = document.getElementById('close-modal');
+      const statusDiv = document.getElementById('widget-status');
+      const testForm = document.getElementById('test-form');
+      
+      let intervalCounter = 0;
+      let intervalId = null;
+      
+      // Initialize widget
+      initButton.addEventListener('click', function() {
+        if (typeof initializeIzmo === 'function') {
+          initializeIzmo({
+            enabledFeatures: [
+              // Core features (15)
+              "Screen Reader",
+              "Contrast", 
+              "Highlight Links",
+              "Bigger Text",
+              "Text Spacing",
+              "Line Height",
+              "Text Align",
+              "Saturation",
+              "Pause Animations",
+              "Hide Images",
+              "Dyslexia Friendly",
+              "Cursor",
+              "Tooltip",
+              "Page Structure",
+              "Dictionary",
+              // WCAG 2.1 compliance features (8)
+              "Alt Text Validator",
+              "Page Title Validator", 
+              "Language Validator",
+              "Auto-refresh Controls",
+              "Focus Trap",
+              "Touch Target Validator",
+              "Reading Order Validator",
+              "Form Enhancement"
+            ]
+          });
+          
+          statusDiv.className = 'status-indicator status-success';
+          statusDiv.innerHTML = `
+            <p><strong>✅ Widget Successfully Initialized!</strong></p>
+            <p>The Izmo Accessibility Widget now includes <strong>23 comprehensive accessibility features</strong>:</p>
+            <ul>
+              <li><strong>15 Core Features:</strong> Screen reader, contrast, text sizing, spacing, dyslexia support, and more</li>
+              <li><strong>8 WCAG 2.1 Compliance Features:</strong> Alt text validation, language detection, focus management, and accessibility auditing</li>
+            </ul>
+            <p><strong>Next Steps:</strong></p>
+            <ol>
+              <li>Look for the accessibility icon (♿) in the bottom-right corner</li>
+              <li>Click the icon to open the widget panel</li>
+              <li>Use the navigation arrows to explore all features</li>
+              <li>Test each feature on the content below</li>
+              <li>Press F1 for keyboard navigation help</li>
+            </ol>
+          `;
+        } else {
+          statusDiv.className = 'status-indicator status-error';
+          statusDiv.innerHTML = '<p><strong>❌ Error:</strong> initializeIzmo function not found. Make sure the widget is properly loaded.</p>';
+        }
+      });
+      
+      // Test timer functionality
+      testTimerButton.addEventListener('click', function() {
+        setTimeout(() => {
+          alert('Timer detected! This demonstrates the auto-refresh controls feature.');
+        }, 1000);
+      });
+      
+      // Test interval functionality
+      testIntervalButton.addEventListener('click', function() {
+        if (intervalId) {
+          clearInterval(intervalId);
+          intervalId = null;
+          testIntervalButton.textContent = '🔄 Test Interval (2s)';
+        } else {
+          intervalId = setInterval(() => {
+            intervalCounter++;
+            document.getElementById('interval-test').textContent = `Interval counter: ${intervalCounter}`;
+          }, 2000);
+          testIntervalButton.textContent = '⏹️ Stop Interval';
+        }
+      });
+      
+      // Test meta refresh
+      testRefreshButton.addEventListener('click', function() {
+        const meta = document.createElement('meta');
+        meta.httpEquiv = 'refresh';
+        meta.content = '5';
+        document.head.appendChild(meta);
+        alert('Meta refresh tag added! This demonstrates the auto-refresh controls feature.');
+      });
+      
+      // Modal functionality
+      openModalButton.addEventListener('click', function() {
+        document.getElementById('testModal').style.display = 'block';
+        // Focus first focusable element
+        setTimeout(() => {
+          document.querySelector('#testModal button').focus();
+        }, 100);
+      });
+      
+      closeModalButton.addEventListener('click', function() {
+        document.getElementById('testModal').style.display = 'none';
+        openModalButton.focus();
+      });
+      
+      // Close modal when clicking outside
+      document.getElementById('testModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+          this.style.display = 'none';
+          openModalButton.focus();
+        }
+      });
+      
+      // Close modal with Escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && document.getElementById('testModal').style.display === 'block') {
+          document.getElementById('testModal').style.display = 'none';
+          openModalButton.focus();
+        }
+      });
+      
+      // Form submission
+      testForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Form submitted! This demonstrates form enhancement features.');
+      });
+      
+      // Add some dynamic content for testing
+      let timerCounter = 0;
+      setInterval(() => {
+        timerCounter++;
+        document.getElementById('timer-test').textContent = `Auto-refresh timer: ${timerCounter}`;
+      }, 5000);
+      
+      // Add keyboard navigation hints
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'F1') {
+          e.preventDefault();
+          alert('Keyboard Navigation Help:\n\n' +
+                'Tab: Navigate forward\n' +
+                'Shift+Tab: Navigate backward\n' +
+                'Enter/Space: Activate buttons\n' +
+                'Escape: Close modals/overlays\n' +
+                'Arrow keys: Navigate within widgets\n' +
+                'F1: Show this help (you just pressed it!)');
+        }
+      });
+      
+      // Add some ARIA live regions for testing
+      const liveRegion = document.createElement('div');
+      liveRegion.setAttribute('aria-live', 'polite');
+      liveRegion.setAttribute('aria-atomic', 'true');
+      liveRegion.style.position = 'absolute';
+      liveRegion.style.left = '-10000px';
+      liveRegion.style.width = '1px';
+      liveRegion.style.height = '1px';
+      liveRegion.style.overflow = 'hidden';
+      document.body.appendChild(liveRegion);
+      
+      // Update live region periodically
+      setInterval(() => {
+        liveRegion.textContent = `Page updated at ${new Date().toLocaleTimeString()}`;
+      }, 10000);
+    });
+  </script>
+</body>
+</html> 

@@ -1,12 +1,14 @@
 import { DOCUMENT, NgIf, NgClass } from "@angular/common";
-import { Component, Renderer2, inject } from "@angular/core";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { Component, inject, OnInit, OnDestroy, Renderer2 } from "@angular/core";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
+import { IzmoAccessibilityComponent } from '../izmo-accessibility.component';
 
 @Component({
-  selector: "astral-line-height",
+  selector: "izmo-line-height",
   standalone: true,
-  template: `    <button
+  template: `
+    <button
       (click)="nextState()"
       [ngClass]="{ 'in-use': !isBaseState() }"
     >
@@ -20,15 +22,15 @@ import { I18nService } from "../services/i18n.service";
             }"
           >
             <svg
-              width="25px"
-              height="25px"
+              width="32"
+              height="32"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 d="M13 6L21 6.00048M13 12L21 12.0005M13 18L21 18.0005M6 4V20M6 4L3 7M6 4L9 7M6 20L3 17M6 20L9 17"
-                stroke="#ffffff"
+                stroke="currentColor"
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -55,21 +57,24 @@ import { I18nService } from "../services/i18n.service";
             </div>
           </div>
         </div>
-      </div>      <astral-widget-checkmark
+      </div>      <izmo-widget-checkmark
         [isActive]="!isBaseState()"
-      ></astral-widget-checkmark>
+      ></izmo-widget-checkmark>
     </button>
   `,
-  imports: [NgIf, NgClass, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, IzmoCheckmarkSvgComponent],
 })
-export class LineHeightComponent {  constructor(
+export class LineHeightComponent implements OnInit, OnDestroy {
+  constructor(
     private readonly renderer: Renderer2,
-    public i18n: I18nService
+    public i18n: I18nService,
+    private parent: IzmoAccessibilityComponent
   ) {}
   
   document = inject(DOCUMENT);
 
   currentState = 0;
+  private styleElement?: HTMLStyleElement;
 
   get baseText() {
     return this.i18n.getTranslation('line-height');
@@ -118,94 +123,73 @@ export class LineHeightComponent {  constructor(
     return this.currentState === 3;
   }
 
-  lowHeight = `
-  *:not(.astral-accessibility *) {
-      line-height: 1.5 !important;
-    }`;
+  ngOnInit() {
+    this.parent.resetEvent.subscribe(() => {
+      this.currentState = 0;
+      this._runStateLogic();
+    });
+  }
 
-  moderateHeight = `
-  *:not(.astral-accessibility *) {
-    line-height: 3 !important;
-  }`;
-
-  heavyHeight = `
-  *:not(.astral-accessibility *) {
-    line-height: 4 !important;
-  }`;
-
-  private lowHeightStyleTag: HTMLStyleElement | null = null;
-  private moderateHeightStyleTag: HTMLStyleElement | null = null;
-  private heavyHeightStyleTag: HTMLStyleElement | null = null;
-
-  _style: HTMLStyleElement;
+  ngOnDestroy() {
+    this._resetLineHeight();
+  }
 
   nextState() {
     this.currentState += 1;
     this.currentState = this.currentState % 4;
 
     this._runStateLogic();
-  }  private _runStateLogic() {
-    this._style?.remove?.();
-    this._style = this.document.createElement("style");
-
-    this._handleLightHeight();
-    this._handleModerateHeight();
-    this._handleHeavyHeight();
-
-    this.document.body.appendChild(this._style);
   }
 
-  private _handleLightHeight() {
+  private _runStateLogic() {
+    this._resetLineHeight();
+    
+    if (this.currentState === 0) {
+      return; // No line height applied
+    }
+
+    // Create style element to apply line height to body content excluding widget
+    this.styleElement = this.renderer.createElement('style');
+    this.renderer.addClass(this.styleElement, 'izmo-line-height-styles');
+    
+    let lineHeightCSS = '';
+    
     if (this.currentState === 1) { // Light Height
-      if (!this.lowHeightStyleTag) {
-        this.lowHeightStyleTag = this.renderer.createElement("style");
-        this.renderer.appendChild(
-          this.lowHeightStyleTag,
-          this.renderer.createText(this.lowHeight),
-        );
-        this.renderer.appendChild(this.document.head, this.lowHeightStyleTag);
-      }
-    } else if (this.lowHeightStyleTag) {
-      this.renderer.removeChild(this.document.head, this.lowHeightStyleTag);
-      this.lowHeightStyleTag = null;
+      lineHeightCSS = `
+        /* Apply light line height to body content excluding widget */
+        body > *:not(izmo-accessibility) {
+          line-height: 1.5 !important;
+        }
+      `;
     }
-  }
 
-  private _handleModerateHeight() {
     if (this.currentState === 2) { // Moderate Height
-      if (!this.moderateHeightStyleTag) {
-        this.moderateHeightStyleTag = this.renderer.createElement("style");
-        this.renderer.appendChild(
-          this.moderateHeightStyleTag,
-          this.renderer.createText(this.moderateHeight),
-        );
-        this.renderer.appendChild(
-          this.document.head,
-          this.moderateHeightStyleTag,
-        );
-      }
-    } else if (this.moderateHeightStyleTag) {
-      this.renderer.removeChild(
-        this.document.head,
-        this.moderateHeightStyleTag,
-      );
-      this.moderateHeightStyleTag = null;
+      lineHeightCSS = `
+        /* Apply moderate line height to body content excluding widget */
+        body > *:not(izmo-accessibility) {
+          line-height: 3 !important;
+        }
+      `;
     }
+
+    if (this.currentState === 3) { // Heavy Height
+      lineHeightCSS = `
+        /* Apply heavy line height to body content excluding widget */
+        body > *:not(izmo-accessibility) {
+          line-height: 4 !important;
+        }
+      `;
+    }
+
+    this.renderer.setProperty(this.styleElement, 'textContent', lineHeightCSS);
+    this.renderer.appendChild(document.head, this.styleElement);
   }
 
-  private _handleHeavyHeight() {
-    if (this.currentState === 3) { // Heavy Height
-      if (!this.heavyHeightStyleTag) {
-        this.heavyHeightStyleTag = this.renderer.createElement("style");
-        this.renderer.appendChild(
-          this.heavyHeightStyleTag,
-          this.renderer.createText(this.heavyHeight),
-        );
-        this.renderer.appendChild(this.document.head, this.heavyHeightStyleTag);
-      }
-    } else if (this.heavyHeightStyleTag) {
-      this.renderer.removeChild(this.document.head, this.heavyHeightStyleTag);
-      this.heavyHeightStyleTag = null;
+  private _resetLineHeight() {
+    // Remove the style element if it exists
+    if (this.styleElement) {
+      this.renderer.removeChild(document.head, this.styleElement);
+      this.styleElement = undefined;
     }
   }
 }

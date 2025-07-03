@@ -1,10 +1,11 @@
 import { DOCUMENT, NgIf, NgClass } from "@angular/common";
-import { Component, inject, Renderer2, OnDestroy } from "@angular/core";
-import { AstralCheckmarkSvgComponent } from "../util/astral-checksvg.component";
+import { Component, inject, Renderer2, OnDestroy, Optional, SkipSelf } from "@angular/core";
+import { IzmoCheckmarkSvgComponent } from "../util/izmo-checksvg.component";
 import { I18nService } from "../services/i18n.service";
+import { IzmoAccessibilityComponent } from "../izmo-accessibility.component";
 
 @Component({
-  selector: "astral-dictionary",
+  selector: "izmo-dictionary",
   standalone: true,
   template: `
     <button
@@ -43,9 +44,9 @@ import { I18nService } from "../services/i18n.service";
         </div>
       </div>
 
-      <astral-widget-checkmark
+      <izmo-widget-checkmark
         [isActive]="isDictionaryActive"
-      ></astral-widget-checkmark>
+      ></izmo-widget-checkmark>
     </button>
 
     <!-- Dictionary popup -->
@@ -66,7 +67,7 @@ import { I18nService } from "../services/i18n.service";
       </div>
     </div>
   `,
-  imports: [NgIf, NgClass, AstralCheckmarkSvgComponent],
+  imports: [NgIf, NgClass, IzmoCheckmarkSvgComponent],
   styles: [`
     .dictionary-popup {
       position: fixed;
@@ -125,6 +126,14 @@ export class DictionaryComponent implements OnDestroy {
   renderer = inject(Renderer2);
   i18n = inject(I18nService);
 
+  constructor(
+    @Optional() @SkipSelf() private parent?: IzmoAccessibilityComponent
+  ) {
+    if (this.parent) {
+      this.parent.resetEvent.subscribe(() => this.reset());
+    }
+  }
+
   isDictionaryActive = false;
   selectedWord = '';
   definition = '';
@@ -133,6 +142,11 @@ export class DictionaryComponent implements OnDestroy {
 
   private clickListener?: () => void;
   private selectionListener?: () => void;
+
+  reset() {
+    this.isDictionaryActive = false;
+    this.closeDictionary();
+  }
 
   toggleDictionary() {
     this.isDictionaryActive = !this.isDictionaryActive;
@@ -214,11 +228,9 @@ export class DictionaryComponent implements OnDestroy {
   private showDefinition(word: string, x: number, y: number) {
     this.selectedWord = word;
     this.definition = 'Loading definition...';
-    
-    // Position the popup
-    this.popupLeft = Math.min(x, window.innerWidth - 320);
-    this.popupTop = Math.max(y - 100, 10);
-    
+    this.popupTop = y + 10;
+    this.popupLeft = x + 10;
+
     // Simulate getting definition (in real implementation, you'd call a dictionary API)
     setTimeout(() => {
       this.definition = this.getSimpleDefinition(word.toLowerCase());

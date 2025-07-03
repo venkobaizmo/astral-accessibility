@@ -1,0 +1,668 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+
+/* Fallback font loading strategy */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/opensans/v40/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0B4gaVI.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  z-index: 999999;
+  bottom: 0;
+  right: 0px;
+  min-width: 0;
+  min-height: 0;
+  transition: max-width 0.1s ease-in-out;
+  transform: translateZ(0);
+  will-change: transform;
+  isolation: isolate;
+  contain: layout style paint;
+  
+  // Default CSS custom properties for theming
+  --iconWidth: 70px;
+  --modalWidth: 400px;
+  --maxModalWidth: 90vw;
+  --modalHeight: 63vh;
+  
+  // Theme colors with defaults
+  --izmo-primary-color: #4A90E2;
+  --izmo-secondary-color: #F5A623;
+  --izmo-accent-color: #7ED321;
+  --izmo-background-color: #FFFFFF;
+  --izmo-text-color: #333333;
+  --izmo-border-color: #E1E8ED;
+  --izmo-shadow-color: rgba(0, 0, 0, 0.25);
+  
+  // Modal colors
+  --izmo-modal-background-color: #232323;
+  --izmo-modal-border-color: #e8e8e8;
+  
+  // Action colors
+  --izmo-action-text-color: #fff;
+  --izmo-action-active-text-color: #000;
+  --izmo-action-disabled-text-color: #a4a4a4;
+  --izmo-action-background-color: #444444;
+  --izmo-action-active-background-color: #ffcb00;
+  --izmo-action-disabled-background-color: #373737;
+  
+  // Icon colors
+  --izmo-action-icon-active-background-color: #ffd73b;
+  --izmo-action-icon-inactive-background-color: #6c6c6c;
+  --izmo-action-icon-disabled-background-color: #595959;
+  
+  // Header colors
+  --izmo-header-background-color: #4A90E2;
+  --izmo-header-text-color: #fff;
+  --izmo-header-title-color: #fff;
+  --izmo-header-close-button-color: #fff;
+  --izmo-header-icon-svg-color: #000000;
+  
+  // Language selector colors
+  --izmo-language-select-background-color: #374151;
+  --izmo-language-select-text-color: #fff;
+  --izmo-language-select-border-color: #4b5563;
+  --izmo-language-select-focus-color: #3b82f6;
+  --izmo-language-select-hover-background-color: #ffffff;
+  
+  // Footer colors
+  --izmo-footer-background-color: transparent;
+  --izmo-footer-text-color: #bbb;
+  --izmo-footer-link-color: #e53935;
+  --izmo-footer-reset-button-background-color: #000000;
+  --izmo-footer-reset-button-text-color: #ffffff;
+  --izmo-footer-reset-button-hover-background-color: #ffd100;
+  --izmo-footer-reset-button-hover-text-color: #000000;
+  --izmo-footer-reset-button-active-background-color: #ffd100;
+  --izmo-footer-reset-button-active-text-color: #000000;
+  --izmo-footer-izmo-color: #e53935;
+  --izmo-footer-cars-color: #000000;
+  
+  // Widget icon colors
+  --izmo-widget-icon-background-color: #4A90E2;
+  --izmo-widget-icon-color: #FFFFFF;
+  --izmo-widget-icon-active-background-color: #ffcb00;
+  --izmo-widget-icon-active-color: #000;
+  
+  // Widget border
+  --izmo-widget-border-color: #E8E8E8;
+  --izmo-widget-border-width: 1px;
+  --izmo-widget-border-style: solid;
+  
+  // Legacy variables for backward compatibility
+  --modalBackgroundColor: var(--izmo-modal-background-color);
+  --modalBorderColor: var(--izmo-modal-border-color);
+  --actionTextColor: var(--izmo-action-text-color);
+  --actionActiveTextColor: var(--izmo-action-active-text-color);
+  --actionDisabledTextColor: var(--izmo-action-disabled-text-color);
+  --actionBackgroundColor: var(--izmo-action-background-color);
+  --actionActiveBackgroundColor: var(--izmo-action-active-background-color);
+  --actionDisabledBackgroundColor: var(--izmo-action-disabled-background-color);
+  --actionIconActiveBackgroundColor: var(--izmo-action-icon-active-background-color);
+  --actionIconInactiveBackgroundColor: var(--izmo-action-icon-inactive-background-color);
+  --actionIconDisabledBackgroundColor: var(--izmo-action-icon-disabled-background-color);
+  --pageWidth: 100%;
+  --pageHeight: 100%;
+  --pageBackgroundColor: var(--izmo-modal-background-color);
+  
+  // Ensure widget maintains consistent spacing regardless of global accessibility changes
+  line-height: 1.2 !important;
+  word-spacing: normal !important;
+  letter-spacing: normal !important;
+  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  
+  // Apply consistent spacing to all widget elements
+  *, *::before, *::after {
+    line-height: 1.2 !important;
+    word-spacing: normal !important;
+    letter-spacing: normal !important;
+    font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  }
+
+  &.izmo-layout-1-column .izmo-modal {
+    width: 400px;
+    max-width: 95vw;
+  }
+  &.izmo-layout-2-column .izmo-modal {
+    width: 700px;
+    max-width: 98vw;
+  }
+  &.izmo-layout-3-column .izmo-modal,
+  &.izmo-layout-default .izmo-modal {
+    width: 740px;
+    max-width: 98vw;
+  }
+
+  // Prevent horizontal scroll
+  & .izmo-modal {
+    overflow-x: hidden;
+  }
+
+  &.izmo-layout-1-column .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 18px;
+    grid-template-columns: none;
+  }
+  &.izmo-layout-2-column .actions {
+    display: grid;
+    gap: 12px;
+    padding: 18px;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+  &.izmo-layout-3-column .actions, &.izmo-layout-default .actions {
+    display: grid;
+    gap: 10px;
+    padding: 18px;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: start;
+  }
+
+  @media (max-width: 1300px) {
+    &.izmo-layout-3-column .izmo-modal,
+    &.izmo-layout-default .izmo-modal {
+      width: 1000px;
+    }
+  }
+  @media (max-width: 1100px) {
+    &.izmo-layout-3-column .izmo-modal,
+    &.izmo-layout-default .izmo-modal {
+      width: 800px;
+    }
+  }
+  @media (max-width: 900px) {
+    &.izmo-layout-3-column .izmo-modal,
+    &.izmo-layout-2-column .izmo-modal {
+      width: 600px;
+    }
+    &.izmo-layout-3-column .actions,
+    &.izmo-layout-2-column .actions {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    &.izmo-layout-3-column .izmo-modal,
+    &.izmo-layout-2-column .izmo-modal,
+    &.izmo-layout-1-column .izmo-modal {
+      width: 98vw;
+      min-width: 0;
+      max-width: 100vw;
+    }
+    &.izmo-layout-3-column .actions,
+    &.izmo-layout-2-column .actions,
+    &.izmo-layout-1-column .actions {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  max-width: 100vw;
+  width: auto;
+  overflow-x: hidden;
+}
+
+.izmo-accessibility {
+  background: var(--modalBackgroundColor);
+  border: var(--izmo-widget-border-width) var(--izmo-widget-border-style) var(--izmo-widget-border-color);
+  border-radius: 16px 0 0 16px;
+  box-shadow: 0 4px 24px var(--izmo-shadow-color);
+  padding: 0;
+  min-width: 0;
+  min-height: 0;
+  max-width: 100vw;
+  width: auto;
+  overflow-x: hidden;
+}
+
+.izmo-header {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-bottom: 1px solid var(--izmo-border-color);
+  position: relative;
+  padding: 18px 18px 10px 18px;
+  background: var(--izmo-header-background-color) !important;
+  min-height: 120px;
+  overflow: visible !important;
+  border: 0px solid var(--izmo-border-color) !important;
+  z-index: 1000001 !important;
+}
+.izmo-header-main-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  min-height: 60px;
+}
+.izmo-header-icon-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: 8px;
+  padding: 8px 0;
+}
+.izmo-header-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--izmo-header-title-color);
+  text-align: center;
+  margin: 0;
+  line-height: 1.2;
+  text-shadow: 0 1px 2px var(--izmo-shadow-color);
+}
+.izmo-header-close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+.izmo-header-close:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.izmo-header-lang-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+.izmo-lang-label {
+  font-weight: 600;
+  color: var(--izmo-header-text-color);
+  font-size: 0.875rem;
+  margin-bottom: 6px;
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.izmo-lang-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--izmo-language-select-border-color);
+  border-radius: 8px;
+  background-color: var(--izmo-language-select-background-color);
+  color: var(--izmo-language-select-text-color);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+.izmo-lang-select:hover {
+  border-color: var(--izmo-language-select-border-color);
+  background-color: var(--izmo-language-select-hover-background-color);
+}
+.izmo-lang-select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+.izmo-lang-select option {
+  background-color: #374151;
+  color: #fff;
+  padding: 8px 12px;
+}
+.izmo-header-controls-title-row {
+  width: 100%;
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+.izmo-controls-title {
+  font-weight: 600;
+  color: var(--izmo-header-text-color);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.izmo-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 18px 10px 18px;
+  border-top: 1px solid var(--izmo-border-color);
+  background: var(--izmo-footer-background-color);
+  .reset-all-btn {
+    background: var(--izmo-footer-reset-button-background-color);
+    color: var(--izmo-footer-reset-button-text-color);
+    border: 1px solid var(--izmo-border-color);
+    border-radius: 5px;
+    padding: 6px 16px 6px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background 0.2s, border 0.2s;
+  }
+  .reset-all-btn:hover {
+    background: var(--izmo-footer-reset-button-hover-background-color);
+    color: var(--izmo-footer-reset-button-hover-text-color);
+    border-color: var(--izmo-footer-reset-button-hover-background-color);
+    outline: none;
+  }
+  .reset-all-btn:active {
+    background: var(--izmo-footer-reset-button-active-background-color);
+    color: var(--izmo-footer-reset-button-active-text-color);
+    border-color: var(--izmo-footer-reset-button-active-background-color);
+  }
+  .footer-powered {
+    color: var(--izmo-footer-text-color);
+    font-size: 13px;
+    a {
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .color-red {
+      color: var(--izmo-footer-link-color) !important;
+    }
+  }
+}
+
+.izmo-position {
+  margin-right: -4px;
+}
+
+.icon-background {
+  background: var(--actionActiveBackgroundColor);
+  border-radius: 50%;
+  font-size: 35px;
+  padding: 8px;
+}
+
+.izmo-icon {
+  @extend .izmo-position;
+  line-height: normal;
+  background-color: var(--izmo-widget-icon-background-color);
+  padding: 8px;
+  padding-right: 16px;
+  border: 0;
+  border-radius: 20px 0 0 20px;
+  height: var(--iconWidth);
+  width: var(--iconWidth);
+  svg {
+    background: var(--izmo-widget-icon-color);
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    padding: 11px;
+  }
+}
+
+.izmo-close-icon {
+  svg {
+    background: var(--izmo-header-close-button-color);
+  }
+}
+
+.izmo-icon-mobile {
+  padding: 6px;
+  svg {
+    background: var(--izmo-widget-icon-active-background-color);
+    border-radius: 50%;
+    width: 49px;
+    height: 49px;
+  }
+}
+
+.izmo-modal {
+  @extend .izmo-position;
+  border: var(--izmo-widget-border-width) var(--izmo-widget-border-style) var(--izmo-widget-border-color);
+  background-color: var(--modalBackgroundColor);
+  border-radius: 0px 0px 0px 0px;
+  padding: 0;
+  margin-right: 0;
+  max-width: 100vw;
+  width: auto;
+  overflow-x: hidden;
+  overflow: visible !important;
+  z-index: 1000000 !important;
+  &.active {
+    display: block;
+  }
+  display: none;
+}
+
+.izmo-page {
+  max-width: 80vw;
+  .action {
+    ::ng-deep {
+      button {
+        font-size: 15px;
+      }
+      .icon {
+        font-size: 25px;
+        padding: 6px;
+        svg {
+          width: 25px;
+          height: 25px;
+        }
+      }
+    }
+  }
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px;
+  max-height: var(--modalHeight);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.action {
+  ::ng-deep {
+    button {
+      overflow-y: hidden;
+      min-width: 0;
+      width: 100%;
+      max-width: 220px;
+      min-height: 90px;
+      height: 90px;
+      padding: 0px 0px !important;
+      margin: 0px 0px !important;
+      font-size: 17px;
+      color: var(--actionTextColor);
+      font-weight: 600;
+      background: var(--actionBackgroundColor);
+      border: 0px solid var(--izmo-border-color);
+      border-radius: 12px !important;
+      overflow: visible;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 12px;
+      box-shadow: none;
+      transition: background 0.2s, color 0.2s;
+      position: relative;
+      &:hover {
+        background: var(--actionActiveBackgroundColor);
+        color: var(--actionActiveTextColor);
+        outline: none;
+      }
+      &.in-use {
+        color: var(--actionActiveTextColor);
+        background: var(--actionActiveBackgroundColor);
+        border: 2px solid var(--izmo-primary-color);
+      }
+      &.disabled-button {
+        color: var(--actionDisabledTextColor);
+        background: var(--actionDisabledBackgroundColor);
+        display: none;
+      }
+      .title {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        overflow: hidden;
+        .icon-state-wrap {
+          display: flex;
+          align-items: center;
+          width: 100%;
+          flex-direction: column;
+          .state-dots-wrap {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            padding: 2px;
+            align-items: stretch;
+            overflow: hidden;
+            text-align: center;
+            
+            span {
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              width: 100%;
+              display: block;
+            }
+          }
+        }
+      }
+      .icon {
+        border-radius: 50%;
+        margin-right: 12px;
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px;
+        font-size: 28px;
+        background: var(--actionIconInactiveBackgroundColor);
+        flex-shrink: 0;
+        svg {
+          width: 28px;
+          height: 28px;
+        }
+        &.active-check {
+          padding: 10px;
+          margin-left: 10px;
+          font-size: 12px;
+          -webkit-text-stroke: 0.7px black;
+          position: absolute;
+          right: 0;
+          top: 10px;
+          svg {
+            width: 15px;
+            height: 15px;
+          }
+        }
+        &.inactive {
+          background: var(--actionIconInactiveBackgroundColor);
+        }
+        &.disabled {
+          background: var(--actionIconDisabledBackgroundColor);
+          svg {
+            filter: brightness(0.5);
+          }
+        }
+        &.active {
+          background: var(--actionIconActiveBackgroundColor);
+          svg {
+            filter: brightness(0);
+          }
+        }
+      }
+    }
+    .dots {
+      display: flex;
+      height: 10px;
+      width: 100%;
+      margin-top: auto;
+      gap: 5px;
+      &.inactive {
+        display: none;
+      }
+      .dot {
+        background: #e8e8e8;
+        width: 100%;
+        height: 8px;
+        border-radius: 4px;
+        &.active {
+          background: #000;
+        }
+      }
+    }
+  }
+}
+
+// Accessibility utility classes
+::ng-deep {
+  .izmo_inverted {
+    filter: invert(1) !important;
+  }
+  .izmo_low_saturation {
+    filter: saturate(0.4) !important;
+  }
+  .izmo_high_saturation {
+    filter: saturate(2.5) !important;
+  }
+  .izmo_desaturated {
+    filter: saturate(0) !important;
+  }
+  .izmo_light_spacing {
+    word-spacing: 0.16em;
+    letter-spacing: 0.12em;
+  }
+  .izmo_moderate_spacing {
+    word-spacing: 0.32em;
+    letter-spacing: 0.24em;
+  }
+  .izmo_heavy_spacing {
+    word-spacing: 0.48em;
+    letter-spacing: 0.36em;
+  }
+  
+  // Exclude widget from filter effects to prevent positioning issues
+  .izmo_low_saturation izmo-accessibility,
+  .izmo_high_saturation izmo-accessibility,
+  .izmo_desaturated izmo-accessibility,
+  .izmo_inverted izmo-accessibility {
+    filter: none !important;
+  }
+}
+
+.action, .action ::ng-deep button, .action .title, .action .icon-state-wrap, .action .state-dots-wrap {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.action ::ng-deep button {
+  border-radius: 12px !important;
+} 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Astral Widget - End User Configuration</title>
+  <title>Izmo Widget - End User Configuration</title>
   <script src="main.js"></script>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
@@ -13,7 +13,7 @@
   </style>
 </head>
 <body>
-  <h1>Astral Accessibility Widget - Configuration Demo</h1>
+  <h1>Izmo Accessibility Widget - Configuration Demo</h1>
   
   <div class="config-section">
     <h2>🎯 End User Configuration (Recommended for Public Websites)</h2>
@@ -83,8 +83,8 @@
       const statusDiv = document.getElementById('config-status');
 
       function initEndUserConfig() {
-        if (typeof initializeAstral === 'function') {
-          initializeAstral({
+        if (typeof initializeIzmo === 'function') {
+          initializeIzmo({
             enabledFeatures: [
               // User Enhancement Tools
               "Screen Reader",
@@ -113,13 +113,13 @@
           });
           statusDiv.innerHTML = '<strong>✅ End User Widget Initialized!</strong> 22 user enhancement features enabled.';
         } else {
-          statusDiv.innerHTML = '<strong>❌ Error:</strong> initializeAstral function not found.';
+          statusDiv.innerHTML = '<strong>❌ Error:</strong> initializeIzmo function not found.';
         }
       }
 
       function initDeveloperConfig() {
-        if (typeof initializeAstral === 'function') {
-          initializeAstral({
+        if (typeof initializeIzmo === 'function') {
+          initializeIzmo({
             enabledFeatures: [
               // Developer Validation Tools
               "Alt Text Validator",
@@ -134,13 +134,13 @@
           });
           statusDiv.innerHTML = '<strong>✅ Developer Widget Initialized!</strong> 8 developer validation features enabled.';
         } else {
-          statusDiv.innerHTML = '<strong>❌ Error:</strong> initializeAstral function not found.';
+          statusDiv.innerHTML = '<strong>❌ Error:</strong> initializeIzmo function not found.';
         }
       }
 
       function initCompleteConfig() {
-        if (typeof initializeAstral === 'function') {
-          initializeAstral({
+        if (typeof initializeIzmo === 'function') {
+          initializeIzmo({
             enabledFeatures: [
               // All User Enhancement Tools
               "Screen Reader", "Contrast", "Highlight Links", "Bigger Text", "Text Spacing", 
@@ -157,7 +157,7 @@
           });
           statusDiv.innerHTML = '<strong>✅ Complete Widget Initialized!</strong> All 30 accessibility features enabled.';
         } else {
-          statusDiv.innerHTML = '<strong>❌ Error:</strong> initializeAstral function not found.';
+          statusDiv.innerHTML = '<strong>❌ Error:</strong> initializeIzmo function not found.';
         }
       }
 
