@@ -276,6 +276,8 @@ export class IzmoAccessibilityComponent implements OnInit, AfterViewInit {
   @ViewChildren(HighlightAllComponent) highlightAllControls!: QueryList<HighlightAllComponent>;
   @ViewChildren(MuteSoundsComponent) muteSoundsControls!: QueryList<MuteSoundsComponent>;
   @ViewChildren(AccessibilityProfilesComponent) accessibilityProfilesControls!: QueryList<AccessibilityProfilesComponent>;
+  @ViewChildren(GrayscaleComponent) grayscaleControls!: QueryList<GrayscaleComponent>;
+  @ViewChildren(LuminosityComponent) luminosityControls!: QueryList<LuminosityComponent>;
 
   constructor(
     private readonly elementRef: ElementRef, 
@@ -523,12 +525,72 @@ export class IzmoAccessibilityComponent implements OnInit, AfterViewInit {
   }
 
   onProfileApplied(features: string[]) {
-    // Only Contrast supports programmatic activation out of the box
+    // Reset all controls first
+    this.resetAllSelections();
+    
+    // Activate controls based on selected profile features
     this.contrastControls.forEach(ctrl => {
-      if (features.includes('Contrast') && ctrl.currentState === 0) ctrl.nextState();
-      if (!features.includes('Contrast') && ctrl.currentState !== 0) ctrl.nextState();
+      ctrl.toggleFromProfile(features.includes('Contrast'));
     });
-    // For other controls, programmatic activation is not supported by default.
-    // To support it, add a public method to the control and call it here.
+    
+    this.invertControls.forEach(ctrl => {
+      ctrl.toggleFromProfile(features.includes('Invert'));
+    });
+    
+    this.saturateControls.forEach(ctrl => {
+      ctrl.toggleFromProfile(features.includes('Saturation'));
+    });
+    
+    this.textSizeControls.forEach(ctrl => {
+      ctrl.toggleFromProfile(features.includes('Bigger Text'));
+    });
+    
+    this.textSpacingControls.forEach(ctrl => {
+      ctrl.toggleFromProfile(features.includes('Text Spacing'));
+    });
+    
+    this.screenReaderControls.forEach(ctrl => {
+      ctrl.toggleFromProfile(features.includes('Screen Reader'));
+    });
+    
+    this.lineHeightControls.forEach(ctrl => {
+      ctrl.toggleFromProfile(features.includes('Line Height'));
+    });
+    
+    this.skipLinksControls.forEach(ctrl => {
+      ctrl.toggleFromProfile(features.includes('Skip Links'));
+    });
+    
+    this.reducedMotionControls.forEach(ctrl => {
+      ctrl.toggleFromProfile(features.includes('Reduced Motion'));
+    });
+    
+    this.dyslexiaFriendlyControls.forEach(ctrl => {
+      ctrl.toggleFromProfile(features.includes('Dyslexia Friendly'));
+    });
+    
+    this.grayscaleControls.forEach(ctrl => {
+      ctrl.toggleFromProfile(features.includes('Grayscale'));
+    });
+    
+    this.muteSoundsControls.forEach(ctrl => {
+      ctrl.toggleFromProfile(features.includes('Mute Sounds'));
+    });
+    
+    this.cursorControls.forEach(ctrl => {
+      ctrl.toggleFromProfile(features.includes('Cursor'));
+    });
+    
+    this.readableFontControls.forEach(ctrl => {
+      ctrl.toggleFromProfile(features.includes('Readable Font'));
+    });
+    
+    this.highlightTitlesControls.forEach(ctrl => {
+      ctrl.toggleFromProfile(features.includes('Highlight Titles'));
+    });
+    
+    this.highlightAllControls.forEach(ctrl => {
+      ctrl.toggleFromProfile(features.includes('Highlight All'));
+    });
   }
 }
