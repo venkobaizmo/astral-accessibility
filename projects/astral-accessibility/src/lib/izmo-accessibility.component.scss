@@ -472,14 +472,42 @@ html, body {
   }
 }
 
+.izmo-main-scroll {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  max-height: calc(100vh - 276px);
+  min-height: 0;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
 .actions {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 18px;
-  max-height: var(--modalHeight);
-  overflow-y: auto;
-  overflow-x: hidden;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: flex-start;
+}
+
+.action {
+  flex: 0 0 160px;
+  min-width: 120px;
+  max-width: 180px;
+  opacity: 0.5;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  transition: border 0.2s, opacity 0.2s;
+}
+.action.active {
+  opacity: 1;
+  border: 2px solid var(--izmo-action-selected-border-color, #FFD100);
+  background: var(--izmo-action-active-background-color, #FFD100);
+}
+
+.izmo-section-title {
+  margin: 16px 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--izmo-section-title-color, var(--izmo-text-color, #001E50));
 }
 
 .action {

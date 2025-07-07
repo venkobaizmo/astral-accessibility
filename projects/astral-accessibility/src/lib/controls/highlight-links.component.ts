@@ -86,6 +86,23 @@ export class HighlightLinksComponent implements OnInit {
     ];
   }
 
+  get isActive(): boolean {
+    return this.currentState !== 0;
+  }
+
+  /**
+   * Programmatically activate/deactivate from profile selection
+   */
+  toggleFromProfile(desiredState: boolean) {
+    if (desiredState && this.currentState === 0) {
+      this.currentState = 1;
+      this._runStateLogic();
+    } else if (!desiredState && this.currentState !== 0) {
+      this.currentState = 0;
+      this._runStateLogic();
+    }
+  }
+
   private styleElement?: HTMLStyleElement;
 
   ngOnInit() {

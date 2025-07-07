@@ -466,4 +466,21 @@ export class LanguageValidatorComponent implements OnDestroy {
     this.showLanguagePanel = false;
     this.removeHighlights();
   }
+
+  get isActive(): boolean {
+    return this.currentState !== 0;
+  }
+
+  /**
+   * Programmatically activate/deactivate from profile selection
+   */
+  toggleFromProfile(desiredState: boolean) {
+    if (desiredState && this.currentState === 0) {
+      this.currentState = 1;
+      this._runStateLogic();
+    } else if (!desiredState && this.currentState !== 0) {
+      this.currentState = 0;
+      this._runStateLogic();
+    }
+  }
 }

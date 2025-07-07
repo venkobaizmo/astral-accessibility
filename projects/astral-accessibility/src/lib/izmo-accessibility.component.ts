@@ -1,6 +1,6 @@
-import { NgIf, NgClass, NgFor } from "@angular/common";
+import { CommonModule } from '@angular/common';
 import { FormsModule } from "@angular/forms";
-import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, Renderer2, OnInit, EventEmitter, AfterViewInit } from "@angular/core";
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, Renderer2, OnInit, EventEmitter, AfterViewInit, ViewChildren, QueryList } from "@angular/core";
 import { ContrastComponent } from "./controls/contrast.component";
 import { InvertComponent } from "./controls/invert.component";
 import { SaturateComponent } from "./controls/saturate.component";
@@ -42,6 +42,7 @@ import { ReadingLineComponent } from "./controls/reading-line.component";
 import { HighlightTitlesComponent } from "./controls/highlight-titles.component";
 import { HighlightAllComponent } from "./controls/highlight-all.component";
 import { MuteSoundsComponent } from "./controls/mute-sounds.component";
+import { AccessibilityProfilesComponent } from "./controls/accessibility-profiles.component";
 
 export interface IzmoTheme {
   // Modal colors
@@ -104,9 +105,7 @@ export type LayoutType = '1-column' | '2-column' | '3-column' | 'responsive';
   styleUrls: ["./izmo-accessibility.component.scss"],
   standalone: true,
   imports: [
-    NgIf,
-    NgClass,
-    NgFor,
+    CommonModule,
     FormsModule,
     InvertComponent,
     ContrastComponent,
@@ -129,25 +128,23 @@ export type LayoutType = '1-column' | '2-column' | '3-column' | 'responsive';
     ReadingOrderValidatorComponent,
     ErrorIdentificationComponent,
     DyslexiaFriendlyComponent,
-    // Additional missing components
-    HighlightLinksComponent,
-    PauseAnimationsComponent,
-    HideImagesComponent,
-    CursorComponent,
-    TooltipComponent,
-    PageStructureComponent,
-    DictionaryComponent,
-    FormEnhancementComponent,
-    TextAlignComponent,
-    ReadableFontComponent,
-    TextMagnifierComponent,
-    LuminosityComponent,
     GrayscaleComponent,
-    ReadingLineComponent,
+    LuminosityComponent,
+    MuteSoundsComponent,
+    HideImagesComponent,
+    HighlightLinksComponent,
     HighlightTitlesComponent,
     HighlightAllComponent,
-    MuteSoundsComponent,
-    // KeyboardNavigationComponent,
+    CursorComponent,
+    TooltipComponent,
+    ReadableFontComponent,
+    TextMagnifierComponent,
+    DictionaryComponent,
+    FormEnhancementComponent,
+    PageStructureComponent,
+    PauseAnimationsComponent,
+    AccessibilityProfilesComponent,
+    TextAlignComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
@@ -156,6 +153,30 @@ export class IzmoAccessibilityComponent implements OnInit, AfterViewInit {
   izmoAccessibilityIcon = "izmo-icon";
   options: Record<string, any> = {};
   enabledFeatures: string[] = [];
+  private defaultEnabledFeatures: string[] = [];
+  
+  // Default features that should be shown when enabledFeatures is empty
+  private readonly defaultFeatures: string[] = [
+    // WCAG 2.1 Core Navigation Features
+    "Skip Links",
+    
+    // WCAG 2.1 Visual Features
+    "Contrast", "Color Blind Support", "Saturation", "Invert", "Hide Images", "Luminosity", "Grayscale",
+    
+    // WCAG 2.1 Text and Reading Features
+    "Screen Reader", "Bigger Text", "Text Spacing", "Line Height", "Text Align", "Dyslexia Friendly", "Cursor", "Highlight Links", "Readable Font",
+    
+    // WCAG 2.1 Motion Features
+    "Reduced Motion", "Screen Mask", "Pause Animations",
+    
+    // Additional Navigation Features
+    "Highlight Titles", "Highlight All", "Mute Sounds"
+  ];
+
+  // Getter that returns enabled features or default features if empty
+  get activeFeatures(): string[] {
+    return this.enabledFeatures.length > 0 ? this.enabledFeatures : this.defaultFeatures;
+  }
   
   // New layout and theme properties
   layoutType: LayoutType = 'responsive';
@@ -179,6 +200,83 @@ export class IzmoAccessibilityComponent implements OnInit, AfterViewInit {
   
   public resetEvent: EventEmitter<void> = new EventEmitter<void>();
   
+  allControls: string[] = [
+    'Skip Links',
+    'Alt Text Validator',
+    'Page Title Validator',
+    'Language Validator',
+    'Auto Refresh Controls',
+    'Focus Trap',
+    'Touch Target Validator',
+    'Reading Order Validator',
+    'Error Identification',
+    'Focus Enhancement',
+    'Contrast',
+    'Color Blind Support',
+    'Saturation',
+    'Luminosity',
+    'Grayscale',
+    'Dyslexia Friendly',
+    'Screen Reader',
+    'Bigger Text',
+    'Text Spacing',
+    'Line Height',
+    'Text Align',
+    'Dictionary',
+    'Highlight Links',
+    'Cursor',
+    'Tooltip',
+    'Readable Font',
+    'Text Magnifier',
+    'Reduced Motion',
+    'Pause Animations',
+    'Screen Mask',
+    'Hide Images',
+    'Page Structure',
+    'Form Enhancement',
+    'Reading Line',
+    'Highlight Titles',
+    'Highlight All',
+    'Mute Sounds'
+  ];
+
+  @ViewChildren(SkipLinksComponent) skipLinksControls!: QueryList<SkipLinksComponent>;
+  @ViewChildren(ContrastComponent) contrastControls!: QueryList<ContrastComponent>;
+  @ViewChildren(InvertComponent) invertControls!: QueryList<InvertComponent>;
+  @ViewChildren(SaturateComponent) saturateControls!: QueryList<SaturateComponent>;
+  @ViewChildren(TextSizeComponent) textSizeControls!: QueryList<TextSizeComponent>;
+  @ViewChildren(TextSpacingComponent) textSpacingControls!: QueryList<TextSpacingComponent>;
+  @ViewChildren(ScreenReaderComponent) screenReaderControls!: QueryList<ScreenReaderComponent>;
+  @ViewChildren(ScreenMaskComponent) screenMaskControls!: QueryList<ScreenMaskComponent>;
+  @ViewChildren(LineHeightComponent) lineHeightControls!: QueryList<LineHeightComponent>;
+  @ViewChildren(ReducedMotionComponent) reducedMotionControls!: QueryList<ReducedMotionComponent>;
+  @ViewChildren(FocusEnhancementComponent) focusEnhancementControls!: QueryList<FocusEnhancementComponent>;
+  @ViewChildren(ColorBlindSupportComponent) colorBlindSupportControls!: QueryList<ColorBlindSupportComponent>;
+  @ViewChildren(AltTextValidatorComponent) altTextValidatorControls!: QueryList<AltTextValidatorComponent>;
+  @ViewChildren(PageTitleValidatorComponent) pageTitleValidatorControls!: QueryList<PageTitleValidatorComponent>;
+  @ViewChildren(LanguageValidatorComponent) languageValidatorControls!: QueryList<LanguageValidatorComponent>;
+  @ViewChildren(AutoRefreshControlsComponent) autoRefreshControls!: QueryList<AutoRefreshControlsComponent>;
+  @ViewChildren(FocusTrapComponent) focusTrapControls!: QueryList<FocusTrapComponent>;
+  @ViewChildren(TouchTargetValidatorComponent) touchTargetValidatorControls!: QueryList<TouchTargetValidatorComponent>;
+  @ViewChildren(ReadingOrderValidatorComponent) readingOrderValidatorControls!: QueryList<ReadingOrderValidatorComponent>;
+  @ViewChildren(ErrorIdentificationComponent) errorIdentificationControls!: QueryList<ErrorIdentificationComponent>;
+  @ViewChildren(DyslexiaFriendlyComponent) dyslexiaFriendlyControls!: QueryList<DyslexiaFriendlyComponent>;
+  @ViewChildren(HighlightLinksComponent) highlightLinksControls!: QueryList<HighlightLinksComponent>;
+  @ViewChildren(PauseAnimationsComponent) pauseAnimationsControls!: QueryList<PauseAnimationsComponent>;
+  @ViewChildren(HideImagesComponent) hideImagesControls!: QueryList<HideImagesComponent>;
+  @ViewChildren(CursorComponent) cursorControls!: QueryList<CursorComponent>;
+  @ViewChildren(TooltipComponent) tooltipControls!: QueryList<TooltipComponent>;
+  @ViewChildren(ReadableFontComponent) readableFontControls!: QueryList<ReadableFontComponent>;
+  @ViewChildren(TextMagnifierComponent) textMagnifierControls!: QueryList<TextMagnifierComponent>;
+  @ViewChildren(DictionaryComponent) dictionaryControls!: QueryList<DictionaryComponent>;
+  @ViewChildren(FormEnhancementComponent) formEnhancementControls!: QueryList<FormEnhancementComponent>;
+  @ViewChildren(PageStructureComponent) pageStructureControls!: QueryList<PageStructureComponent>;
+  @ViewChildren(ReadingLineComponent) readingLineControls!: QueryList<ReadingLineComponent>;
+  @ViewChildren(HighlightTitlesComponent) highlightTitlesControls!: QueryList<HighlightTitlesComponent>;
+  @ViewChildren(HighlightAllComponent) highlightAllControls!: QueryList<HighlightAllComponent>;
+  @ViewChildren(MuteSoundsComponent) muteSoundsControls!: QueryList<MuteSoundsComponent>;
+  @ViewChildren(AccessibilityProfilesComponent) accessibilityProfilesControls!: QueryList<AccessibilityProfilesComponent>;
+
   constructor(
     private readonly elementRef: ElementRef, 
     private readonly renderer: Renderer2,
@@ -200,6 +298,7 @@ export class IzmoAccessibilityComponent implements OnInit, AfterViewInit {
     if (izmoOptions) {
       this.options = JSON.parse(izmoOptions);
       this.enabledFeatures = this.options["enabledFeatures"] || [];
+      this.defaultEnabledFeatures = [...this.enabledFeatures];
       
       // Set locale if provided
       if (this.options["locale"]) {
@@ -421,5 +520,15 @@ export class IzmoAccessibilityComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     // Simple initialization - no complex scroll handling needed
+  }
+
+  onProfileApplied(features: string[]) {
+    // Only Contrast supports programmatic activation out of the box
+    this.contrastControls.forEach(ctrl => {
+      if (features.includes('Contrast') && ctrl.currentState === 0) ctrl.nextState();
+      if (!features.includes('Contrast') && ctrl.currentState !== 0) ctrl.nextState();
+    });
+    // For other controls, programmatic activation is not supported by default.
+    // To support it, add a public method to the control and call it here.
   }
 }

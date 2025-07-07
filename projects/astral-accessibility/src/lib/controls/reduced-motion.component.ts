@@ -84,6 +84,12 @@ export class ReducedMotionComponent implements OnInit {
     this.announceChange();
   }
 
+  toggleFromProfile(desiredState: boolean) {
+    if (this.isActive !== desiredState) {
+      this.toggle();
+    }
+  }
+
   private applyReducedMotion() {
     this.styleElement = this.renderer.createElement('style');
     this.renderer.addClass(this.styleElement, 'izmo-reduced-motion-styles');

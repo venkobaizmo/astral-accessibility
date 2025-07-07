@@ -209,6 +209,25 @@ export interface IzmoTranslations {
   'mute-sounds': string;
   'mute-sounds-active': string;
   'mute-sounds-disabled': string;
+  // Accessibility Profiles
+  'accessibility-profiles-title': string;
+  'accessibility-profiles-subtitle': string;
+  'select-profile': string;
+  'apply-profile': string;
+  'reset-profile': string;
+  'more-features': string;
+  'profile-visual-impairment': string;
+  'profile-visual-impairment-desc': string;
+  'profile-color-blindness': string;
+  'profile-color-blindness-desc': string;
+  'profile-dyslexia': string;
+  'profile-dyslexia-desc': string;
+  'profile-motor-impairment': string;
+  'profile-motor-impairment-desc': string;
+  'profile-cognitive-impairment': string;
+  'profile-cognitive-impairment-desc': string;
+  'profile-comprehensive': string;
+  'profile-comprehensive-desc': string;
 }
 
 @Injectable({
@@ -426,7 +445,26 @@ export class I18nService {
       'highlight-all-disabled': 'Enable Highlight All',
       'mute-sounds': 'Mute Sounds',
       'mute-sounds-active': 'Mute Sounds enabled',
-      'mute-sounds-disabled': 'Enable Mute Sounds'
+      'mute-sounds-disabled': 'Enable Mute Sounds',
+      // Accessibility Profiles
+      'accessibility-profiles-title': 'Accessibility Profiles',
+      'accessibility-profiles-subtitle': 'Choose a profile to quickly apply multiple accessibility features',
+      'select-profile': 'Select Profile',
+      'apply-profile': 'Apply Profile',
+      'reset-profile': 'Reset Profile',
+      'more-features': 'more',
+      'profile-visual-impairment': 'Visual Impairment',
+      'profile-visual-impairment-desc': 'Enhanced visibility and screen reader support',
+      'profile-color-blindness': 'Color Blindness',
+      'profile-color-blindness-desc': 'Color adjustments for various types of color blindness',
+      'profile-dyslexia': 'Dyslexia',
+      'profile-dyslexia-desc': 'Reading-friendly fonts and spacing for dyslexia',
+      'profile-motor-impairment': 'Motor Impairment',
+      'profile-motor-impairment-desc': 'Enhanced navigation and focus controls',
+      'profile-cognitive-impairment': 'Cognitive Impairment',
+      'profile-cognitive-impairment-desc': 'Reduced distractions and simplified interface',
+      'profile-comprehensive': 'Comprehensive',
+      'profile-comprehensive-desc': 'All accessibility features for maximum support'
     },
     'es-ES': {
       'accessibility-tools': 'Herramientas de accesibilidad',
@@ -636,7 +674,26 @@ export class I18nService {
       'highlight-all-disabled': 'Habilitar Resaltar Todo',
       'mute-sounds': 'Silenciar Sonidos',
       'mute-sounds-active': 'Silenciar Sonidos activo',
-      'mute-sounds-disabled': 'Habilitar Silenciar Sonidos'
+      'mute-sounds-disabled': 'Habilitar Silenciar Sonidos',
+      // Accessibility Profiles
+      'accessibility-profiles-title': 'Perfiles de Accesibilidad',
+      'accessibility-profiles-subtitle': 'Elige un perfil para aplicar rápidamente múltiples características de accesibilidad',
+      'select-profile': 'Seleccionar Perfil',
+      'apply-profile': 'Aplicar Perfil',
+      'reset-profile': 'Restablecer Perfil',
+      'more-features': 'más',
+      'profile-visual-impairment': 'Discapacidad Visual',
+      'profile-visual-impairment-desc': 'Visibilidad mejorada y soporte para lector de pantalla',
+      'profile-color-blindness': 'Daltonismo',
+      'profile-color-blindness-desc': 'Ajustes de color para varios tipos de daltonismo',
+      'profile-dyslexia': 'Dislexia',
+      'profile-dyslexia-desc': 'Fuentes y espaciado amigables para la lectura con dislexia',
+      'profile-motor-impairment': 'Discapacidad Motora',
+      'profile-motor-impairment-desc': 'Navegación mejorada y controles de foco',
+      'profile-cognitive-impairment': 'Discapacidad Cognitiva',
+      'profile-cognitive-impairment-desc': 'Distracciones reducidas e interfaz simplificada',
+      'profile-comprehensive': 'Integral',
+      'profile-comprehensive-desc': 'Todas las características de accesibilidad para máximo soporte'
     },
     'fr-FR': {
       'accessibility-tools': 'Outils d\'accessibilité',
@@ -846,7 +903,26 @@ export class I18nService {
       'highlight-all-disabled': 'Activer le surlignage général',
       'mute-sounds': 'Couper le son',
       'mute-sounds-active': 'Son coupé',
-      'mute-sounds-disabled': 'Activer la coupure du son'
+      'mute-sounds-disabled': 'Activer la coupure du son',
+      // Accessibility Profiles
+      'accessibility-profiles-title': 'Profils d\'Accessibilité',
+      'accessibility-profiles-subtitle': 'Choisissez un profil pour appliquer rapidement plusieurs fonctionnalités d\'accessibilité',
+      'select-profile': 'Sélectionner le Profil',
+      'apply-profile': 'Appliquer le Profil',
+      'reset-profile': 'Réinitialiser le Profil',
+      'more-features': 'plus',
+      'profile-visual-impairment': 'Déficience Visuelle',
+      'profile-visual-impairment-desc': 'Visibilité améliorée et support du lecteur d\'écran',
+      'profile-color-blindness': 'Daltonisme',
+      'profile-color-blindness-desc': 'Ajustements de couleur pour différents types de daltonisme',
+      'profile-dyslexia': 'Dyslexie',
+      'profile-dyslexia-desc': 'Polices et espacement adaptés à la dyslexie',
+      'profile-motor-impairment': 'Déficience Motrice',
+      'profile-motor-impairment-desc': 'Navigation améliorée et contrôles de focus',
+      'profile-cognitive-impairment': 'Déficience Cognitive',
+      'profile-cognitive-impairment-desc': 'Distractions réduites et interface simplifiée',
+      'profile-comprehensive': 'Complet',
+      'profile-comprehensive-desc': 'Toutes les fonctionnalités d\'accessibilité pour un support maximal'
     },
     'de-DE': {
       'accessibility-tools': 'Barrierefreiheit-Tools',
@@ -1056,7 +1132,26 @@ export class I18nService {
       'highlight-all-disabled': 'Allgemeine Hervorhebung aktivieren',
       'mute-sounds': 'Ton stummschalten',
       'mute-sounds-active': 'Ton stummgeschaltet',
-      'mute-sounds-disabled': 'Ton stummschalten aktivieren'
+      'mute-sounds-disabled': 'Ton stummschalten aktivieren',
+      // Accessibility Profiles
+      'accessibility-profiles-title': 'Barrierefreiheit-Profile',
+      'accessibility-profiles-subtitle': 'Wählen Sie ein Profil, um schnell mehrere Barrierefreiheit-Funktionen anzuwenden',
+      'select-profile': 'Profil auswählen',
+      'apply-profile': 'Profil anwenden',
+      'reset-profile': 'Profil zurücksetzen',
+      'more-features': 'mehr',
+      'profile-visual-impairment': 'Sehbehinderung',
+      'profile-visual-impairment-desc': 'Verbesserte Sichtbarkeit und Bildschirmlesegerät-Unterstützung',
+      'profile-color-blindness': 'Farbenblindheit',
+      'profile-color-blindness-desc': 'Farbanpassungen für verschiedene Arten von Farbenblindheit',
+      'profile-dyslexia': 'Legasthenie',
+      'profile-dyslexia-desc': 'Lesefreundliche Schriftarten und Abstände für Legasthenie',
+      'profile-motor-impairment': 'Motorische Behinderung',
+      'profile-motor-impairment-desc': 'Verbesserte Navigation und Fokus-Steuerung',
+      'profile-cognitive-impairment': 'Kognitive Behinderung',
+      'profile-cognitive-impairment-desc': 'Reduzierte Ablenkungen und vereinfachte Benutzeroberfläche',
+      'profile-comprehensive': 'Umfassend',
+      'profile-comprehensive-desc': 'Alle Barrierefreiheit-Funktionen für maximalen Support'
     },
     'hi-IN': {
       'accessibility-tools': 'सुलभता उपकरण',
@@ -1266,7 +1361,26 @@ export class I18nService {
       'highlight-all-disabled': 'सभी हाइलाइट सक्षम करें',
       'mute-sounds': 'ध्वनि मूक करें',
       'mute-sounds-active': 'ध्वनि मूक सक्षम',
-      'mute-sounds-disabled': 'ध्वनि मूक सक्षम करें'
+      'mute-sounds-disabled': 'ध्वनि मूक सक्षम करें',
+      // Accessibility Profiles
+      'accessibility-profiles-title': 'सुलभता प्रोफाइल',
+      'accessibility-profiles-subtitle': 'कई सुलभता सुविधाओं को तुरंत लागू करने के लिए एक प्रोफाइल चुनें',
+      'select-profile': 'प्रोफाइल चुनें',
+      'apply-profile': 'प्रोफाइल लागू करें',
+      'reset-profile': 'प्रोफाइल रीसेट करें',
+      'more-features': 'और',
+      'profile-visual-impairment': 'दृष्टि दोष',
+      'profile-visual-impairment-desc': 'बेहतर दृश्यता और स्क्रीन रीडर समर्थन',
+      'profile-color-blindness': 'रंग अंधापन',
+      'profile-color-blindness-desc': 'विभिन्न प्रकार के रंग अंधापन के लिए रंग समायोजन',
+      'profile-dyslexia': 'डिस्लेक्सिया',
+      'profile-dyslexia-desc': 'डिस्लेक्सिया के लिए पठन-अनुकूल फॉन्ट और स्पेसिंग',
+      'profile-motor-impairment': 'मोटर दोष',
+      'profile-motor-impairment-desc': 'बेहतर नेविगेशन और फोकस नियंत्रण',
+      'profile-cognitive-impairment': 'संज्ञानात्मक दोष',
+      'profile-cognitive-impairment-desc': 'कम विचलन और सरल इंटरफेस',
+      'profile-comprehensive': 'व्यापक',
+      'profile-comprehensive-desc': 'अधिकतम समर्थन के लिए सभी सुलभता सुविधाएं'
     }
   };
 

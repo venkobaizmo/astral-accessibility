@@ -88,6 +88,18 @@ export class TextSizeComponent implements OnInit {
       this.i18n.getTranslation('extra-large-text')
     ];
   }
+  get isActive() {
+    return this.currentState !== 0;
+  }
+  toggleFromProfile(desiredState: boolean) {
+    if (desiredState && this.currentState === 0) {
+      this.currentState = 1;
+      this._runStateLogic();
+    } else if (!desiredState && this.currentState !== 0) {
+      this.currentState = 0;
+      this._runStateLogic();
+    }
+  }
   private readonly initialStyles = new WeakMap();
 
   _style: HTMLStyleElement;

@@ -381,4 +381,21 @@ export class DyslexiaFriendlyComponent implements OnInit, OnDestroy {
       window.removeEventListener('scroll', this.scrollHandler);
     }
   }
+
+  get isActive(): boolean {
+    return !this.isBaseState();
+  }
+
+  /**
+   * Programmatically activate/deactivate from profile selection
+   */
+  toggleFromProfile(desiredState: boolean) {
+    if (desiredState && this.isBaseState()) {
+      this.currentState = 1;
+      this._runStateLogic();
+    } else if (!desiredState && !this.isBaseState()) {
+      this.currentState = 0;
+      this._runStateLogic();
+    }
+  }
 }

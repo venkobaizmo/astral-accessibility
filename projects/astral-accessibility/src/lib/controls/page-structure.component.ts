@@ -53,7 +53,7 @@ interface StructureItem {
   imports: [NgIf, NgClass, IzmoCheckmarkSvgComponent],
 })
 export class PageStructureComponent implements OnInit, OnDestroy {
-  isActive = false;
+  private _isActive = false;
   private overlayElement?: HTMLElement;
   private structureItems: StructureItem[] = [];
   parent = inject(IzmoAccessibilityComponent);
@@ -65,7 +65,7 @@ export class PageStructureComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.parent.resetEvent.subscribe(() => {
-      this.isActive = false;
+      this._isActive = false;
       this.hideStructureNavigation();
     });
     this.scanPageStructure();
@@ -77,14 +77,23 @@ export class PageStructureComponent implements OnInit, OnDestroy {
     }
   }
 
+  get isActive() {
+    return this._isActive;
+  }
   toggle() {
-    if (this.isActive) {
+    if (this._isActive) {
       this.hideStructureNavigation();
     } else {
       this.showStructureNavigation();
     }
-    this.isActive = !this.isActive;
+    this._isActive = !this._isActive;
     this.announceChange();
+  }
+
+  toggleFromProfile(desiredState: boolean) {
+    if (this._isActive !== desiredState) {
+      this.toggle();
+    }
   }
 
   private scanPageStructure() {
@@ -253,11 +262,11 @@ export class PageStructureComponent implements OnInit, OnDestroy {
       this.renderer.removeChild(document.body, this.overlayElement);
       this.overlayElement = undefined;
     }
-    this.isActive = false;
+    this._isActive = false;
   }
 
   private announceChange() {
-    const message = this.isActive ? 'Page structure navigation opened' : 'Page structure navigation closed';
+    const message = this._isActive ? 'Page structure navigation opened' : 'Page structure navigation closed';
     this.announceMessage(message);
   }
 

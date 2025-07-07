@@ -60,7 +60,7 @@ import { IzmoAccessibilityComponent } from '../izmo-accessibility.component';
   `]
 })
 export class ReadingLineComponent implements OnInit, OnDestroy {
-  isActive = false;
+  private _isActive = false;
   private i18n = inject(I18nService);
   private readingLine: HTMLElement | null = null;
   private resetSub?: any;
@@ -79,6 +79,9 @@ export class ReadingLineComponent implements OnInit, OnDestroy {
   getDisplayText(): string {
     return this.i18n.getTranslation('reading-line' as any) || 'Reading Line';
   }
+  get isActive() {
+    return this._isActive;
+  }
   getAriaLabel(): string {
     return this.isActive
       ? this.i18n.getTranslation('reading-line-active' as any) || 'Reading Line enabled'
@@ -86,12 +89,17 @@ export class ReadingLineComponent implements OnInit, OnDestroy {
   }
 
   toggleReadingLine() {
-    this.isActive = !this.isActive;
-    if (this.isActive) {
+    this._isActive = !this._isActive;
+    if (this._isActive) {
       this.createReadingLine();
       document.addEventListener('mousemove', this.onMouseMove);
     } else {
       this.removeReadingLine();
+    }
+  }
+  toggleFromProfile(desiredState: boolean) {
+    if (this.isActive !== desiredState) {
+      this.toggleReadingLine();
     }
   }
 
@@ -119,7 +127,7 @@ export class ReadingLineComponent implements OnInit, OnDestroy {
   }
 
   reset() {
-    this.isActive = false;
+    this._isActive = false;
     this.removeReadingLine();
   }
 }

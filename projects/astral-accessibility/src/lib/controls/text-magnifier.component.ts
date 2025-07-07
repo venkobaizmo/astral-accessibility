@@ -66,7 +66,7 @@ import { IzmoAccessibilityComponent } from '../izmo-accessibility.component';
   `]
 })
 export class TextMagnifierComponent implements OnInit, OnDestroy {
-  isActive = false;
+  private _isActive = false;
   private i18n = inject(I18nService);
   private overlay: HTMLElement | null = null;
   private resetSub?: any;
@@ -85,6 +85,9 @@ export class TextMagnifierComponent implements OnInit, OnDestroy {
   getDisplayText(): string {
     return this.i18n.getTranslation('text-magnifier' as any) || 'Text Magnifier';
   }
+  get isActive() {
+    return this._isActive;
+  }
   getAriaLabel(): string {
     return this.isActive
       ? this.i18n.getTranslation('text-magnifier-active' as any) || 'Text Magnifier enabled'
@@ -92,13 +95,19 @@ export class TextMagnifierComponent implements OnInit, OnDestroy {
   }
 
   toggleMagnifier() {
-    this.isActive = !this.isActive;
-    if (this.isActive) {
+    this._isActive = !this._isActive;
+    if (this._isActive) {
       document.addEventListener('mousemove', this.onMouseMove, true);
       document.addEventListener('mouseover', this.onMouseOver, true);
       document.addEventListener('mouseout', this.onMouseOut, true);
     } else {
       this.reset();
+    }
+  }
+
+  toggleFromProfile(desiredState: boolean) {
+    if (this.isActive !== desiredState) {
+      this.toggleMagnifier();
     }
   }
 
@@ -137,7 +146,7 @@ export class TextMagnifierComponent implements OnInit, OnDestroy {
   }
 
   reset() {
-    this.isActive = false;
+    this._isActive = false;
     document.removeEventListener('mousemove', this.onMouseMove, true);
     document.removeEventListener('mouseover', this.onMouseOver, true);
     document.removeEventListener('mouseout', this.onMouseOut, true);

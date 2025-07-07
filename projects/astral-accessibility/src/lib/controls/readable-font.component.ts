@@ -95,6 +95,12 @@ export class ReadableFontComponent implements OnInit, OnDestroy {
     }
   }
 
+  toggleFromProfile(desiredState: boolean) {
+    if (this.isActive !== desiredState) {
+      this.toggleReadableFont();
+    }
+  }
+
   reset() {
     this.isActive = false;
     const style = document.getElementById('izmo-readable-font-style');

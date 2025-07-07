@@ -3,25 +3,23 @@
   // 1. Default minimal features if enabledFeatures is empty or missing
   var defaultFeatures = [
     // WCAG 2.1 Core Navigation Features
-    "Skip Links", "Keyboard Navigation",
-    // "Focus Enhancement",
+    "Skip Links",
     
     // WCAG 2.1 Visual Features
     "Contrast", "Color Blind Support", "Saturation", "Invert", "Hide Images", "Luminosity", "Grayscale",
     
     // WCAG 2.1 Text and Reading Features
     "Screen Reader", "Bigger Text", "Text Spacing", "Line Height", "Text Align", "Dyslexia Friendly", "Cursor", "Highlight Links", "Readable Font",
-    // "Text Magnifier",
     
     // WCAG 2.1 Motion Features
     "Reduced Motion", "Screen Mask", "Pause Animations",
     
     // Additional Navigation Features
-    //"Reading Line",
-     "Highlight Titles", "Highlight All", "Mute Sounds"
+    "Highlight Titles", "Highlight All", "Mute Sounds"
   ];
 
   function ensureFeatures(config) {
+    
     if (!Array.isArray(config.enabledFeatures) || config.enabledFeatures.length === 0) {
       config.enabledFeatures = defaultFeatures;
     }

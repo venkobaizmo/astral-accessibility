@@ -105,6 +105,10 @@ export class ContrastComponent implements OnInit, OnDestroy {
     ];
   }
 
+  get isActive(): boolean {
+    return this.currentState !== 0;
+  }
+
   ngOnInit() {
     this.parent.resetEvent.subscribe(() => {
       this.currentState = 0;
@@ -121,6 +125,16 @@ export class ContrastComponent implements OnInit, OnDestroy {
     this.currentState = this.currentState % 4;
 
     this._runStateLogic();
+  }
+
+  toggleFromProfile(desiredState: boolean) {
+    if (desiredState && this.currentState === 0) {
+      this.currentState = 1;
+      this._runStateLogic();
+    } else if (!desiredState && this.currentState !== 0) {
+      this.currentState = 0;
+      this._runStateLogic();
+    }
   }
 
   private _runStateLogic() {

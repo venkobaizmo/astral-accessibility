@@ -43,7 +43,8 @@ import { IzmoAccessibilityComponent } from '../izmo-accessibility.component';
   styles: []
 })
 export class GrayscaleComponent implements OnInit, OnDestroy {
-  isActive = false;
+  // Remove isActive property, use currentState for state
+  currentState = 0;
   private i18n = inject(I18nService);
   private resetSub?: any;
   constructor(@Optional() @SkipSelf() private parent: IzmoAccessibilityComponent) {}
@@ -68,16 +69,23 @@ export class GrayscaleComponent implements OnInit, OnDestroy {
   }
 
   toggleGrayscale() {
-    this.isActive = !this.isActive;
-    if (this.isActive) {
-      const style = document.createElement('style');
-      style.id = 'izmo-grayscale-style';
+    this.currentState = this.currentState === 0 ? 1 : 0;
+    this._runStateLogic();
+  }
+
+  private _runStateLogic() {
+    if (this.currentState !== 0) {
+      let style = document.getElementById('izmo-grayscale-style') as HTMLStyleElement;
+      if (!style) {
+        style = document.createElement('style');
+        style.id = 'izmo-grayscale-style';
+        document.head.appendChild(style);
+      }
       style.textContent = `
         body > :not(izmo-accessibility) {
           filter: grayscale(100%) !important;
         }
       `;
-      document.head.appendChild(style);
     } else {
       const style = document.getElementById('izmo-grayscale-style');
       if (style) style.remove();
@@ -85,8 +93,21 @@ export class GrayscaleComponent implements OnInit, OnDestroy {
   }
 
   reset() {
-    this.isActive = false;
+    this.currentState = 0;
     const style = document.getElementById('izmo-grayscale-style');
     if (style) style.remove();
+  }
+
+  get isActive() {
+    return this.currentState !== 0;
+  }
+  toggleFromProfile(desiredState: boolean) {
+    if (desiredState && this.currentState === 0) {
+      this.currentState = 1;
+      this._runStateLogic();
+    } else if (!desiredState && this.currentState !== 0) {
+      this.currentState = 0;
+      this._runStateLogic();
+    }
   }
 } 

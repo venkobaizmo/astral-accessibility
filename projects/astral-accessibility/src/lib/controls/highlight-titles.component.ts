@@ -42,7 +42,7 @@ import { IzmoAccessibilityComponent } from '../izmo-accessibility.component';
   styles: []
 })
 export class HighlightTitlesComponent implements OnInit, OnDestroy {
-  isActive = false;
+  private _isActive = false;
   private i18n = inject(I18nService);
   private styleElement: HTMLStyleElement | null = null;
   private resetSub?: any;
@@ -61,6 +61,9 @@ export class HighlightTitlesComponent implements OnInit, OnDestroy {
   getDisplayText(): string {
     return this.i18n.getTranslation('highlight-titles' as any) || 'Highlight Titles';
   }
+  get isActive() {
+    return this._isActive;
+  }
   getAriaLabel(): string {
     return this.isActive
       ? this.i18n.getTranslation('highlight-titles-active' as any) || 'Highlight Titles enabled'
@@ -68,11 +71,16 @@ export class HighlightTitlesComponent implements OnInit, OnDestroy {
   }
 
   toggleHighlightTitles() {
-    this.isActive = !this.isActive;
-    if (this.isActive) {
+    this._isActive = !this._isActive;
+    if (this._isActive) {
       this.createHighlightStyle();
     } else {
       this.removeHighlightStyle();
+    }
+  }
+  toggleFromProfile(desiredState: boolean) {
+    if (this.isActive !== desiredState) {
+      this.toggleHighlightTitles();
     }
   }
 
@@ -104,7 +112,7 @@ export class HighlightTitlesComponent implements OnInit, OnDestroy {
   }
 
   reset() {
-    this.isActive = false;
+    this._isActive = false;
     this.removeHighlightStyle();
   }
 } 

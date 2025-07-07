@@ -103,134 +103,58 @@
           <option *ngFor="let lang of availableLanguages" [value]="lang.code">{{ lang.name }}</option>
         </select>
       </div>
-      <div class="izmo-header-controls-title-row">
-        <span class="izmo-controls-title">{{ i18n.getTranslation('accessibility-controls-title') }}</span>
-      </div>
     </div>
-    <!-- CONTROLS: Actions -->
-    <div class="actions" role="group" [attr.aria-label]="i18n.getTranslation('accessibility-features')">
-      <!-- WCAG 2.1 Core Features -->
-      <div class="action" *ngIf="this.enabledFeatures.includes('Skip Links')">
-        <izmo-skip-links></izmo-skip-links>
-      </div>
-
-      <!-- New WCAG 2.1 Level A/AA Features -->
-      <div class="action" *ngIf="this.enabledFeatures.includes('Alt Text Validator')">
-        <izmo-alt-text-validator></izmo-alt-text-validator>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Page Title Validator')">
-        <izmo-page-title-validator></izmo-page-title-validator>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Language Validator')">
-        <izmo-language-validator></izmo-language-validator>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Auto Refresh Controls')">
-        <izmo-auto-refresh-controls></izmo-auto-refresh-controls>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Focus Trap')">
-        <izmo-focus-trap></izmo-focus-trap>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Touch Target Validator')">
-        <izmo-touch-target-validator></izmo-touch-target-validator>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Reading Order Validator')">
-        <izmo-reading-order-validator></izmo-reading-order-validator>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Error Identification')">
-        <izmo-error-identification></izmo-error-identification>
-      </div>
-
-      <!-- Focus and Navigation Features -->
-      <div class="action" *ngIf="this.enabledFeatures.includes('Focus Enhancement')">
-        <izmo-focus-enhancement></izmo-focus-enhancement>
-      </div>
-      
-      <!-- Color and Visual Features -->
-      <div class="action" *ngIf="this.enabledFeatures.includes('Contrast')">
-        <izmo-contrast></izmo-contrast>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Color Blind Support')">
-        <izmo-color-blind-support></izmo-color-blind-support>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Saturation')">
-        <izmo-saturate></izmo-saturate>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Luminosity')">
-        <izmo-luminosity></izmo-luminosity>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Grayscale')">
-        <izmo-grayscale></izmo-grayscale>
-      </div>
-        <!-- Text and Reading Features -->
-      <div class="action" *ngIf="this.enabledFeatures.includes('Dyslexia Friendly')">
-        <izmo-dyslexia-friendly></izmo-dyslexia-friendly>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Screen Reader')">
-        <izmo-screen-reader></izmo-screen-reader>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Bigger Text')">
-        <izmo-text-size></izmo-text-size>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Text Spacing')">
-        <izmo-text-spacing></izmo-text-spacing>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Line Height')">
-        <izmo-line-height></izmo-line-height>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Text Align')">
-        <izmo-text-align></izmo-text-align>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Dictionary')">
-        <izmo-dictionary></izmo-dictionary>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Highlight Links')">
-        <izmo-highlight-links></izmo-highlight-links>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Cursor')">
-        <izmo-cursor></izmo-cursor>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Tooltip')">
-        <izmo-tooltip></izmo-tooltip>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Readable Font')">
-        <izmo-readable-font></izmo-readable-font>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Text Magnifier')">
-        <izmo-text-magnifier></izmo-text-magnifier>
-      </div>
-      
-      <!-- Motion and Animation Features -->
-      <div class="action" *ngIf="this.enabledFeatures.includes('Reduced Motion')">
-        <izmo-reduced-motion></izmo-reduced-motion>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Pause Animations')">
-        <izmo-pause-animations></izmo-pause-animations>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Screen Mask')">
-        <izmo-screen-mask></izmo-screen-mask>
-      </div>
-      
-      <!-- Visual and Content Features -->
-      <div class="action" *ngIf="this.enabledFeatures.includes('Hide Images')">
-        <izmo-hide-images></izmo-hide-images>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Page Structure')">
-        <izmo-page-structure></izmo-page-structure>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Form Enhancement')">
-        <izmo-form-enhancement></izmo-form-enhancement>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Reading Line')">
-        <izmo-reading-line></izmo-reading-line>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Highlight Titles')">
-        <izmo-highlight-titles></izmo-highlight-titles>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Highlight All')">
-        <izmo-highlight-all></izmo-highlight-all>
-      </div>
-      <div class="action" *ngIf="this.enabledFeatures.includes('Mute Sounds')">
-        <izmo-mute-sounds></izmo-mute-sounds>
+    <div class="izmo-main-scroll">
+      <!-- PROFILES: Accessibility Profiles -->
+      <izmo-accessibility-profiles
+        (profileApplied)="onProfileApplied($event)"
+      ></izmo-accessibility-profiles>
+      <!-- CONTROLS TITLE: Accessibility Controls -->
+      <div class="izmo-section-title">{{ i18n.getTranslation('accessibility-controls-title') }}</div>
+      <!-- CONTROLS: Actions -->
+      <div class="actions" role="group" [attr.aria-label]="i18n.getTranslation('accessibility-features')">
+        <div class="action" *ngFor="let control of activeFeatures" [ngClass]="{ 'active': activeFeatures.includes(control) }">
+          <ng-container [ngSwitch]="control">
+            <izmo-skip-links *ngSwitchCase="'Skip Links'"></izmo-skip-links>
+            <izmo-alt-text-validator *ngSwitchCase="'Alt Text Validator'"></izmo-alt-text-validator>
+            <izmo-page-title-validator *ngSwitchCase="'Page Title Validator'"></izmo-page-title-validator>
+            <izmo-language-validator *ngSwitchCase="'Language Validator'"></izmo-language-validator>
+            <izmo-auto-refresh-controls *ngSwitchCase="'Auto Refresh Controls'"></izmo-auto-refresh-controls>
+            <izmo-focus-trap *ngSwitchCase="'Focus Trap'"></izmo-focus-trap>
+            <izmo-touch-target-validator *ngSwitchCase="'Touch Target Validator'"></izmo-touch-target-validator>
+            <izmo-reading-order-validator *ngSwitchCase="'Reading Order Validator'"></izmo-reading-order-validator>
+            <izmo-error-identification *ngSwitchCase="'Error Identification'"></izmo-error-identification>
+            <izmo-focus-enhancement *ngSwitchCase="'Focus Enhancement'"></izmo-focus-enhancement>
+            <izmo-contrast *ngSwitchCase="'Contrast'"></izmo-contrast>
+            <izmo-color-blind-support *ngSwitchCase="'Color Blind Support'"></izmo-color-blind-support>
+            <izmo-saturate *ngSwitchCase="'Saturation'"></izmo-saturate>
+            <izmo-invert *ngSwitchCase="'Invert'"></izmo-invert>
+            <izmo-luminosity *ngSwitchCase="'Luminosity'"></izmo-luminosity>
+            <izmo-grayscale *ngSwitchCase="'Grayscale'"></izmo-grayscale>
+            <izmo-dyslexia-friendly *ngSwitchCase="'Dyslexia Friendly'"></izmo-dyslexia-friendly>
+            <izmo-screen-reader *ngSwitchCase="'Screen Reader'"></izmo-screen-reader>
+            <izmo-text-size *ngSwitchCase="'Bigger Text'"></izmo-text-size>
+            <izmo-text-spacing *ngSwitchCase="'Text Spacing'"></izmo-text-spacing>
+            <izmo-line-height *ngSwitchCase="'Line Height'"></izmo-line-height>
+            <izmo-text-align *ngSwitchCase="'Text Align'"></izmo-text-align>
+            <izmo-dictionary *ngSwitchCase="'Dictionary'"></izmo-dictionary>
+            <izmo-highlight-links *ngSwitchCase="'Highlight Links'"></izmo-highlight-links>
+            <izmo-cursor *ngSwitchCase="'Cursor'"></izmo-cursor>
+            <izmo-tooltip *ngSwitchCase="'Tooltip'"></izmo-tooltip>
+            <izmo-readable-font *ngSwitchCase="'Readable Font'"></izmo-readable-font>
+            <izmo-text-magnifier *ngSwitchCase="'Text Magnifier'"></izmo-text-magnifier>
+            <izmo-reduced-motion *ngSwitchCase="'Reduced Motion'"></izmo-reduced-motion>
+            <izmo-pause-animations *ngSwitchCase="'Pause Animations'"></izmo-pause-animations>
+            <izmo-screen-mask *ngSwitchCase="'Screen Mask'"></izmo-screen-mask>
+            <izmo-hide-images *ngSwitchCase="'Hide Images'"></izmo-hide-images>
+            <izmo-page-structure *ngSwitchCase="'Page Structure'"></izmo-page-structure>
+            <izmo-form-enhancement *ngSwitchCase="'Form Enhancement'"></izmo-form-enhancement>
+            <izmo-reading-line *ngSwitchCase="'Reading Line'"></izmo-reading-line>
+            <izmo-highlight-titles *ngSwitchCase="'Highlight Titles'"></izmo-highlight-titles>
+            <izmo-highlight-all *ngSwitchCase="'Highlight All'"></izmo-highlight-all>
+            <izmo-mute-sounds *ngSwitchCase="'Mute Sounds'"></izmo-mute-sounds>
+          </ng-container>
+        </div>
       </div>
     </div>
     <!-- FOOTER -->

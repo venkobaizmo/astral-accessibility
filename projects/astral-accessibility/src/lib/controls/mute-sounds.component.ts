@@ -40,7 +40,7 @@ import { IzmoAccessibilityComponent } from '../izmo-accessibility.component';
   styles: []
 })
 export class MuteSoundsComponent implements OnInit, OnDestroy {
-  isActive = false;
+  private _isActive = false;
   private i18n = inject(I18nService);
   private styleElement: HTMLStyleElement | null = null;
   private originalVolumes: Map<HTMLMediaElement, number> = new Map();
@@ -60,6 +60,9 @@ export class MuteSoundsComponent implements OnInit, OnDestroy {
   getDisplayText(): string {
     return this.i18n.getTranslation('mute-sounds' as any) || 'Mute Sounds';
   }
+  get isActive() {
+    return this._isActive;
+  }
   getAriaLabel(): string {
     return this.isActive
       ? this.i18n.getTranslation('mute-sounds-active' as any) || 'Mute Sounds enabled'
@@ -67,11 +70,16 @@ export class MuteSoundsComponent implements OnInit, OnDestroy {
   }
 
   toggleMuteSounds() {
-    this.isActive = !this.isActive;
-    if (this.isActive) {
+    this._isActive = !this._isActive;
+    if (this._isActive) {
       this.muteAllSounds();
     } else {
       this.unmuteAllSounds();
+    }
+  }
+  toggleFromProfile(desiredState: boolean) {
+    if (this.isActive !== desiredState) {
+      this.toggleMuteSounds();
     }
   }
 
@@ -156,7 +164,7 @@ export class MuteSoundsComponent implements OnInit, OnDestroy {
   }
 
   reset() {
-    this.isActive = false;
+    this._isActive = false;
     this.unmuteAllSounds();
   }
 } 

@@ -275,4 +275,17 @@ export class DictionaryComponent implements OnDestroy {
   ngOnDestroy() {
     this.stopDictionary();
   }
+
+  get isActive(): boolean {
+    return this.isDictionaryActive;
+  }
+
+  /**
+   * Programmatically activate/deactivate from profile selection
+   */
+  toggleFromProfile(desiredState: boolean) {
+    if (this.isDictionaryActive !== desiredState) {
+      this.toggleDictionary();
+    }
+  }
 }

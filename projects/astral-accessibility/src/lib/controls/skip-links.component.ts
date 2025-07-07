@@ -83,6 +83,12 @@ export class SkipLinksComponent implements OnInit {
     this.announceChange();
   }
 
+  toggleFromProfile(desiredState: boolean) {
+    if (this.isActive !== desiredState) {
+      this.toggle();
+    }
+  }
+
   private addSkipLinks() {
     // Create skip links container
     this.skipLinksContainer = this.renderer.createElement('div');

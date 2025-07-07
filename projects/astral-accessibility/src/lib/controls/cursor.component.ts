@@ -87,6 +87,10 @@ export class CursorComponent implements OnInit {
     ];
   }
 
+  get isActive(): boolean {
+    return this.currentState !== 0;
+  }
+
   private styleElement?: HTMLStyleElement;
 
   ngOnInit() {
@@ -154,5 +158,15 @@ export class CursorComponent implements OnInit {
     }
     this.renderer.setProperty(this.styleElement, 'textContent', css);
     this.renderer.appendChild(this.document.head, this.styleElement);
+  }
+
+  toggleFromProfile(desiredState: boolean) {
+    if (desiredState && this.currentState === 0) {
+      this.currentState = 1;
+      this._runStateLogic();
+    } else if (!desiredState && this.currentState !== 0) {
+      this.currentState = 0;
+      this._runStateLogic();
+    }
   }
 }
