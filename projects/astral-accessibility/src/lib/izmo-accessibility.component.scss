@@ -298,13 +298,14 @@ html, body {
   margin-bottom: 8px;
 }
 .izmo-lang-label {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--izmo-header-text-color);
   font-size: 0.875rem;
   margin-bottom: 6px;
   display: block;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
+  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 .izmo-lang-select {
   width: 100%;
@@ -338,11 +339,12 @@ html, body {
   margin-bottom: 8px;
 }
 .izmo-controls-title {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--izmo-header-text-color);
   font-size: 0.875rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
+  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 .izmo-footer {
@@ -358,7 +360,7 @@ html, body {
     border: 1px solid var(--izmo-border-color);
     border-radius: 5px;
     padding: 6px 16px 6px 10px;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 500;
     cursor: pointer;
     display: flex;
@@ -378,7 +380,7 @@ html, body {
   }
   .footer-powered {
     color: var(--izmo-footer-text-color);
-    font-size: 13px;
+    font-size: 0.8125rem;
     a {
       text-decoration: none;
       font-weight: bold;
@@ -396,7 +398,7 @@ html, body {
 .icon-background {
   background: var(--actionActiveBackgroundColor);
   border-radius: 50%;
-  font-size: 35px;
+  font-size: 2.1875rem;
   padding: 8px;
 }
 
@@ -458,10 +460,10 @@ html, body {
   .action {
     ::ng-deep {
       button {
-        font-size: 15px;
+        font-size: 0.9375rem;
       }
       .icon {
-        font-size: 25px;
+        font-size: 1.5625rem;
         padding: 6px;
         svg {
           width: 25px;
@@ -505,9 +507,12 @@ html, body {
 
 .izmo-section-title {
   margin: 16px 0 8px 0;
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 1.125rem;
+  font-weight: 700;
   color: var(--izmo-section-title-color, var(--izmo-text-color, #001E50));
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 .action {
@@ -521,7 +526,7 @@ html, body {
       height: 90px;
       padding: 0px 0px !important;
       margin: 0px 0px !important;
-      font-size: 17px;
+      font-size: 1.0625rem;
       color: var(--actionTextColor);
       font-weight: 600;
       background: var(--actionBackgroundColor);
@@ -590,7 +595,7 @@ html, body {
         align-items: center;
         justify-content: center;
         padding: 8px;
-        font-size: 28px;
+        font-size: 1.75rem;
         background: var(--actionIconInactiveBackgroundColor);
         flex-shrink: 0;
         svg {
@@ -600,7 +605,7 @@ html, body {
         &.active-check {
           padding: 10px;
           margin-left: 10px;
-          font-size: 12px;
+          font-size: 0.75rem;
           -webkit-text-stroke: 0.7px black;
           position: absolute;
           right: 0;

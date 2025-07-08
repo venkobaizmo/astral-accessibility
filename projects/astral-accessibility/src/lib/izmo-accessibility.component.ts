@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from "@angular/forms";
-import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, Renderer2, OnInit, EventEmitter, AfterViewInit, ViewChildren, QueryList } from "@angular/core";
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, Renderer2, OnInit, EventEmitter, AfterViewInit, ViewChildren, QueryList, HostBinding, ChangeDetectorRef } from "@angular/core";
 import { ContrastComponent } from "./controls/contrast.component";
 import { InvertComponent } from "./controls/invert.component";
 import { SaturateComponent } from "./controls/saturate.component";
@@ -179,22 +179,26 @@ export class IzmoAccessibilityComponent implements OnInit, AfterViewInit {
   }
   
   // New layout and theme properties
-  layoutType: LayoutType = 'responsive';
+  layoutType: LayoutType = '3-column';
   theme: IzmoTheme = {};
   
   // Language properties
   currentLanguage: string = 'en-US';
   availableLanguages = [
     { code: 'en-US', name: 'English (United States)' },
+    { code: 'en-GB', name: 'English (United Kingdom)' },
     { code: 'es-ES', name: 'Español (España)' },
     { code: 'fr-FR', name: 'Français (France)' },
     { code: 'de-DE', name: 'Deutsch (Deutschland)' },
     { code: 'it-IT', name: 'Italiano (Italia)' },
-    { code: 'pt-BR', name: 'Português (Brasil)' },
-    { code: 'ru-RU', name: 'Русский (Россия)' },
-    { code: 'ja-JP', name: '日本語 (日本)' },
-    { code: 'ko-KR', name: '한국어 (대한민국)' },
-    { code: 'ar-SA', name: 'العربية (السعودية)' },
+    { code: 'pt-PT', name: 'Português (Portugal)' },
+    { code: 'nl-NL', name: 'Nederlands (Nederland)' },
+    { code: 'sv-SE', name: 'Svenska (Sverige)' },
+    { code: 'no-NO', name: 'Norsk (Norge)' },
+    { code: 'da-DK', name: 'Dansk (Danmark)' },
+    { code: 'fi-FI', name: 'Suomi (Suomi)' },
+    { code: 'pl-PL', name: 'Polski (Polska)' },
+    { code: 'cs-CZ', name: 'Čeština (Česká republika)' },
     { code: 'hi-IN', name: 'हिन्दी (भारत)' }
   ];
   
@@ -282,7 +286,8 @@ export class IzmoAccessibilityComponent implements OnInit, AfterViewInit {
   constructor(
     private readonly elementRef: ElementRef, 
     private readonly renderer: Renderer2,
-    public readonly i18n: I18nService
+    public readonly i18n: I18nService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   get openAccessibilityPanelText(): string {
@@ -297,6 +302,8 @@ export class IzmoAccessibilityComponent implements OnInit, AfterViewInit {
     const izmoElement = document.querySelector("izmo-accessibility");
     const izmoOptions = izmoElement?.getAttribute("izmo-features");
 
+    const validLayouts: LayoutType[] = ['1-column', '2-column', '3-column', 'responsive'];
+
     if (izmoOptions) {
       this.options = JSON.parse(izmoOptions);
       this.enabledFeatures = this.options["enabledFeatures"] || [];
@@ -304,17 +311,21 @@ export class IzmoAccessibilityComponent implements OnInit, AfterViewInit {
       
       // Set locale if provided
       if (this.options["locale"]) {
-        this.currentLanguage = this.options["locale"];
         this.i18n.setLocale(this.options["locale"]);
+        this.currentLanguage = this.i18n.locale;
       } else {
         // Auto-detect language if not provided
         this.currentLanguage = this.detectBrowserLanguage();
-        this.i18n.setLocale(this.currentLanguage);
       }
       
-      // Set layout type if provided
-      if (this.options["layout"]) {
-        this.layoutType = this.options["layout"];
+      // Set layout type if provided and valid, otherwise default to 3-column
+      const providedLayout = this.options["layout"];
+      const validLayouts: LayoutType[] = ['1-column', '2-column', '3-column', 'responsive'];
+      if (providedLayout && validLayouts.includes(providedLayout)) {
+        this.layoutType = providedLayout;
+      } else {
+        // Always default to 3-column if layout is missing or invalid
+        this.layoutType = '3-column';
       }
       
       // Set custom theme if provided
@@ -322,8 +333,8 @@ export class IzmoAccessibilityComponent implements OnInit, AfterViewInit {
         this.theme = this.options["theme"];
       }
       
-      // Apply custom height if provided, otherwise default to 58vh
-      const customHeight = this.options["widgetHeight"] ?? "58vh";
+      // Apply custom height if provided, otherwise default to 100vh
+      const customHeight = this.options["widgetHeight"] ?? "100vh";
       this.setWidgetHeight(customHeight);
       
       // Apply layout and theme configurations
@@ -332,8 +343,8 @@ export class IzmoAccessibilityComponent implements OnInit, AfterViewInit {
     } else {
       // No config provided, use defaults
       this.currentLanguage = this.detectBrowserLanguage();
-      this.i18n.setLocale(this.currentLanguage);
-      this.setWidgetHeight("58vh");
+      this.layoutType = '3-column';
+      this.setWidgetHeight("100vh");
       this.applyLayoutConfiguration();
     }
 
@@ -343,6 +354,8 @@ export class IzmoAccessibilityComponent implements OnInit, AfterViewInit {
       this.izmoAccessibilityPanel = "izmo-page izmo-modal";
       this.izmoAccessibilityIcon = "izmo-icon izmo-icon-mobile";
     }
+    // Force change detection to update layout class
+    this.cdr.detectChanges();
   }
 
   private setWidgetHeight(height: string) {
@@ -474,28 +487,29 @@ export class IzmoAccessibilityComponent implements OnInit, AfterViewInit {
 
   private detectBrowserLanguage(): string {
     const browserLang = navigator.language || navigator.languages?.[0] || 'en-US';
-    const availableCodes = this.availableLanguages.map(lang => lang.code);
-    
-    // Try exact match first
-    if (availableCodes.includes(browserLang)) {
-      return browserLang;
-    }
-    
-    // Try language code match (e.g., 'en' for 'en-US')
-    const langCode = browserLang.split('-')[0];
-    const match = availableCodes.find(code => code.startsWith(langCode));
-    
-    return match || 'en-US';
+    // Use the i18n service to find the closest supported locale
+    this.i18n.setLocale(browserLang);
+    return this.i18n.locale;
   }
 
   onLanguageChange(event: any): void {
     const newLanguage = event.target.value;
     this.currentLanguage = newLanguage;
     this.i18n.setLocale(newLanguage);
+    
+    // Update selected profile in accessibility profiles component when language changes
+    this.accessibilityProfilesControls.forEach(profilesComponent => {
+      profilesComponent.updateSelectedProfile();
+    });
   }
 
   public resetAllSelections(): void {
     this.resetEvent.emit();
+    
+    // Reset profiles as well
+    this.accessibilityProfilesControls.forEach(profilesComponent => {
+      profilesComponent.resetProfile();
+    });
   }
 
   get userAgent(): string {
@@ -525,8 +539,8 @@ export class IzmoAccessibilityComponent implements OnInit, AfterViewInit {
   }
 
   onProfileApplied(features: string[]) {
-    // Reset all controls first
-    this.resetAllSelections();
+    // Reset all controls first (but not profiles)
+    this.resetEvent.emit();
     
     // Activate controls based on selected profile features
     this.contrastControls.forEach(ctrl => {

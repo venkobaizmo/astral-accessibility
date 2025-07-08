@@ -89,7 +89,7 @@ import { IzmoAccessibilityComponent } from "../izmo-accessibility.component";
       justify-content: space-between;
       align-items: center;
       margin-bottom: 8px;
-      font-size: 16px;
+      font-size: 1rem;
       font-weight: bold;
       color: #333;
     }
@@ -97,7 +97,7 @@ import { IzmoAccessibilityComponent } from "../izmo-accessibility.component";
     .close-btn {
       background: none;
       border: none;
-      font-size: 20px;
+      font-size: 1.25rem;
       cursor: pointer;
       color: #666;
       padding: 0;
@@ -115,7 +115,7 @@ import { IzmoAccessibilityComponent } from "../izmo-accessibility.component";
     }
 
     .dictionary-definition {
-      font-size: 14px;
+      font-size: 0.875rem;
       line-height: 1.4;
       color: #555;
     }

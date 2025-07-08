@@ -72,7 +72,7 @@ export interface AccessibilityProfile {
   imports: [NgIf, NgClass, NgFor],
   styles: [`
     .izmo-section-title {
-      font-size: 18px;
+      font-size: 1.125rem;
       font-weight: 600;
       color: var(--izmo-section-title-color, var(--izmo-text-color, #001E50));
       margin: 0 0 12px 0;
@@ -96,12 +96,15 @@ export interface AccessibilityProfile {
       outline: none;
     }
     .izmo-section-title, .izmo-profiles-title {
-      font-size: 18px;
-      font-weight: 600;
+      font-size: 1.125rem;
+      font-weight: 700;
       color: var(--izmo-section-title-color, var(--izmo-text-color, #001E50));
       margin: 0;
       padding: 0;
       line-height: 1.2;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
     .izmo-profiles-arrow {
       display: flex;
@@ -133,14 +136,17 @@ export interface AccessibilityProfile {
     
     .izmo-profiles-title {
       margin: 0 0 8px 0;
-      font-size: 18px;
-      font-weight: 600;
+      font-size: 1.125rem;
+      font-weight: 700;
       color: var(--izmo-profiles-title-color, var(--izmo-text-color, #001E50));
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
     
     .izmo-profiles-subtitle {
       margin: 0;
-      font-size: 14px;
+      font-size: 0.875rem;
       color: var(--izmo-profiles-subtitle-color, var(--izmo-text-color, #001E50));
       opacity: 0.8;
     }
@@ -199,7 +205,7 @@ export interface AccessibilityProfile {
     
     .izmo-profile-name {
       margin: 0 0 4px 0;
-      font-size: 16px;
+      font-size: 1rem;
       font-weight: 600;
       color: var(--izmo-profile-name-color, var(--izmo-action-text-color, #001E50));
     }
@@ -210,7 +216,7 @@ export interface AccessibilityProfile {
     
     .izmo-profile-description {
       margin: 0 0 8px 0;
-      font-size: 13px;
+      font-size: 0.8125rem;
       line-height: 1.4;
       color: var(--izmo-profile-description-color, var(--izmo-action-text-color, #001E50));
       opacity: 0.8;
@@ -230,7 +236,7 @@ export interface AccessibilityProfile {
       padding: 2px 6px;
       background: var(--izmo-profile-feature-tag-background-color, var(--izmo-action-icon-inactive-background-color, #E8E8E8));
       border-radius: 4px;
-      font-size: 11px;
+      font-size: 0.6875rem;
       color: var(--izmo-profile-feature-tag-color, var(--izmo-action-text-color, #001E50));
     }
     
@@ -243,7 +249,7 @@ export interface AccessibilityProfile {
       padding: 2px 6px;
       background: var(--izmo-action-icon-disabled-background-color, #B0B0B0);
       border-radius: 4px;
-      font-size: 11px;
+      font-size: 0.6875rem;
       color: var(--izmo-action-disabled-text-color, #B0B0B0);
     }
     
@@ -272,7 +278,7 @@ export interface AccessibilityProfile {
       padding: 10px 20px;
       border: none;
       border-radius: 6px;
-      font-size: 14px;
+      font-size: 0.875rem;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -313,27 +319,26 @@ export class AccessibilityProfilesComponent implements OnInit {
   @Output() profileSelected = new EventEmitter<AccessibilityProfile>();
   @Output() profileApplied = new EventEmitter<string[]>();
   expanded = false;
-  profiles: AccessibilityProfile[] = [];
   selectedProfile: AccessibilityProfile | null = null;
 
   constructor(public readonly i18n: I18nService) {}
 
   ngOnInit() {
-    this.initializeProfiles();
+    // No need to initialize profiles here as they're now reactive
   }
 
   toggleAccordion() {
     this.expanded = !this.expanded;
   }
 
-  private initializeProfiles() {
-    this.profiles = [
+  get profiles(): AccessibilityProfile[] {
+    return [
       {
         id: 'visual-impairment',
         name: this.i18n.getTranslation('profile-visual-impairment'),
         description: this.i18n.getTranslation('profile-visual-impairment-desc'),
         icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z',
-        features: ['Bigger Text', 'Contrast', 'Screen Reader', 'Text Magnifier', 'Cursor'],
+        features: ['Bigger Text', 'Contrast', 'Screen Reader', 'Cursor'],
         category: 'visual'
       },
       {
@@ -341,7 +346,7 @@ export class AccessibilityProfilesComponent implements OnInit {
         name: this.i18n.getTranslation('profile-color-blindness'),
         description: this.i18n.getTranslation('profile-color-blindness-desc'),
         icon: 'M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z',
-        features: ['Color Blind Support', 'Contrast', 'Grayscale', 'Luminosity'],
+        features: ['Contrast', 'Grayscale'],
         category: 'visual'
       },
       {
@@ -349,7 +354,7 @@ export class AccessibilityProfilesComponent implements OnInit {
         name: this.i18n.getTranslation('profile-dyslexia'),
         description: this.i18n.getTranslation('profile-dyslexia-desc'),
         icon: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z',
-        features: ['Dyslexia Friendly', 'Text Spacing', 'Line Height', 'Readable Font', 'Reading Line'],
+        features: ['Dyslexia Friendly', 'Text Spacing', 'Line Height', 'Readable Font'],
         category: 'reading'
       },
       {
@@ -357,7 +362,7 @@ export class AccessibilityProfilesComponent implements OnInit {
         name: this.i18n.getTranslation('profile-motor-impairment'),
         description: this.i18n.getTranslation('profile-motor-impairment-desc'),
         icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z',
-        features: ['Focus Enhancement', 'Skip Links', 'Cursor', 'Touch Target Validator', 'Keyboard Navigation'],
+        features: ['Skip Links', 'Cursor'],
         category: 'navigation'
       },
       {
@@ -365,7 +370,7 @@ export class AccessibilityProfilesComponent implements OnInit {
         name: this.i18n.getTranslation('profile-cognitive-impairment'),
         description: this.i18n.getTranslation('profile-cognitive-impairment-desc'),
         icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z',
-        features: ['Reduced Motion', 'Pause Animations', 'Hide Images', 'Screen Mask', 'Text Align'],
+        features: ['Reduced Motion'],
         category: 'reading'
       },
       {
@@ -373,7 +378,7 @@ export class AccessibilityProfilesComponent implements OnInit {
         name: this.i18n.getTranslation('profile-comprehensive'),
         description: this.i18n.getTranslation('profile-comprehensive-desc'),
         icon: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z',
-        features: ['Bigger Text', 'Contrast', 'Screen Reader', 'Focus Enhancement', 'Dyslexia Friendly', 'Color Blind Support', 'Reduced Motion'],
+        features: ['Bigger Text', 'Contrast', 'Screen Reader', 'Dyslexia Friendly', 'Reduced Motion'],
         category: 'comprehensive'
       }
     ];
@@ -384,30 +389,37 @@ export class AccessibilityProfilesComponent implements OnInit {
     this.profileApplied.emit(profile.features);
   }
 
+  // Update selected profile when language changes
+  updateSelectedProfile() {
+    if (this.selectedProfile) {
+      // Find the updated profile with the same ID
+      const updatedProfile = this.profiles.find(p => p.id === this.selectedProfile!.id);
+      if (updatedProfile) {
+        this.selectedProfile = updatedProfile;
+      }
+    }
+  }
+
+  // Reset profile selection
+  resetProfile() {
+    this.selectedProfile = null;
+    // Emit empty array to indicate no profile is active
+    this.profileApplied.emit([]);
+  }
+
   getFeatureTranslation(feature: string): string {
     const translationMap: { [key: string]: string } = {
       'Bigger Text': this.i18n.getTranslation('bigger-text'),
       'Contrast': this.i18n.getTranslation('contrast'),
       'Screen Reader': this.i18n.getTranslation('screen-reader'),
-      'Text Magnifier': this.i18n.getTranslation('text-magnifier'),
       'Cursor': this.i18n.getTranslation('cursor'),
-      'Color Blind Support': this.i18n.getTranslation('color-blind-support'),
       'Grayscale': this.i18n.getTranslation('grayscale'),
-      'Luminosity': this.i18n.getTranslation('luminosity'),
       'Dyslexia Friendly': this.i18n.getTranslation('dyslexia-friendly'),
       'Text Spacing': this.i18n.getTranslation('text-spacing'),
       'Line Height': this.i18n.getTranslation('line-height'),
       'Readable Font': this.i18n.getTranslation('readable-font'),
-      'Reading Line': this.i18n.getTranslation('reading-line'),
-      'Focus Enhancement': this.i18n.getTranslation('focus-enhancement'),
       'Skip Links': this.i18n.getTranslation('skip-links'),
-      'Touch Target Validator': this.i18n.getTranslation('touch-target-validator'),
-      'Keyboard Navigation': this.i18n.getTranslation('keyboard-navigation'),
-      'Reduced Motion': this.i18n.getTranslation('reduced-motion'),
-      'Pause Animations': this.i18n.getTranslation('pause-animations'),
-      'Hide Images': this.i18n.getTranslation('hide-images'),
-      'Screen Mask': this.i18n.getTranslation('screen-mask'),
-      'Text Align': this.i18n.getTranslation('text-align')
+      'Reduced Motion': this.i18n.getTranslation('reduced-motion')
     };
     
     return translationMap[feature] || feature;

@@ -25,6 +25,13 @@
     }
   }
 
+  function ensureLayout(config) {
+    var validLayouts = ['1-column', '2-column', '3-column', 'responsive'];
+    if (!config.layout || validLayouts.indexOf(config.layout) === -1) {
+      config.layout = '3-column';
+    }
+  }
+
   // 2. Get script src to determine main.js path
   var currentScript = document.currentScript || (function() {
     var scripts = document.getElementsByTagName('script');
@@ -45,6 +52,7 @@
 
     var config = window.izmoWidgetConfig || {};
     ensureFeatures(config);
+    ensureLayout(config);
     window.izmoWidgetConfig = config;
     if (typeof initializeIzmo === 'function') {
       initializeIzmo(window.izmoWidgetConfig);

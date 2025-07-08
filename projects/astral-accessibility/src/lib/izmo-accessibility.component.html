@@ -2,7 +2,7 @@
   name="viewport"
   content="width=device-width, initial-scale=1, minimum-scale=1"
 />
-<div class="izmo-accessibility d-flex align-items-end" role="complementary" [attr.aria-label]="i18n.getTranslation('accessibility-tools')">
+<div [ngClass]="'izmo-accessibility d-flex align-items-end ' + getLayoutClass()" role="complementary" [attr.aria-label]="i18n.getTranslation('accessibility-tools')">
   <div>
     <div class="izmo-inverted-corner"></div>
     <button
